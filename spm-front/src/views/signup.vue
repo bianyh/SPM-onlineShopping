@@ -1,94 +1,137 @@
 <template>
-    <div class="login-main">
-      <div class="login-bg"></div>
-      <div class="welcome-banner">
-        <div class="banner-content">
-            <h1>WELCOME TO ONLINE SHOPPING MALL</h1>
-            <p>线上购物商城</p>
-        </div>
-      </div>
-      <div class="login-container">
+  <div class="login-main">
+    <div class="login-bg"></div>
+    <div class="login-container">
+      <div class="title-row">
         <h2 class="login-title">SIGNUP</h2>
-        <div class="login-form">
-            <div class="form-item">
-                <div class="input-wrapper">
-                <el-icon class="input-icon"><User /></el-icon>
-                <input type="text" v-model="signupForm.username" placeholder="please input username">
-                <span class="required-mark">*</span>
-                </div>
-            </div>
-            <div class="form-item">
-                <div class="input-wrapper">
-                <el-icon class="input-icon"><Lock /></el-icon>
-                <input type="password" v-model="signupForm.password" placeholder="please input password">
-                <span class="required-mark">*</span>
-                </div>
-            </div>
-            <div class="form-item">
-                <div class="input-wrapper">
-                <el-icon class="input-icon"><Message/></el-icon>
-                <input type="email" v-model="signupForm.email" placeholder="please input e-mail">
-                </div>
-            </div>
-            <div class="form-item">
-                <div class="input-wrapper">
-                <el-icon class="input-icon"><Cellphone/></el-icon>
-                <input type="text" v-model="signupForm.phone" placeholder="please input phone-number">
-                </div>
-            </div>
-            <div class="form-item">
-                <button class="submit-button" @click="handleSignup">SIGNUP</button>
-            </div>
-            <div class="form-footer">
-            <router-link to="/login" class="signup-link">
-              return login
-            </router-link>
+        <span class="login-tip"> Already have an account?</span>
+        <router-link to="/login" class="login-link">
+          Login in!
+        </router-link>
+      </div>
+      <div class="login-form">
+        <div class="form-item">
+          <div class="input-wrapper">
+            <el-icon class="input-icon">
+              <User />
+            </el-icon>
+            <input class="input-word" type="text" v-model="signupForm.username" placeholder="please input username">
+            <span class="required-mark">*</span>
           </div>
         </div>
+        <div class="form-item">
+          <div class="input-wrapper">
+            <el-icon class="input-icon">
+              <Lock />
+            </el-icon>
+            <input class="input-word" type="password" v-model="signupForm.password" placeholder="please input password">
+            <span class="required-mark">*</span>
+          </div>
+        </div>
+        <div class="form-item">
+          <div class="input-wrapper">
+            <el-icon class="input-icon">
+              <Lock />
+            </el-icon>
+            <input class="input-word" type="password_confirm" v-model="signupForm.password" placeholder="confirm your password">
+            <span class="required-mark">*</span>
+          </div>
+        </div>
+        <div class="form-item">
+          <div class="input-wrapper">
+            <el-icon class="input-icon">
+              <Message />
+            </el-icon>
+            <input class="input-word" type="email" v-model="signupForm.email" placeholder="please input e-mail">
+          </div>
+        </div>
+        <div class="form-item">
+          <div class="input-wrapper">
+            <el-icon class="input-icon">
+              <Cellphone />
+            </el-icon>
+            <input class="input-word" type="text" v-model="signupForm.phone" placeholder="please input phone-number">
+          </div>
+        </div>
+        <div class="form-item">
+          <button class="submit-button" @click="handleSignup">SIGNUP</button>
+        </div>
+        <!-- 移除原来的 return login -->
       </div>
     </div>
-  </template>
+  </div>
+</template>
 
-  <script>
-  import {  User,Lock,Message,Cellphone} from '@element-plus/icons-vue'
-  import axios from 'axios'
-  export default {
-    name: 'signup',
-    components:{
-        User,
-        Lock,
-        Message,
-        Cellphone
-    },
-    data() {
-      return {
-        signupForm: {
-          username: '',
-          password: '',
-          email: '',
-          phone: ''
-        }
-      }
-    },
-    methods: {
-      async handleSignup() {
-        try {
-          const response = await axios.post('/auth/signup', this.signupForm)
-          console.log('注册成功', response.data)
-          this.$router.push('/login')
-        } catch (error) {
-          console.error('注册失败', error)
-        }
+<script>
+import { userShow, userRegister } from '@/api/user';
+import MessageBus from '@/utils/MessageBus';
+import { User, Lock, Message, Cellphone } from '@element-plus/icons-vue'
+import axios from 'axios'
+export default {
+  name: 'signup',
+  components: {
+    User,
+    Lock,
+    Message,
+    Cellphone
+  },
+  data() {
+    return {
+      signupForm: {
+        username: '',
+        password: '',
+        email: '',
+        phone: ''
       }
     }
+  },
+  methods: {
+    async handleSignup() {/* 注册请求
+          try {
+              const response = await axios.post('/auth/signup', this.signupForm)
+              console.log('注册成功', response.data)
+              this.$router.push('/login')
+          } catch (error) {
+              console.error('注册失败', error)
+          }
+      },
+      registerRequest() {*/
+      if (this.password != this.password_confirm) //检查密码码
+      {
+        MessageBus.emit('box', "The passwords entered are not the same.")
+        return
+      }
+      if ( // 如果存在未填写的必需项目
+        this.signupForm.password == "" ||
+        this.signupForm.username == "" ||
+        this.signupForm.phone == ""
+      ) { // 拒绝提交
+        MessageBus.emit('box', "There are required items that have not been filled in, please check.")
+        return
+      }
+      userRegister(
+        this.username,
+        this.password,
+        this.email,
+        this.phoneNumber,
+      ).then((result) => {
+        MessageBus.emit('box', result)
+      }, (err) => {
+        MessageBus.emit('box', err)
+      })
+    }
+
   }
-  </script>
-  
-  <style scoped>
- .login-main {
+}
+</script>
+
+<style scoped>
+.login-main {
   width: 100%;
   height: 100vh;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .login-bg {
@@ -104,6 +147,7 @@
   opacity: 0.5;
 }
 
+/** 原来的标题栏
 .welcome-banner {
   position: absolute;
   top: 0;
@@ -115,19 +159,17 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   z-index: 1;
 }
-
 .banner-content h1 {
   color: white;
   font-size: 20px;
   margin: 0;
   margin-bottom: 5px;
 }
-
 .banner-content p {
   color: rgba(255, 255, 255, 0.9);
   font-size: 14px;
   margin: 0;
-}
+}*/
 
 .login-container {
   width: 500px;
@@ -142,12 +184,38 @@
   transform: translate(-50%, -50%);
   padding: 20px;
   z-index: 1;
+  opacity: 0.9;
+}
+
+/* 新增 title-row 样式 */
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
 .login-title {
-  text-align: center;
-  margin-bottom: 30px;
   color: #333;
+  margin: 0;
+  /* 去除原有的 margin-bottom */
+}
+
+.login-tip {
+  font-size: 14px;
+  opacity: 0.5;
+  margin-left: 130px;
+}
+
+.login-link {
+  color: #409EFF;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.login-link:hover {
+  color: #66b1ff;
+  text-decoration: underline;
 }
 
 .login-form {
@@ -164,7 +232,8 @@
 
 .input-icon {
   position: absolute;
-  left: -30px;  /* 将图标移到输入框外部左侧 */
+  left: -30px;
+  /* 将图标移到输入框外部左侧 */
   color: #909399;
   font-size: 20px;
   z-index: 1;
@@ -182,7 +251,8 @@
   height: 40px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  padding: 0 30px 0 15px;  /* 调整右侧padding为必填标记留出空间 */
+  padding: 0 30px 0 15px;
+  /* 调整右侧padding为必填标记留出空间 */
   font-size: 14px;
   outline: none;
 }
@@ -215,20 +285,5 @@
   background-color: #66b1ff;
 }
 
-.form-footer {
-  text-align: center;
-  margin-top: 15px;
-}
-
-.signup-link {
-  color: #409EFF;
-  text-decoration: none;
-  font-size: 14px;
-  transition: color 0.3s;
-}
-
-.signup-link:hover {
-  color: #66b1ff;
-  text-decoration: underline;
-}
-  </style>
+/* 移除原有的 form-footer 样式 */
+</style>

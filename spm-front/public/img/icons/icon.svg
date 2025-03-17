@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <g class="layer" display="none">
+  <title>图层 2</title>
+ </g>
+ <g class="layer" display="inline">
+  <title>Layer 1</title>
+  <path d="m47,7l39.5,167l37,38l128,80l-23,-146l-37,-55l-144.5,-84z" fill="#fff7a0" id="svg_5" stroke="#ecdbff" stroke-linecap="round" stroke-linejoin="round" stroke-width="10"/>
+  <path d="m49,9l64.5,116l48,-32l-112.5,-84z" fill="#f9e998" id="svg_6" opacity="0.75" stroke="#000000" stroke-opacity="0" stroke-width="2"/>
+  <path d="m251.5,292l-128,-80l22,-42l106,122z" fill="#bc9b2f" id="svg_8" opacity="0.75" stroke="#000000" stroke-opacity="0" stroke-width="2"/>
+  <path d="m49,9l142.5,82l-30,2l-112.5,-84z" fill="#fcf9a9" id="svg_9" opacity="0.75" stroke="#000000" stroke-opacity="0" stroke-width="2"/>
+  <path d="m228.5,146l-37,-55l-22,44l59,11z" fill="#f9f1ca" id="svg_10" opacity="0.75" stroke="#000000" stroke-opacity="0" stroke-width="2"/>
+  <path d="m228.5,146l23,146l-82,-157l59,11z" fill="#edea9c" id="svg_11" opacity="0.75" stroke="#000000" stroke-opacity="0" stroke-width="2"/>
+  <path d="m49,9l37.5,165l27,-49l-64.5,-116z" fill="#e8d05a" id="svg_12" opacity="0.75" stroke="#000000" stroke-opacity="0" stroke-width="2"/>
+  <path d="m191.5,91l-30,2l8,42l22,-44z" fill="#fbfccc" id="svg_13" opacity="0.75" stroke="#000000" stroke-opacity="0" stroke-width="2"/>
+  <path d="m145.5,170l-32,-45l56,10l-24,35z" fill="#f7eda5" id="svg_14" opacity="0.75" stroke="#000000" stroke-opacity="0" stroke-width="2"/>
+  <path d="m145.5,170l-59,4l27,-49l32,45z" fill="#e0c350" id="svg_15" opacity="0.75" stroke="#000000" stroke-opacity="0" stroke-width="2"/>
+  <path d="m145.5,170l106,122l-82,-157l-24,35z" fill="#ddd375" id="svg_16" opacity="0.75" stroke="#000000" stroke-opacity="0" stroke-width="2"/>
+  <path d="m123.5,212l-37,-38l59,-4l-22,42z" fill="#ccaf33" id="svg_17" opacity="0.75" stroke="#000000" stroke-opacity="0" stroke-width="2"/>
+  <path d="m113.5,125l48,-32l8,42l-56,-10z" fill="#fcffe2" id="svg_18" opacity="0.75" stroke="#000000" stroke-opacity="0" stroke-width="2"/>
+ </g>
+</svg>

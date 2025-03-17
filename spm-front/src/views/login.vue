@@ -1,33 +1,32 @@
 <template>
   <div class="login-main">
     <div class="login-bg"></div>
-    <div class="welcome-banner">
-      <div class="banner-content">
-        <h1>WELCOME TO ONLINE SHOPPING MALL</h1>
-        <p>线上购物商城</p>
-      </div>
-    </div>
     <div class="login-container">
       <h2 class="login-title">LOGIN</h2>
       <div class="login-form">
         <div class="form-item">
           <div class="input-wrapper">
-          <el-icon class="input-icon"><User /></el-icon>
-          <input type="text" v-model="loginForm.name" placeholder="please input username">
+            <el-icon class="input-icon">
+              <User />
+            </el-icon>
+            <input class="input-word" type="text" v-model="loginForm.name" placeholder="please input username">
           </div>
         </div>
         <div class="form-item">
           <div class="input-wrapper">
-          <el-icon class="input-icon"><Lock /></el-icon>
-          <input type="password" v-model="loginForm.pwd" placeholder="please input password">
-         </div>
+            <el-icon class="input-icon">
+              <Lock />
+            </el-icon>
+            <input class="input-word" type="password" v-model="loginForm.pwd" placeholder="please input password">
+          </div>
         </div>
         <div class="form-item">
           <button class="submit-button" @click="handleLogin">LOGIN</button>
         </div>
         <div class="form-footer">
+          <span class="text-account">No account yet?</span>
           <router-link to="/signup" class="signup-link">
-            create an account
+            register now!
           </router-link>
         </div>
       </div>
@@ -36,14 +35,16 @@
 </template>
 
 <script>
-import {  User,Lock} from '@element-plus/icons-vue'
-  import axios from 'axios'
+import { User, Lock } from '@element-plus/icons-vue'
+import { userLogin } from '@/api/user'
+import axios from 'axios'
+import MessageBus from '@/utils/MessageBus'
 export default {
   name: 'login',
-  components:{
-        User,
-        Lock
-    },
+  components: {
+    User,
+    Lock
+  },
   data() {
     return {
       loginForm: {
@@ -54,23 +55,37 @@ export default {
   },
   methods: {
     async handleLogin() {
-      try {
-        const response = await axios.post('/auth/login', this.loginForm)
-        console.log('登录成功', response.data)
-        // 处理登录成功后的逻辑
-      } catch (error) {
-        console.error('登录失败', error)
-      }
+      userLogin(this.loginForm.name, this.loginForm.pwd).then((result) => {
+        if (result.code == 0) {
+          result.content = result.data
+          result.wait = true // 等待执行结果
+          result.callbacks = [this.goToMainPage]
+          window.localStorage.setItem("token", result.data) //储存token
+          MessageBus.emit('box', result) // 登陆成功消息框
+        }
+        else {
+          MessageBus.emit('box', result);
+        }
+      }, (err) => {
+        MessageBus.emit('box', "无法连接至后端服务")
+      })
+
     }
+    //handleLogin() {
+      //this.$router.push('/home');
+    //  this.$router.push('/homenew');
+    //}
   }
 }
 </script>
 
 <style scoped>
- .login-main {
+.login-main {
   width: 100%;
   height: 100vh;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .login-bg {
@@ -86,30 +101,6 @@ export default {
   opacity: 0.5;
 }
 
-.welcome-banner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: linear-gradient(90deg, #409EFF, #66b1ff);
-  padding: 12px 0;
-  text-align: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1;
-}
-
-.banner-content h1 {
-  color: white;
-  font-size: 20px;
-  margin: 0;
-  margin-bottom: 5px;
-}
-
-.banner-content p {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 14px;
-  margin: 0;
-}
 
 .login-container {
   width: 500px;
@@ -124,6 +115,7 @@ export default {
   transform: translate(-50%, -50%);
   padding: 20px;
   z-index: 1;
+  opacity: 0.9;
 }
 
 .login-title {
@@ -146,10 +138,14 @@ export default {
 
 .input-icon {
   position: absolute;
-  left: -30px;  /* 将图标移到输入框外部左侧 */
+  left: -30px;
+  /* 将图标移到输入框外部左侧 */
   color: #909399;
   font-size: 20px;
   z-index: 1;
+}
+
+.input-word {
 }
 
 .form-item {
@@ -164,7 +160,8 @@ export default {
   height: 40px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  padding: 0 30px 0 15px;  /* 调整右侧padding为必填标记留出空间 */
+  padding: 0 30px 0 15px;
+  /* 调整右侧padding为必填标记留出空间 */
   font-size: 14px;
   outline: none;
 }
@@ -200,6 +197,10 @@ export default {
 .form-footer {
   text-align: center;
   margin-top: 15px;
+}
+
+.text-account {
+  opacity: 0.5;
 }
 
 .signup-link {

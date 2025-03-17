@@ -1,0 +1,56 @@
+@import './base.css';
+@import './cards.css';
+@import './buttons.css';
+@import './inputs.css';
+
+.mainbg {
+  box-sizing: content-box;
+  background-size: 100% 100%;
+  background-attachment: fixed;
+  width: 100%;
+  display: flex;
+}
+
+.divider {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  display: block;
+  margin: 0 0 0.5rem 0;
+  border-bottom: 2px solid #777;
+  line-height: 1.5rem;
+}
+
+#app {
+  max-width: 1024px;
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+a,
+.orange {
+  text-decoration: none;
+  color: hsl(40, 100%, 36%);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+a:hover {
+  background-color: hsl(0, 0%, 91%);
+}
+
+
+
+.panel {
+  display: flex;
+  position: relative;
+  margin: 0;
+  padding: 2%;
+  border: 2px solid darkgrey;
+  border-radius: 4px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 10px 10px #888888;
+  width: 100%;
+  flex-direction: column;
+  place-items: center center;
+}

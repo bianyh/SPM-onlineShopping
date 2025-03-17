@@ -5,11 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "command": "npm run dev",
+            "command": "npm run serve",
             "name": "vue dev",
             "request": "launch",
             "type": "node-terminal",
-            "cwd": "${workspaceFolder}/FrontEnd/"
+            "cwd": "${workspaceFolder}/spm-front/"
         },
         {
             "type": "java",

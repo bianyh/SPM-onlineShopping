@@ -12,6 +12,9 @@
 //     app.component(key, icons[key])
 // })
 // app.mount('#app').use(store).use(router).use(ElementPlus)
+
+import './assets/main.css' // 导入全局css
+
 import { createApp } from 'vue'
 import App from './App.vue'
 import './registerServiceWorker'
@@ -20,6 +23,7 @@ import store from './store'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+
 
 const app = createApp(App)
 

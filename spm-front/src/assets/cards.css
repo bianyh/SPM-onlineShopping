@@ -1,0 +1,21 @@
+
+.input-card {
+    text-align: left;
+    margin: 1% 0;
+    border-style: solid;
+    border-left-width: 0.5rem;
+    border-color: gainsboro;
+    border-radius: 0 4px;
+    transition: 0.4s;
+    display: block;
+    position: relative;
+    width: auto;
+    padding: 1rem;
+    background-color: #fff;
+}
+
+
+.input-card:hover {
+    border-color: grey;
+    box-shadow: 0 0 4px #000;
+}

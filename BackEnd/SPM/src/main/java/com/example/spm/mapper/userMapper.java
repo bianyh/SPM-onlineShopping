@@ -13,6 +13,6 @@ public interface userMapper {
     @Select("select * from user where username=#{username}")
     public User findByUsername(String username);
 
-    @Update("update user set nickname=#{nickname}, avatar=#{userpic}, phone=#{phone}, email=#{email}, updata_at=now() where id=#{id}")
+    @Update("update user set nickname=#{nickname}, avatar=#{userpic}, phone=#{phone}, email=#{email} where id=#{id}")
     void update(@Param("id") int id, @Param("nickname") String nickname, @Param("userpic") String userpic, @Param("phone") String phone, String email);
 }

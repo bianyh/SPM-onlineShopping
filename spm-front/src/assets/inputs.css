@@ -1,0 +1,21 @@
+input {
+    border-style: solid;
+    border-width: 0.1rem;
+    border-color: gainsboro;
+    border-radius: 1px;
+    transition: 0.4s;
+    box-shadow: none;
+    width: 100%;
+    outline-width: 0;
+    color: #4f4f4f;
+}
+
+input:hover {
+    border-color: grey;
+}
+
+input:active {
+    outline-style: none;
+    background-color: gainsboro;
+    transition: 0.1s;
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<svg width="192" height="192" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <title>search</title>
+ <g class="layer">
+  <title>Layer 1</title>
+  <ellipse cx="78" cy="77.5" fill="#bcddff" id="svg_1" rx="47" ry="47" stroke="#4c4c4c" stroke-width="13"/>
+  <rect fill="#4c4c4c" height="13" id="svg_2" stroke="#4c4c4c" stroke-width="13" transform="rotate(46.2454 135.5 140)" width="67" x="102" y="133.5"/>
+  <circle cx="91" cy="55.5" fill="#ffffff" id="svg_3" r="10" stroke="#4c4c4c" stroke-width="0"/>
+ </g>
+</svg>

@@ -1,0 +1,19 @@
+
+.submit-button {
+    padding: 0.5rem 3rem;
+    display: block;
+    margin: auto;
+    height: 100%;
+    border: 2px solid #888;
+    border-radius: 4px;
+    transition: 0.4s;
+    text-align: center;
+    background-color: #a471b8;
+    color: #fff;
+    font: 1rem 'Fira Sans';
+    font-family: sans-serif;
+    transition: 0.2s;
+}
+.submit-button:active {
+    background-color: #663c6d;
+}
