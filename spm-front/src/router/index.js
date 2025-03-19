@@ -32,10 +32,7 @@ const routes = [
   },
   {
     path:'/search',
-<<<<<<< HEAD
-=======
     name: 'search',
->>>>>>> main
     component:ProductSearchView,
   },
 
