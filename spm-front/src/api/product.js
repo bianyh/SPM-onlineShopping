@@ -3,7 +3,7 @@
 import myAxios from "@/config/axios";
 
 //搜索商品
-export function searchProduct(keyword, page = 0, limit = 20) {
+export function searchProduct(keyword, page = 1, limit = 20) {
     return myAxios({
         url: '/api/product',
         method: 'get',

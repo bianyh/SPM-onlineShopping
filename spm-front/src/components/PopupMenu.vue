@@ -58,10 +58,11 @@ export default {
     display: block;
     width: fit-content;
     top: 3rem;
+    right: 0;
     background-color: white;
     border-radius: 4px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    transform: scaleY(0) translateX(-50%);
+    transform: scaleY(0);
     transform-origin: top center;
     transition: transform 0.2s ease-out;
     z-index: 1000;
@@ -69,7 +70,7 @@ export default {
 }
 
 .popup-menu-show {
-    transform: scaleY(1) translateX(-50%);
+    transform: scaleY(1);
 }
 
 .popup-menu ::v-deep(*) {

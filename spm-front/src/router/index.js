@@ -32,6 +32,7 @@ const routes = [
   },
   {
     path:'/search',
+    name: 'search',
     component:ProductSearchView,
   },
 
@@ -72,5 +73,6 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes
 })
+
 
 export default router
