@@ -22,4 +22,8 @@ public interface productService {
     int submitComment(ProductComment productComment);
 
     int removeProductFromFavorite(UserFavorites userFavorites);
+
+    int updateProductStatus(int id, int status);
+
+    int deleteProduct(Integer id);
 }

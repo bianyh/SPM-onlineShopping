@@ -42,4 +42,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return shoppingCartItemMapper.updateCartItem(shoppingCartItem, userId, productId);
     }
 
+    @Override
+    public Integer deleteCart(Integer cartId, Integer userId) {
+        return shoppingCartItemMapper.deleteCartItem(cartId, userId);
+    }
+
 }

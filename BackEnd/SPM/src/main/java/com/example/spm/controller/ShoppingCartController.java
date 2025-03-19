@@ -84,5 +84,18 @@ public class ShoppingCartController {
             return Result.error(result.toString());
         }
     }
+    @DeleteMapping("delete/{cartId}")
+    public Result deleteCart(@PathVariable Integer cartId) {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        System.out.println("    ThreadLocalUtil.get() = " + map);
+        Integer userId = (Integer) map.get("id");
+        Integer rowsAffected = shoppingCartService.deleteCart(cartId, userId);
+        if (rowsAffected > 0) {
+            Object result = new HashMap<>();
+            return Result.success(result);
+        } else {
+            return Result.error("删除购物车商品失败");
+        }
+    }
 
 }

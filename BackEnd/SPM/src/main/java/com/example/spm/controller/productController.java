@@ -139,4 +139,48 @@ public class productController {
             return Result.error("评论提交失败");
         }
     }
+
+    @PutMapping("/status")
+    public Result updateProductStatus(
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody Map<String, String> requestBody) {
+
+        String id = requestBody.get("id");
+        String status = requestBody.get("status");
+        int statusNum = 0;
+
+        if (status.equals("上架中")) {
+            statusNum = 0;
+        } else if (status.equals("已上架")) {
+            statusNum = 1;
+        } else {
+            statusNum = 2;
+        }
+        Map<String, Object> result = new HashMap<>();
+        int rowsAffected = productservice.updateProductStatus(Integer.valueOf(id), statusNum);
+        if (rowsAffected > 0) {
+            result.put("code", 0);
+            result.put("message", "商品状态修改成功");
+            return Result.success(result);
+        } else {
+
+            return Result.error("商品状态修改失败");
+        }
+    }
+    @DeleteMapping("/delete/{id}")
+    public Result deleteProduct(
+            @RequestHeader("Authorization") String authorization,
+            @PathVariable Integer id) {
+
+        Map<String, Object> result = new HashMap<>();
+        int rowsAffected = productservice.deleteProduct(id);
+        if (rowsAffected > 0) {
+            result.put("code", 0);
+            result.put("message", "商品删除成功");
+            return Result.success(result);
+        } else {
+
+            return Result.error("商品删除失败");
+        }
+    }
 }

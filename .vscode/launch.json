@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "command": "npm run serve",
+            "command": "npm run dev",
             "name": "vue dev",
             "request": "launch",
             "type": "node-terminal",

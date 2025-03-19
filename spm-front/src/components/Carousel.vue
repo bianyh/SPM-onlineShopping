@@ -21,7 +21,6 @@
 </template>
 
 <script >
-import { ref,defineProps } from 'vue';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';

@@ -32,7 +32,10 @@ export default {
         updateMsg(stateCode, message, controlType) {
             this.msg = message
             this.stateCode = stateCode
-            this.type = controlType
+            if (controlType)
+                this.type = controlType
+            else
+                this.type = 0
             this.visible = true
             this.content = ''
             this.callbacks = []

@@ -78,7 +78,7 @@ export default{
 /* 响应式布局 - 小于 1000 px 时改为上下布局 */
 @media screen and (max-width: 1024px) {
   .main {
-    display: flex;
+    display: block;
     position: absolute;
     margin: 0;
     width: 100%;

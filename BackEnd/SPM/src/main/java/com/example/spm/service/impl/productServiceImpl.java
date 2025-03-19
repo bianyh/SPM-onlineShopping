@@ -66,4 +66,15 @@ public class productServiceImpl implements productService {
     public long getTotalCount(String keyword) {
         return productmapper.getTotalCount(keyword);
     }
+
+
+    @Override
+    public int updateProductStatus(int id, int status) {
+        return productmapper.updataStatusById(id, status);
+    }
+
+    @Override
+    public int deleteProduct(Integer id) {
+        return productmapper.deleteProductById(id);
+    }
 }

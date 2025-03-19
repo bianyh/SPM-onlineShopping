@@ -1,9 +1,6 @@
 package com.example.spm.mapper;
 import com.example.spm.pojo.ShoppingCartItem;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -20,4 +17,6 @@ public interface ShoppingCartItemMapper {
     int updateCartItem(ShoppingCartItem shoppingCartItem, Integer userId, Long productId);
     @Select("SELECT * FROM cart WHERE user_id = #{userId} AND product_id = #{productId}")
     Integer findCartItemByUserIdAndProductId(Integer userId, Long productId);
+    @Delete("DELETE FROM cart WHERE product_id = #{cartId} AND user_id = #{userId}")
+    Integer deleteCartItem(Integer cartId, Integer userId);
 }

@@ -57,14 +57,6 @@ public class addressController {
         return Result.success("默认地址id为：" + id);
     }
 
-    /*
-    * 获取省、市、区等地理数据
-    * */
-    @GetMapping("/regions")
-    public Result getRegions(){
-      /*  List<Map<String, Object>> regions = addressService.getRegions();*/
-        return Result.success(regions);
-    }
 
 
     /*

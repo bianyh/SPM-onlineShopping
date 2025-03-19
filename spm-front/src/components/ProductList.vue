@@ -13,31 +13,32 @@
   
   <script setup>
   import { ref } from 'vue';
+  import sampleImage from '@/assets/test2.png';
   
   const products = ref([
     {
       id: 1,
       name: '商品 1',
       price: '￥99.00',
-      image: require('@/assets/test2.png')
+      image: sampleImage 
     },
     {
       id: 2,
       name: '商品 2',
       price: '￥199.00',
-      image: require('@/assets/test2.png')
+      image: sampleImage
     },
     {
       id: 3,
       name: '商品 3',
       price: '￥299.00',
-      image: require('@/assets/test2.png')
+      image: sampleImage
     },
     {
       id: 4,
       name: '商品 4',
       price: '￥399.00',
-      image: require('@/assets/test2.png')
+      image: sampleImage
     }
   ]);
   </script>

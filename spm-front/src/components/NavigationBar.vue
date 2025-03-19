@@ -37,7 +37,7 @@ export default {
                 message: "提示",
                 content: "Do you want to logout? You can login later.",
                 callbacks: [
-                    () => {},
+                    () => { },
                     this.handleLogoutConfirm
                 ]
             }
@@ -48,7 +48,7 @@ export default {
             localStorage.setItem("user", "")
             setTimeout(() => {
                 MessageBus.emit("box", "You're already logout.")
-            },200)
+            }, 200)
         },
         popup() { // 弹出菜单
             this.$refs.popupMenu.toggleMenu()
@@ -69,7 +69,12 @@ export default {
                 </nav>
                 <span class="placeholder" />
                 <div class="right-state-aligner">
-                    <button @click="goToLogin" class="right-state-aligner">Sign in</button>
+                    <span class="search-container">
+                        <input id="search" v-model="searchContent" placeholder="Search..." class="search-input">
+                        <img src="/img/icons/search.svg" class="search-text" v-show="searchContent">
+                    </span>
+                </div>
+                <div class="right-state-aligner">
                     <popup-menu ref="popupMenu">
                         <template #trigger>
                             <img alt="user-avatar" :src="userProfileImg" class="right-state-aligner" ref="userImg" />
@@ -81,10 +86,7 @@ export default {
                             <a class="popup-menu-item" @click="handleLogout">Logout</a>
                         </div>
                     </popup-menu>
-                </div>
-                <div class="right-state-aligner">
-                    <input id="search" v-model="searchContent" placeholder="Search..." class="search-input">
-                    <img src="/img/icons/search.svg" class="search-text" v-show="searchContent">
+                    <button @click="goToLogin" class="right-state-aligner">Sign in</button>
                 </div>
 
             </div>
@@ -114,34 +116,27 @@ export default {
     width: 100%;
     padding: 0% 1rem;
     margin-top: 0.5rem;
-    display: inline-block;
+    display: flex;
     /*作为垂直居中的父元素*/
     line-height: 2rem;
 }
 
-/* 左侧标题容器 */
-.left-logo-aligner {
-    float: left;
-}
-
-/* 右侧标题容器 */
-.right-state-aligner {
-    float: right;
-}
 
 /* 两边容器共有属性 */
 .left-logo-aligner,
 .right-state-aligner {
     vertical-align: middle;
-    display: inline-block;
+    display: inline;
     text-align: center;
     height: 2rem;
-    margin-left: 1rem;
+    margin: 0 4px;
     cursor: pointer;
 }
 
 .placeholder {
+    flex: 1;
     margin: auto;
+    background-color: #000000;
 }
 
 /* 按钮 */
@@ -157,10 +152,14 @@ button:hover {
     background-color: #cfcfcf;
 }
 
+.search-container {
+    display: flex;
+}
+
 /* 搜索框 */
 .search-input {
-    float: right;
-    display: block;
+    display: inline-block;
+    position: relative;
     width: 100%;
     padding: 0.4rem;
     background-color: #ebebeb;
@@ -171,13 +170,11 @@ button:hover {
 
 /* 搜索悬浮图标 */
 .search-text {
-    display: flexbox;
+    margin-left: auto;
     position: relative;
-    height: 100%;
-    right: -50%;
-    transform: translateX(-60%);
+    flex: 0 1 auto;
+    height: 2rem;
     object-fit: contain;
-    top: -100%;
     /*border: 1px solid #8a8a8a;*/
 }
 
@@ -207,5 +204,11 @@ button:hover {
 
 img:hover {
     border-radius: 8px;
+}
+
+@media (max-width:1024px) {
+    nav {
+        visibility: hidden;
+    }
 }
 </style>

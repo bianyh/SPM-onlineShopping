@@ -8,14 +8,9 @@
                         <span>Home</span>
                     </div>
                 </div>
-
                 <!-- 导航栏 -->
                 <div class="nav">
                     <ul>
-                        <li>
-                            
-                            <!-- 种类 -->
-                        </li>
                         <li>
                             <Carts/>
                             <!-- 购物车 -->
@@ -60,9 +55,9 @@
         </div>
         
 
-        <!-- 轮播图区域 -->
+        <!-- 轮播图区域 :images="swiperImages" -->
         <div class="banner"> 
-            <Carousel :images="swiperImages" />
+            <Carousel />
         </div>
 
         <!-- 商品展示区域 -->
@@ -78,7 +73,6 @@
 </template>
 
 <script setup>
-import CategoryDropdown from '@/components/CategoryDropdown.vue';
 import Carts from './Carts.vue';
 import Myorders from './Myorders.vue';
 import { ref } from 'vue';

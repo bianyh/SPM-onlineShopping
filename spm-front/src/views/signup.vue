@@ -33,7 +33,7 @@
             <el-icon class="input-icon">
               <Lock />
             </el-icon>
-            <input class="input-word" type="password_confirm" v-model="signupForm.password" placeholder="confirm your password">
+            <input class="input-word" type="password_confirm" v-model="signupForm.password_confirm" placeholder="confirm your password">
             <span class="required-mark">*</span>
           </div>
         </div>
@@ -81,7 +81,8 @@ export default {
         username: '',
         password: '',
         email: '',
-        phone: ''
+        phone: '',
+        password_confirm: ''
       }
     }
   },
@@ -96,7 +97,7 @@ export default {
           }
       },
       registerRequest() {*/
-      if (this.password != this.password_confirm) //检查密码码
+      if (this.signupForm.password != this.signupForm.password_confirm) //检查密码码
       {
         MessageBus.emit('box', "The passwords entered are not the same.")
         return

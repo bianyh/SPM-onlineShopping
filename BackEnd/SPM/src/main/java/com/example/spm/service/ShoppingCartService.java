@@ -12,4 +12,6 @@ public interface ShoppingCartService {
     int addProductToCart(ShoppingCartItem shoppingCartItem);
 
     int updateCartItem(ShoppingCartItem shoppingCartItem, Integer userId);
+
+    Integer deleteCart(Integer cartId, Integer userId);
 }
