@@ -33,7 +33,7 @@
             <el-icon class="input-icon">
               <Lock />
             </el-icon>
-            <input class="input-word" type="password_confirm" v-model="signupForm.password_confirm" placeholder="confirm your password">
+            <input class="input-word" type="password" v-model="signupForm.password_confirm" placeholder="confirm your password">
             <span class="required-mark">*</span>
           </div>
         </div>
@@ -87,16 +87,7 @@ export default {
     }
   },
   methods: {
-    async handleSignup() {/* 注册请求
-          try {
-              const response = await axios.post('/auth/signup', this.signupForm)
-              console.log('注册成功', response.data)
-              this.$router.push('/login')
-          } catch (error) {
-              console.error('注册失败', error)
-          }
-      },
-      registerRequest() {*/
+    async handleSignup() {
       if (this.signupForm.password != this.signupForm.password_confirm) //检查密码码
       {
         MessageBus.emit('box', "The passwords entered are not the same.")
@@ -111,17 +102,23 @@ export default {
         return
       }
       userRegister(
-        this.username,
-        this.password,
-        this.email,
-        this.phoneNumber,
+        this.signupForm.username,
+        this.signupForm.password,
+        this.signupForm.email,
+        this.signupForm.phoneNumber,
       ).then((result) => {
+        result.callbacks = []
+        if (result.code == 0) {
+          result.callbacks[0] = this.goBack
+        }
         MessageBus.emit('box', result)
       }, (err) => {
         MessageBus.emit('box', err)
       })
+    },
+    goBack(){
+      this.$router.back()
     }
-
   }
 }
 </script>

@@ -5,12 +5,16 @@ import { RouterLink } from 'vue-router'
 import PopupMenu from './PopupMenu.vue';
 import MessageBus from '@/utils/MessageBus';
 import CategoryDropdown from './CategoryDropdown.vue';
+import { ElButton, ElInput } from 'element-plus';
+import { Search } from '@element-plus/icons-vue'
+import { transParams } from '@/utils/vineUtils';
 
 export default {
     data() {
         return {
             userProfileImg: '/img/icons/unknown_user.svg',
-            searchContent: ''
+            searchContent: '',
+            isLogined: false,
         }
     },
     components: {
@@ -42,6 +46,7 @@ export default {
                 ]
             }
             MessageBus.emit("box", data)
+            MessageBus.off()
         },
         handleLogoutConfirm() { // 确认退出账户
             localStorage.setItem("token", "")
@@ -49,11 +54,27 @@ export default {
             setTimeout(() => {
                 MessageBus.emit("box", "You're already logout.")
             }, 200)
+            MessageBus.emit("auth", { type: "logout" })
+        },
+        handleSearch() {
+            localStorage.setItem('searchContent', this.searchContent)
+            this.$router.push("/search")
         },
         popup() { // 弹出菜单
             this.$refs.popupMenu.toggleMenu()
         }
+    },
+    mounted() {
+        MessageBus.on("auth", (event) => {
+            if (event.type == "login") {
+                this.isLogined = true
+            }
+            else {
+                this.isLogined = false
+            }
+        })
     }
+
 }
 </script>
 
@@ -70,12 +91,16 @@ export default {
                 <span class="placeholder" />
                 <div class="right-state-aligner">
                     <span class="search-container">
-                        <input id="search" v-model="searchContent" placeholder="Search..." class="search-input">
-                        <img src="/img/icons/search.svg" class="search-text" v-show="searchContent">
+                        <ElInput id="search" v-model="searchContent" placeholder="Search..." >
+                            <template #append>
+                                <ElButton icon="Search" @click="handleSearch()"/>
+                            </template></ElInput>
+                        <!--img src="/img/icons/search.svg" class="search-text" v-show="searchContent"
+                            @click="handleSearch"-->
                     </span>
                 </div>
                 <div class="right-state-aligner">
-                    <popup-menu ref="popupMenu">
+                    <popup-menu ref="popupMenu" v-if="isLogined">
                         <template #trigger>
                             <img alt="user-avatar" :src="userProfileImg" class="right-state-aligner" ref="userImg" />
                         </template>
@@ -86,7 +111,7 @@ export default {
                             <a class="popup-menu-item" @click="handleLogout">Logout</a>
                         </div>
                     </popup-menu>
-                    <button @click="goToLogin" class="right-state-aligner">Sign in</button>
+                    <ElButton @click="goToLogin" v-if="!isLogined" class="right-state-aligner">Sign in</ElButton>
                 </div>
 
             </div>
@@ -141,11 +166,8 @@ export default {
 
 /* 按钮 */
 button {
-    border: 1px solid #888;
-    border-radius: 4px;
-    box-shadow: 0px 1px 1px #888888;
-    font: 1rem sans-serif;
     transition: 0.2s;
+    font-size: medium;
 }
 
 button:hover {
@@ -156,17 +178,7 @@ button:hover {
     display: flex;
 }
 
-/* 搜索框 */
-.search-input {
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    padding: 0.4rem;
-    background-color: #ebebeb;
-    border-width: 1px 1px 1px 1px;
-    border-radius: 0.2rem;
-    font-size: medium;
-}
+/* 搜索框 deleted*/
 
 /* 搜索悬浮图标 */
 .search-text {

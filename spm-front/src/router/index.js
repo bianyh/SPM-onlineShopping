@@ -9,6 +9,7 @@ import Category3 from '@/views/Category/Category3.vue'
 import Carts from '@/views/Carts.vue'
 import Myorders from '@/views/Myorders.vue'
 import UserMessage from '@/views/UserMessage.vue'
+import ProductSearchView from '@/views/ProductSearchView.vue'
 const routes = [
   {
     path: '/',
@@ -28,6 +29,10 @@ const routes = [
     path:'/homenew',
     name:'homenew',
     component:homenew
+  },
+  {
+    path:'/search',
+    component:ProductSearchView,
   },
 
   /*Catorgies的分类*/ 
