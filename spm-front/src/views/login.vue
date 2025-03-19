@@ -39,6 +39,7 @@ import { User, Lock } from '@element-plus/icons-vue'
 import { userLogin } from '@/api/user'
 import axios from 'axios'
 import MessageBus from '@/utils/MessageBus'
+import { decodeJwt } from '@/utils/jwtUtils'
 export default {
   name: 'login',
   components: {
@@ -57,11 +58,14 @@ export default {
     async handleLogin() {
       userLogin(this.loginForm.name, this.loginForm.pwd).then((result) => {
         if (result.code == 0) {
-          result.content = result.data
           result.wait = true // 等待执行结果
           result.callbacks = [this.goToMainPage]
           window.localStorage.setItem("token", result.data) //储存token
+          window.localStorage.setItem("user", decodeJwt(result.data)[1])
+          result.content = window.localStorage.getItem("user")//.claims.username
+          console.log( result.content)
           MessageBus.emit('box', result) // 登陆成功消息框
+          MessageBus.emit("auth", { type: "login" })
         }
         else {
           MessageBus.emit('box', result);
