@@ -3,10 +3,7 @@ package com.example.spm.mapper;
 import com.example.spm.pojo.Product;
 import com.example.spm.pojo.ProductComment;
 import com.example.spm.pojo.UserFavorites;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -29,4 +26,10 @@ public interface productMapper {
     int submitComment(ProductComment productComment);
     @Delete("DELETE FROM user_favorites WHERE user_id = #{userId} AND product_id = #{productId}")
     int removeProductFromFavorite(UserFavorites userFavorites);
+
+    @Update("UPDATE product SET status = #{status} WHERE id = #{id}")
+    int updataStatusById(int id, int status);
+
+    @Delete("DELETE FROM product WHERE id = #{id}")
+    int deleteProductById(Integer id);
 }
