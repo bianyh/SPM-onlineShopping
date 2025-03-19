@@ -6,8 +6,11 @@ import PopupMenu from './PopupMenu.vue';
 import MessageBus from '@/utils/MessageBus';
 import CategoryDropdown from './CategoryDropdown.vue';
 import { ElButton, ElInput } from 'element-plus';
+<<<<<<< HEAD
 import { Search } from '@element-plus/icons-vue'
 import { transParams } from '@/utils/vineUtils';
+=======
+>>>>>>> main
 
 export default {
     data() {
@@ -58,7 +61,16 @@ export default {
         },
         handleSearch() {
             localStorage.setItem('searchContent', this.searchContent)
+<<<<<<< HEAD
             this.$router.push("/search")
+=======
+            console.log(this.$route.name)
+            if (this.$route.name == 'search'){
+                MessageBus.emit("search", this.searchContent)
+            }
+            else
+                this.$router.push("/search")
+>>>>>>> main
         },
         popup() { // 弹出菜单
             this.$refs.popupMenu.toggleMenu()
