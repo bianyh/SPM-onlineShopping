@@ -117,7 +117,7 @@ const selectKeyword = (keyword) => {
 }
 .wrapper{
     margin:0 auto;
-    width:1440px;
+    width:100%;
 }
 .header{
     height: 66px;
@@ -208,9 +208,7 @@ const selectKeyword = (keyword) => {
 }
 
 .middle1{
-
     margin:0 auto;
-    width:1440px;
     display:flex;
     justify-content: center; /* 让 searchContainer 在水平方向相对于 middle1 居中 */
 }

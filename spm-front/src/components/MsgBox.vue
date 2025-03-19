@@ -45,7 +45,8 @@ export default {
             if (this.callbacks)
                 if (index > -1 && index < this.callbacks.length) {
                     const callback = this.callbacks[index]
-                    callback(param)
+                    if (typeof(callback) == 'function')
+                        callback(param)
                 }
             this.hideBox(param)
         },

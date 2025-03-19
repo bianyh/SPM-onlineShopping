@@ -22,6 +22,9 @@ export default{
       this.$refs.msgbox.update(result);
     })
   },
+  unmounted() {
+    MessageBus.off()
+  },
   methods: {
     PageSwitch(target, user) {
       this.pageState = target

@@ -1,15 +1,20 @@
-//user.js
+//product.js
 
 import myAxios from "@/config/axios";
 
-//用户登录
-export function userLogin(username, password) {
+//搜索商品
+<<<<<<< HEAD
+export function searchProduct(keyword, page = 0, limit = 20) {
+=======
+export function searchProduct(keyword, page = 1, limit = 20) {
+>>>>>>> main
     return myAxios({
-        url: '/api/auth/login',
-        method: 'post',
-        data: {
-            'username': username,
-            'password': password
+        url: '/api/product',
+        method: 'get',
+        params: {
+            'keyword': keyword,
+            'page': page,
+            'limit': limit
         }
     })
 }
