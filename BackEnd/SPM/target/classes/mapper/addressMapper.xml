@@ -3,6 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<!-- 动态sql完成address中的更新地址的信息接口-->
+
 <mapper namespace="com.example.spm.mapper.addressMapper">
 
     <update id="updateById">
