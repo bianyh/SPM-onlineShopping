@@ -1,9 +1,13 @@
-<script>
+<script setup>
 import { RouterView } from 'vue-router';
+import 'element-plus/theme-chalk/display.css'
+</script>
+
+<script>
 import NavigationBar from './components/NavigationBar.vue';
 import MsgBox from './components/MsgBox.vue';
 import MessageBus from './utils/MessageBus';
-export default{
+export default {
   name:'APP',
   components: {
     NavigationBar,

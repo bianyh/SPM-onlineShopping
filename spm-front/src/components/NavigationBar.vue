@@ -1,11 +1,14 @@
 //NavigationBar
+<script setup>
+import { ElButton, ElCol, ElDrawer, ElIcon, ElInput, ElRow, ElDivider, ElLink } from 'element-plus';
+import { RouterLink } from 'vue-router'
+</script>
 
 <script>
-import { RouterLink } from 'vue-router'
 import PopupMenu from './PopupMenu.vue';
 import MessageBus from '@/utils/MessageBus';
 import CategoryDropdown from './CategoryDropdown.vue';
-import { ElButton, ElInput } from 'element-plus';
+import Category1 from '@/views/Category/Category1.vue';
 
 export default {
     data() {
@@ -13,6 +16,7 @@ export default {
             userProfileImg: '/img/icons/unknown_user.svg',
             searchContent: '',
             isLogined: false,
+            drawerVisible: false
         }
     },
     components: {
@@ -20,11 +24,8 @@ export default {
         CategoryDropdown
     },
     methods: {
-        goToLogin() {
-            this.$router.push('/login')
-        },
-        goToHome() {
-            this.$router.push('/')
+        navigateTo(path) {
+            this.$router.push(path)
         },
         handleMenuClick(option) {
             //console.log(`点击了${option}`);
@@ -57,7 +58,7 @@ export default {
         handleSearch() {
             localStorage.setItem('searchContent', this.searchContent)
             console.log(this.$route.name)
-            if (this.$route.name == 'search'){
+            if (this.$route.name == 'search') {
                 MessageBus.emit("search", this.searchContent)
             }
             else
@@ -84,20 +85,59 @@ export default {
 <template>
     <Transition name="pages">
         <div class="header">
-            <div class="mid-container">
-                <img alt="logo" class="left-logo-aligner" @click="goToHome" src="/img/icons/icon.svg" />
-                <div id="title" class="left-logo-aligner" @click="goToHome">SPMoS</div>
+            <div class="mid-container" >
+                <img alt="logo" class="left-logo-aligner" @click="drawerVisible = true" src="/img/icons/icon.svg" />
+                <div id="title" class="left-logo-aligner" @click="drawerVisible = true">SPMoS</div>
+                <ElDrawer v-model="drawerVisible" :show-close=false direction="ttb" :with-header=false :z-index=1 size="60%">
+                    <img class="drawer-bg" src="/img/drawerbg.svg">
+                    <img class="drawer-text" src="/img/icons/spmos.svg">
+                    <ElRow class="row-bg" justify="space-evenly" align="top" @click="drawerVisible = false">
+                        <ElCol v-loading=false :sm="7" :xs="24">
+                            <el-divider content-position="left">Explore what you want</el-divider>
+                            <ElRow >
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/')">商店主页</ElLink>
+                            </ElRow>
+                            <ElRow>
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/')">热卖商品</ElLink>
+                            </ElRow>
+                            <ElRow>
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/search')">分类查找</ElLink>
+                            </ElRow>
+                        </ElCol>
+                        <!--ElCol :sm="2" :xs="0"><el-divider direction="vertical" class="hidden-xs-only"/></ElCol-->
+                        <ElCol v-loading=false :sm="7" :xs="24">
+                            <el-divider content-position="left">Find what you got</el-divider>
+                            <ElRow>
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/cart')">我的购物车</ElLink>
+                            </ElRow>
+                            <ElRow>
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/order')">我的订单</ElLink>
+                            </ElRow>
+                        </ElCol>
+                        <!--ElCol :sm="2" :xs="0"><el-divider direction="vertical" class="hidden-xs-only"/></ElCol-->
+                        <ElCol v-loading=true :sm="7" :xs="24">
+                            <el-divider content-position="left">Manager what you built</el-divider>
+                            <ElRow>
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/seller/product')">我的商品</ElLink>
+                            </ElRow>
+                            <ElRow>
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/seller')">我的店铺</ElLink>
+                            </ElRow>
+                        </ElCol>
+                    </ElRow>
+                </ElDrawer>
                 <nav class="left-logo-aligner">
                     <CategoryDropdown />
                     <RouterLink to="/Shop">Shops</RouterLink>
                 </nav>
-                <span class="placeholder" />
+                <span class="placeholder hidden-xs-only"/>
                 <div class="right-state-aligner">
                     <span class="search-container">
-                        <ElInput id="search" v-model="searchContent" placeholder="Search..." >
+                        <ElInput id="search" v-model="searchContent" placeholder="Search...">
                             <template #append>
-                                <ElButton icon="Search" @click="handleSearch()"/>
-                            </template></ElInput>
+                                <ElButton icon="Search" @click.stop="handleSearch()" />
+                            </template>
+                        </ElInput>
                         <!--img src="/img/icons/search.svg" class="search-text" v-show="searchContent"
                             @click="handleSearch"-->
                     </span>
@@ -114,7 +154,7 @@ export default {
                             <a class="popup-menu-item" @click="handleLogout">Logout</a>
                         </div>
                     </popup-menu>
-                    <ElButton @click="goToLogin" v-if="!isLogined" class="right-state-aligner">Sign in</ElButton>
+                    <ElButton @click.stop="navigateTo('/login')" v-if="!isLogined" class="right-state-aligner">Sign in</ElButton>
                 </div>
 
             </div>
@@ -137,6 +177,24 @@ export default {
     z-index: 100;
 }
 
+.drawer-bg {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    transform: translate(-1em,-1em);
+}
+
+.drawer-text {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform: translate(-1em,-1em);
+}
+
 /* 标题栏居中容器 */
 .mid-container {
     margin: auto;
@@ -149,6 +207,11 @@ export default {
     line-height: 2rem;
 }
 
+.el-row-expand {
+    width: 100%;
+    padding: 0.4rem;
+    font-size: large;
+}
 
 /* 两边容器共有属性 */
 .left-logo-aligner,

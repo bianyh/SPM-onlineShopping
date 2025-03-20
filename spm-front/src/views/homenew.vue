@@ -1,27 +1,14 @@
 <template>
     <div class="body">
-        <div class="header">
+        <!--div class="header">
             <div class="wrapper">
-                <!-- 当前所处位置 -->
+                < 当前所处位置 >
                 <div class="location">
                     <div class="location-style"><a href="#"></a>
                         <span>Home</span>
                     </div>
                 </div>
-                <!-- 导航栏 -->
-                <div class="nav">
-                    <ul>
-                        <li>
-                            <Carts/>
-                            <!-- 购物车 -->
-                        </li>
-                        <li>
-                            <Myorders/>
-                            <!-- 我的订单 -->
-                        </li>
-                    </ul>
-                </div>
-                <!-- 用户信息 -->
+                < 用户信息 >
                 <div class="userMessage">
                     <div class="userInfo">
                         <div class="Touxiang">
@@ -32,7 +19,7 @@
                     <button class="logoutBtn" @click="handleLogout">goback</button>
                 </div>
             </div>
-        </div>
+        </div-->
 
         <div class='middle1'>
             <div class="searchContainer">
@@ -73,21 +60,12 @@
 </template>
 
 <script setup>
-import Carts from './Carts.vue';
-import Myorders from './Myorders.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Carousel from '@/components/Carousel.vue';
 import ProductList from '../components/ProductList.vue';
 
 const router = useRouter();
-
-const handleLogout = () => {
-    router.push('/login');
-}
-const handlegoUser = () => {
-    router.push('/userMessage');
-}
 
 const searchQuery = ref('');
 const allKeywords = ref(['手机', '电脑', '平板', '相机', '耳机','...']);
@@ -113,7 +91,7 @@ const selectKeyword = (keyword) => {
 <style scoped>
 .body{
     background-color:#fdeff3; 
-    top: 3cap;
+    top: 3rem;
 }
 .wrapper{
     margin:0 auto;

@@ -20,11 +20,17 @@ export default {
 </script>
 
 <template>
-    <ElCard>
-        <ElContainer>
-            <ElImage :src="img2url"></ElImage>
-            <ElCol :span="14">{{ product.name }}</ElCol>
-            <ElCol :span="10">{{ product.id }}</ElCol>
-        </ElContainer>
-    </ElCard>
+    <div class="card">
+        asd
+    </div>
 </template>
+
+<style>
+.card {
+    display: flex;
+    position: absolute;
+    background-color: #474747;
+    min-width: 100px;
+    min-height: 100px;
+}
+</style>
