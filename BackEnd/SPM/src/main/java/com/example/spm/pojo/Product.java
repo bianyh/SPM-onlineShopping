@@ -26,4 +26,6 @@ public class Product {
 
     private String pictures;
     private Integer storeId;
+    private Integer status;
+    private Double rate;
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<svg width="384" height="192" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <defs>
+  <filter id="svg_1_blur">
+   <feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
+  </filter>
+  <filter id="svg_2_blur">
+   <feGaussianBlur in="SourceGraphic" stdDeviation="2.5"/>
+  </filter>
+  <filter id="svg_5_blur">
+   <feGaussianBlur in="SourceGraphic" stdDeviation="2.5"/>
+  </filter>
+  <filter id="svg_7_blur">
+   <feGaussianBlur in="SourceGraphic" stdDeviation="1"/>
+  </filter>
+ </defs>
+ <g class="layer">
+  <title>Layer 1</title>
+  <rect fill="#00bbff" filter="url(#svg_1_blur)" height="71" id="svg_1" opacity="0.5" stroke="#000000" stroke-width="0" transform="matrix(1 0 0 1 0 0) matrix(0.726863 -0.686782 0.686782 0.726863 -13.1323 22.6253)" width="404.44" x="-127.34" y="-34.65"/>
+  <rect fill="#1d00ff" filter="url(#svg_2_blur)" height="125.08" id="svg_2" opacity="0.35" stroke="#000000" stroke-width="0" transform="matrix(1 0 0 1 0 0) matrix(0.546041 -0.518181 0.515931 0.548423 -169.176 -16.6859)" width="404.44" x="107.89" y="648.64"/>
+  <rect fill="#2b60ff" height="19.59" id="svg_4" opacity="0.5" stroke="#000000" stroke-width="0" transform="matrix(0.726864 -0.686782 0.686782 0.726864 -83.2287 40.0597)" width="125.79" x="-23.28" y="80.75"/>
+  <rect fill="#0083ff" filter="url(#svg_5_blur)" height="25.22" id="svg_5" opacity="0.5" stroke="#000000" stroke-width="0" transform="rotate(-43.3759 320.975 -2.03001)" width="95.43" x="273.26" y="-14.64"/>
+  <rect fill="#ff9d00" height="31.42" id="svg_6" opacity="0.5" stroke="#000000" stroke-width="0" transform="matrix(1 0 0 1 0 0) matrix(0.776103 -0.744828 0.733306 0.788297 -290.761 157.577)" width="170.59" x="301.76" y="390.6"/>
+  <rect fill="#ff6e00" filter="url(#svg_7_blur)" height="25.1" id="svg_7" opacity="0.5" stroke="#000000" stroke-width="0" transform="rotate(-43.3759 6.505 204)" width="127.25" x="-57.12" y="191.45"/>
+ </g>
+</svg>
