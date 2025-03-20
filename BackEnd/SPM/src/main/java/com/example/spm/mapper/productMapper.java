@@ -5,6 +5,7 @@ import com.example.spm.pojo.ProductComment;
 import com.example.spm.pojo.UserFavorites;
 import org.apache.ibatis.annotations.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -32,4 +33,19 @@ public interface productMapper {
 
     @Delete("DELETE FROM product WHERE id = #{id}")
     int deleteProductById(Integer id);
+
+    @Update("update product set " +
+            "pictures = #{pictures}," +
+            "price = #{price}," +
+            "store_id = #{storeId}," +
+            "name = #{name}," +
+            "description = #{description}, " +
+            "updated_at = now() " +
+            "where id = #{id}")
+    void updateProduct(String pictures, BigDecimal price, Integer storeId, String name, String description, Integer id);
+
+    @Insert("insert into product(pictures, price, name, store_id, stock, description, created_at, updated_at)" +
+            "values (#{pictures}, #{price}, #{name}, #{storeId}, #{stock}, #{description}, now(), now() )")
+    Integer addProduct(@Param("pictures") String pictures, @Param("price") BigDecimal price, @Param("name") String name
+            , @Param("storeId") Integer storeId, @Param("stock") Integer stock, @Param("description") String description);
 }
