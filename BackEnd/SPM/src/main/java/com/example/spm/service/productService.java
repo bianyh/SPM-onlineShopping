@@ -23,7 +23,12 @@ public interface productService {
 
     int removeProductFromFavorite(UserFavorites userFavorites);
 
+    void updateProduct(Product product, Integer id);
+
+    Integer addProduct(Product product);
+
     int updateProductStatus(int id, int status);
 
     int deleteProduct(Integer id);
 }
+

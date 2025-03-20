@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.spm.mapper.sellerMapper">
+
+    <!-- 模糊搜索店铺 -->
+    <select id="findByNameContaining" resultType="com.example.spm.pojo.Store">
+        SELECT
+            id,
+            name,
+            `describe`,
+            picture_path,
+            status
+            FROM store
+            WHERE name LIKE CONCAT('%', #{name}, '%')
+            LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <!-- 统计总记录数 -->
+    <select id="countByNameContaining" resultType="int">
+        SELECT COUNT(*) FROM store
+        WHERE name LIKE CONCAT('%', #{name}, '%')
+    </select>
+
+</mapper>
