@@ -1,14 +1,13 @@
-import { createStore } from 'vuex'
+// store
+import { createStore } from 'vuex';
 
 export default createStore({
   state: {
-  },
-  getters: {
+    sharedData: null
   },
   mutations: {
-  },
-  actions: {
-  },
-  modules: {
+    setSharedData(state, data) {
+      state.sharedData = data;
+    }
   }
-})
+});

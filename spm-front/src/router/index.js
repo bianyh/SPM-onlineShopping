@@ -11,30 +11,52 @@ import Myorders from '@/views/Myorders.vue'
 import UserMessage from '@/components/user/UserMessage.vue'
 import ProductSearchView from '@/views/ProductSearchView.vue'
 import UserView from '@/views/UserView.vue'
+import ProductView from '@/views/ProductView.vue'
+import MessageBus from '@/utils/MessageBus'
 const routes = [
   {
     path: '/',
-    redirect: '/homenew'
+    redirect: '/homenew',
   },
   {
     path: '/login',
     name: 'login',
-    component: login
+    component: login,
+    meta: {
+      title: 'Log in'
+    }
   },
   {
     path: '/signup',
     name: 'signup',
-    component: signup
+    component: signup,
+    meta: {
+      title: 'Sign up'
+    }
   },
   {
     path:'/homenew',
-    name:'homenew',
-    component:homenew
+    name:'home',
+    component:homenew,
+    meta: {
+      title: 'Home Page'
+    }
   },
   {
     path:'/search',
     name: 'search',
     component:ProductSearchView,
+    meta: {
+      title: 'Searching Goods'
+    }
+  },
+  {
+    path:'/product',
+    name: 'product',
+    component: ProductView,
+    meta: {
+      title: 'Product'
+    }
   },
 
   /*Catorgies的分类*/ 
@@ -54,19 +76,28 @@ const routes = [
     component: Category3
   }
   ,{
-    path:'/Carts',
-    name:'Carts',
-    component:Carts
+    path:'/cart',
+    name:'cart',
+    component:Carts,
+    meta: {
+      title: 'Shopping Cart'
+    }
   },
   {
-    path:'/Myorders',
-    name:'Myorders',
-    component:Myorders
+    path:'/order',
+    name:'order',
+    component:Myorders,
+    meta: {
+      title: 'Orders'
+    }
   },
   {
     path:'/user',
     name:'UserView',
-    component:UserView
+    component:UserView,
+    meta: {
+      title: 'User Center'
+    }
   }
 ]
 
@@ -75,5 +106,10 @@ const router = createRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title || 'SPMoS';
+  MessageBus.emit("routerChange", to.meta.title || 'SPMoS')
+  next();
+});
 
 export default router

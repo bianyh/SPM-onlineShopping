@@ -53,7 +53,7 @@ export default {
                 </el-menu-item>
                 <el-menu-item index="4">
                     <el-icon>
-                        <setting />
+                        <ShoppingTrolley />
                     </el-icon>
                     <span>购物车(My Cart)</span>
                 </el-menu-item>
@@ -76,8 +76,8 @@ export default {
                     <el-dropdown-item>The Action 3st</el-dropdown-item>
                 </el-dropdown-menu>
             </template>
-        </el-dropdown>
-    </ElAffix-->
+</el-dropdown>
+</ElAffix-->
 </template>
 
 <style scoped></style>

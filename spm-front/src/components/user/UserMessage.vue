@@ -1,15 +1,25 @@
+<script>
+export default {
+    data() {
+        return {
+            user: userInfo()
+        }
+    }
+}
+</script>
+
 <template>
     <div class="MessageBox">
         <div class="editMessage">
             <ElContainer style="justify-items: center;">
                 <!-- 这里需要添加具体的头像替换逻辑 -->
                 <ElAside width="4rem">
-                    <ElAvatar size="large" src="/img/kachina.png" alt=""/>
+                    <ElAvatar size="large" src="/img/kachina.png" alt="" />
                 </ElAside>
-                    <ElContainer direction="vertical">
-                        <h3>Username</h3>
-                        Joined Time
-                    </ElContainer>
+                <ElContainer direction="vertical">
+                    <h3>{{ user.username }}</h3>
+                    Joined Time
+                </ElContainer>
             </ElContainer>
             <!-- 这里可以修改信息 -->
             <div class="form-item">
@@ -67,6 +77,7 @@
         </template>
     </el-dialog>
 </template>
+
 <script setup>
 import CategoryDropdown from '@/components/CategoryDropdown.vue';
 import Carts from '@/views/Carts.vue';
@@ -74,6 +85,7 @@ import Myorders from '@/views/Myorders.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElButton, ElInput, ElDialog, ElImage, ElText, ElCol, ElRow, ElAvatar, ElContainer, ElAside, ElMain, ElHeader, ElFooter } from 'element-plus';
+import { userInfo } from '@/api/user.js';
 //import axios from 'axios';
 const router = useRouter();
 
@@ -99,6 +111,8 @@ const userData = ref({
     email: '',
     password: ''
 });
+
+
 const editUsername = () => {
 
     console.log('编辑用户名');
@@ -154,7 +168,6 @@ const startAddingAddress = () => {
 
 </script>
 <style scoped>
-
 .header {
     height: 66px;
     opacity: 1;

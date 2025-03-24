@@ -42,10 +42,8 @@ export default {
             this.handleSearch()
         },
         showProduct(product) {
-            ElMessage({
-                message: '想找商品详情页？没做喵。',
-                type: 'warning',
-            })
+            this.$store.commit('setSharedData', { pid: product.id });
+            this.$router.push("/product")
         }
     },
 }
@@ -78,7 +76,7 @@ export default {
                     </template>
                     <template #default>
                         <el-card :body-style="{ padding: '0px', marginBottom: '1px'}" shadow="hover"
-                            @click="showProduct" class="card-style"> 
+                            @click="showProduct(product)" class="card-style"> 
                             <div></div>
                             <ElImage fit="cover" :src="product.pictures" class="image"
                                 style="width: 240px; height: 240px" />

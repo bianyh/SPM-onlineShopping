@@ -1,4 +1,4 @@
-package com.example.spm.Mapper;
+package com.example.spm.mapper;
 
 
 import com.example.spm.pojo.Order;
