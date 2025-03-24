@@ -88,7 +88,7 @@ export default {
             <div class="mid-container" >
                 <img alt="logo" class="left-logo-aligner" @click="drawerVisible = true" src="/img/icons/icon.svg" />
                 <div id="title" class="left-logo-aligner" @click="drawerVisible = true">SPMoS</div>
-                <ElDrawer v-model="drawerVisible" :show-close=false direction="ttb" :with-header=false :z-index=1 size="60%">
+                <ElDrawer v-model="drawerVisible" :show-close=false direction="ttb" :with-header=false :z-index=1 size="30rem">
                     <img class="drawer-bg" src="/img/drawerbg.svg">
                     <img class="drawer-text" src="/img/icons/spmos.svg">
                     <ElRow class="row-bg" justify="space-evenly" align="top" @click="drawerVisible = false">
@@ -108,6 +108,9 @@ export default {
                         <ElCol v-loading=false :sm="7" :xs="24">
                             <el-divider content-position="left">Find what you got</el-divider>
                             <ElRow>
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/user')">用户中心</ElLink>
+                            </ElRow>
+                            <ElRow>
                                 <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/cart')">我的购物车</ElLink>
                             </ElRow>
                             <ElRow>
@@ -116,7 +119,7 @@ export default {
                         </ElCol>
                         <!--ElCol :sm="2" :xs="0"><el-divider direction="vertical" class="hidden-xs-only"/></ElCol-->
                         <ElCol v-loading=true :sm="7" :xs="24">
-                            <el-divider content-position="left">Manager what you built</el-divider>
+                            <el-divider content-position="left">Manage what you built</el-divider>
                             <ElRow>
                                 <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/seller/product')">我的商品</ElLink>
                             </ElRow>
@@ -169,7 +172,7 @@ export default {
     left: 0%;
     position: fixed;
     width: 100%;
-    height: 3cap;
+    height: 3rem;
     border: 0;
     box-shadow: 0px 5px 5px #888888;
     font: 1.5em sans-serif;

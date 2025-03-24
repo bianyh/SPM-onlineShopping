@@ -8,8 +8,9 @@ import Category2 from '@/views/Category/Category2.vue'
 import Category3 from '@/views/Category/Category3.vue'
 import Carts from '@/views/Carts.vue'
 import Myorders from '@/views/Myorders.vue'
-import UserMessage from '@/views/UserMessage.vue'
+import UserMessage from '@/components/user/UserMessage.vue'
 import ProductSearchView from '@/views/ProductSearchView.vue'
+import UserView from '@/views/UserView.vue'
 const routes = [
   {
     path: '/',
@@ -63,9 +64,9 @@ const routes = [
     component:Myorders
   },
   {
-    path:'/UserMseeage',
-    name:'UserMessage',
-    component:UserMessage
+    path:'/user',
+    name:'UserView',
+    component:UserView
   }
 ]
 
