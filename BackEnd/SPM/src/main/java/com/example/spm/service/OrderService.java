@@ -1,4 +1,4 @@
-package com.example.spm.Service;
+package com.example.spm.service;
 
 import com.example.spm.pojo.OrderRequest;
 

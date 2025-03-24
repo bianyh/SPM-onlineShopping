@@ -63,10 +63,9 @@
 </template>
 
 <script>
-import { userShow, userRegister } from '@/api/user';
+import { userRegister } from '@/api/user';
 import MessageBus from '@/utils/MessageBus';
 import { User, Lock, Message, Cellphone } from '@element-plus/icons-vue'
-import axios from 'axios'
 export default {
   name: 'signup',
   components: {

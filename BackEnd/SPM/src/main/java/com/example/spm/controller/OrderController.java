@@ -1,6 +1,6 @@
-package com.example.spm.Controller;
+package com.example.spm.controller;
 
-import com.example.spm.Service.OrderService;
+import com.example.spm.service.OrderService;
 import com.example.spm.pojo.OrderItem;
 import com.example.spm.pojo.OrderRequest;
 import com.example.spm.pojo.Result;

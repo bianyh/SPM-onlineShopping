@@ -1,8 +1,8 @@
-package com.example.spm.Service.impl;
+package com.example.spm.service.impl;
 
 
-import com.example.spm.Mapper.OrderMapper;
-import com.example.spm.Service.OrderService;
+import com.example.spm.mapper.OrderMapper;
+import com.example.spm.service.OrderService;
 import com.example.spm.pojo.Order;
 import com.example.spm.pojo.OrderItem;
 import com.example.spm.pojo.OrderRequest;
