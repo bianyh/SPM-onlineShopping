@@ -1,6 +1,7 @@
 //NavigationBar
 <script setup>
-import { ElButton, ElCol, ElDrawer, ElIcon, ElInput, ElRow, ElDivider, ElLink, ElText } from 'element-plus';
+import { Search } from '@element-plus/icons-vue';
+import { ElButton, ElCol, ElDrawer, ElIcon, ElInput, ElRow, ElDivider, ElLink, ElText, ElAvatar } from 'element-plus';
 </script>
 
 <script>
@@ -90,7 +91,8 @@ export default {
         <div class="header">
             <div class="mid-container">
                 <img alt="logo" class="aligner" @click="drawerVisible = true" src="/img/icons/icon.svg" />
-                <ElText id="title" class="aligner" @click="drawerVisible = true" style="font-size: x-large;">{{ titleText }}</ElText>
+                <ElText id="title" class="aligner" @click="drawerVisible = true" style="font-size: x-large;">{{
+                    titleText }}</ElText>
                 <ElDrawer v-model="drawerVisible" :show-close=false direction="ttb" :with-header=false :z-index=1
                     size="30rem">
                     <img class="drawer-bg" src="/img/drawerbg.svg">
@@ -140,19 +142,21 @@ export default {
                     </ElRow>
                 </ElDrawer>
                 <span class="placeholder" />
-                <ElInput class="aligner" id="search" v-model="searchContent" placeholder="Search...">
+                <ElButton :icon="Search" circle class="hidden-sm-and-up" style="margin: auto 0.5rem;"/>
+                <ElInput class="aligner hidden-xs-only" id="search" v-model="searchContent" placeholder="Search...">
                     <template #append>
                         <ElButton icon="Search" @click.stop="handleSearch()" />
                     </template>
                 </ElInput>
                 <popup-menu ref="popupMenu" v-if="isLogined">
                     <template #trigger>
-                        <img alt="user-avatar" :src="userProfileImg" ref="userImg" />
+                        <ElAvatar alt="user-avatar" :src="userProfileImg" style="height: 2rem; width: 2rem;"
+                            fit="contain" ref="userImg" />
                     </template>
                     <div>
-                        <a class="popup-menu-item" @click="handleMenuClick('/Myaccount')">My Account</a>
-                        <a class="popup-menu-item" @click="handleMenuClick('/UserMseeage')">Messages</a>
-                        <a class="popup-menu-item" @click="handleMenuClick('/Myorders')">My Orders</a>
+                        <a class="popup-menu-item" @click="handleMenuClick('/user')">My Account</a>
+                        <a class="popup-menu-item" @click="handleMenuClick('/notifiction')">Messages</a>
+                        <a class="popup-menu-item" @click="handleMenuClick('/order')">My Orders</a>
                         <a class="popup-menu-item" @click="handleLogout">Logout</a>
                     </div>
                 </popup-menu>
@@ -217,7 +221,6 @@ export default {
 
 /* 两边容器约束 */
 .aligner {
-    vertical-align: middle;
     display: flex;
     text-align: center;
     height: 2rem;
@@ -284,5 +287,4 @@ button:hover {
 img:hover {
     border-radius: 8px;
 }
-
 </style>
