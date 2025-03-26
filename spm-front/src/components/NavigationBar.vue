@@ -7,6 +7,7 @@ import { ElButton, ElCol, ElDrawer, ElIcon, ElInput, ElRow, ElDivider, ElLink, E
 <script>
 import PopupMenu from './PopupMenu.vue';
 import MessageBus from '@/utils/MessageBus';
+import ShopDropdown from './ShopDropdown.vue';
 
 export default {
     data() {
@@ -20,6 +21,7 @@ export default {
     },
     components: {
         PopupMenu,
+        ShopDropdown
     },
     methods: {
         navigateTo(path) {
@@ -143,6 +145,9 @@ export default {
                         </ElCol>
                     </ElRow>
                 </ElDrawer>
+                <nav class="left-logo-aligner">
+                    <ShopDropdown />
+                </nav>
                 <span class="placeholder" />
                 <ElButton :icon="Search" circle class="hidden-sm-and-up" @click.stop="handleSearch()" style="margin: auto 0.5rem;"/>
                 <ElInput class="aligner hidden-xs-only" id="search" v-model="searchContent" placeholder="Search...">
@@ -150,7 +155,8 @@ export default {
                         <ElButton icon="Search" @click.stop="handleSearch()" />
                     </template>
                 </ElInput>
-                <popup-menu ref="popupMenu" v-if="isLogined">
+                       
+                    <popup-menu ref="popupMenu" v-if="isLogined">
                     <template #trigger>
                         <ElAvatar alt="user-avatar" :src="userProfileImg" style="height: 2rem; width: 2rem;"
                             fit="contain" ref="userImg" />
