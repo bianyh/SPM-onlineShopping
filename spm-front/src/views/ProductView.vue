@@ -1,7 +1,7 @@
 <script setup>
 import { productInfo } from '@/api/product';
 import { storeInfo } from '@/api/store';
-import { ElAside, ElAvatar, ElButton, ElCard, ElCol, ElContainer, ElDivider, ElHeader, ElIcon, ElImage, ElMain, ElMessage, ElPageHeader, ElRate, ElRow, ElText } from 'element-plus';
+import { ElAffix, ElAside, ElAvatar, ElButton, ElCard, ElCol, ElContainer, ElDivider, ElFooter, ElHeader, ElIcon, ElImage, ElMain, ElMessage, ElPageHeader, ElRate, ElRow, ElText } from 'element-plus';
 </script>
 
 <script>
@@ -49,8 +49,8 @@ export default {
 </script>
 
 <template>
-    <ElContainer style="position: absolute; width: 100%; top: 4rem;">
-        <ElMain class="card-container">
+    <ElRow style="position: relative; width: 100%; top: 4rem;">
+        <div class="card-container">
             <ElCard class="custom-card">
                 <ElImage class="el-img" :src="product?.pictures" fit="contain" show-progress
                     :preview-src-list="[product?.pictures]">
@@ -89,8 +89,23 @@ export default {
                     </ElContainer>
                 </ElCard>
             </ElCard>
-        </ElMain>
-    </ElContainer>
+
+        </div>
+        <div class="card-container">
+        <ElAffix position="bottom" class="custom-card" style="background-color: #000;">
+            <ElButton @click="handleAddToCart" :loading="product?.status == 0 ? true : false"
+                style="width: 768px; max-width: 100%; height: 3.5rem; font-size: 1.2rem;" type="danger">
+                <ElIcon class="el-icon--left" style="margin-right: 1rem;">
+                    <ShoppingTrolley />
+                </ElIcon>
+                忍不了了，立即选购！ <br> PURCHASE NOW!
+            </ElButton>
+
+        </ElAffix>
+
+        </div>
+
+    </ElRow>
 </template>
 
 <style scoped>
@@ -126,7 +141,7 @@ export default {
         max-width: 768px;
         /* 确保最大宽度为 md */
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
         /* 水平居中 */
         /* align-items: center;  垂直居中 */
         /* height: 200px;  设置内容区域的高度 */
