@@ -1,20 +1,20 @@
-package com.example.spm.Service.impl;
+package com.example.spm.service.impl;
 
 
-import com.example.spm.Mapper.OrderMapper;
-import com.example.spm.Service.OrderService;
-import com.example.spm.pojo.Order;
-import com.example.spm.pojo.OrderItem;
-import com.example.spm.pojo.OrderRequest;
-import com.example.spm.pojo.Product;
+import com.example.spm.mapper.OrderMapper;
+import com.example.spm.pojo.*;
+import com.example.spm.service.OrderService;
+import com.example.spm.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -25,6 +25,18 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private com.example.spm.mapper.productMapper productmapper;
+
+    @Override
+    public void updateOrderLogistics(Integer orderId, Integer productId) {
+        // 使用 Java 8 时间 API（线程安全）
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
+        String timestamp = LocalDateTime.now().format(formatter);
+
+        // 生成随机后缀（0~999）
+        int randomSuffix = new Random().nextInt(1000);
+        String trackingNumber = timestamp + "-" + String.format("%03d", randomSuffix);
+        orderMapper.updateOrderLogistics(orderId, productId, trackingNumber);
+    }
 
     @Override
     @Transactional
@@ -61,9 +73,42 @@ public class OrderServiceImpl implements OrderService {
             Product pro = productmapper.getProductById(Math.toIntExact(i.getProductId()));
             orderMapper.submitOrderItem(order.getId(), i.getProductId(), i.getQuantity(), pro.getPrice().multiply(BigDecimal.valueOf(i.getQuantity())), i.getSpec());
         }
-
-        return;
-
     }
+
+    @Override
+    public List<Order> findByUserId(Integer userId, String status) {
+        if(status == null){
+            return orderMapper.findByUserId(userId);
+        }
+        return orderMapper.findByUserIdAndStatus(userId, status);
+    }
+
+    @Override
+    public void sendOrder(Integer orderId, String trackingNumber) {
+        orderMapper.sendOrder(orderId, trackingNumber);
+    }
+
+    @Override
+    public void confirmOrder(Integer orderId) {
+        orderMapper.confirmOrder(orderId);
+    }
+
+    @Override
+    public Order getDetail(Integer orderId) {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer userId = (Integer) map.get("id");
+        return orderMapper.getDetailOfOrder(orderId, userId);
+    }
+
+    @Override
+    public List<LogisticsDTO> getLogistics(Integer orderId, Integer productId) {
+        return orderMapper.getLogistics(orderId, productId);
+    }
+
+    @Override
+    public void cancelOrder(Integer orderId) {
+        orderMapper.cancelOrder(orderId);
+    }
+
 
 }
