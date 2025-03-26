@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.spm.mapper.OrderMapper">
+    <!-- 启用驼峰命名映射或自定义resultMap -->
+    <resultMap id="OrderLogisticsResult" type="com.example.spm.pojo.LogisticsDTO">
+        <id property="orderId" column="order_id"/>
+        <id property="productId" column="product_id"/>
+        <!-- 其他字段映射 -->
+    </resultMap>
+
+    <select id="getLogistics" resultMap="OrderLogisticsResult">
+        SELECT *
+        FROM order_logistics
+        WHERE order_id = #{orderId}
+        <if test="productId != null">
+            AND product_id = #{productId}
+        </if>
+    </select>
+</mapper>
