@@ -105,6 +105,7 @@ const routes = [
   },
   {
     path: "/Editgood", 
+    name: "Editgood",
     component: Editgood,
   }
 ]
