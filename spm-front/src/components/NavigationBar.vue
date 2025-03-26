@@ -8,6 +8,7 @@ import { RouterLink } from 'vue-router'
 import PopupMenu from './PopupMenu.vue';
 import MessageBus from '@/utils/MessageBus';
 import CategoryDropdown from './CategoryDropdown.vue';
+import ShopDropdown from './ShopDropdown.vue';
 import Category1 from '@/views/Category/Category1.vue';
 
 export default {
@@ -21,7 +22,8 @@ export default {
     },
     components: {
         PopupMenu,
-        CategoryDropdown
+        CategoryDropdown,
+        ShopDropdown
     },
     methods: {
         navigateTo(path) {
@@ -128,7 +130,7 @@ export default {
                 </ElDrawer>
                 <nav class="left-logo-aligner">
                     <CategoryDropdown />
-                    <RouterLink to="/Shop">Shops</RouterLink>
+                    <ShopDropdown />
                 </nav>
                 <span class="placeholder hidden-xs-only"/>
                 <div class="right-state-aligner">

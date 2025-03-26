@@ -10,6 +10,12 @@ import Carts from '@/views/Carts.vue'
 import Myorders from '@/views/Myorders.vue'
 import UserMessage from '@/views/UserMessage.vue'
 import ProductSearchView from '@/views/ProductSearchView.vue'
+import SellerHome from '@/views/SellerHome.vue'  
+import ShopInfo from '@/views/ShopInfo.vue'
+import Editgood from '@/views/Editgood.vue'
+import Releasegood from '@/views/Releasegood.vue'
+import Goodsmanage from '@/views/Goodsmanage.vue'
+import Application from '@/views/Application.vue'
 const routes = [
   {
     path: '/',
@@ -63,9 +69,43 @@ const routes = [
     component:Myorders
   },
   {
-    path:'/UserMseeage',
+    path:'/UserMessage',
     name:'UserMessage',
     component:UserMessage
+  },
+  {
+    path:'/UserMessage',
+    name:'UserMessage',
+    component:UserMessage
+  },
+  {
+    path: '/seller-home',
+    name: 'seller-home',
+    component: SellerHome
+  },
+  {
+    path: '/application',
+    name: 'application',
+    component: Application
+  },
+  {
+    path: '/shop-info',
+    name: 'shop-info',
+    component: ShopInfo
+  },
+  {
+    path: "/Releasegood",
+    name: "Releasegood",
+    component: Releasegood,
+  },
+  {
+    path: "/Goodsmanage",
+    name: "Goodsmanage",
+    component: Goodsmanage,
+  },
+  {
+    path: "/Editgood", 
+    component: Editgood,
   }
 ]
 
