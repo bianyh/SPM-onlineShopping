@@ -45,7 +45,6 @@ public class productController {
 //
     @GetMapping("/search/{id}")
     public Result getProductById(@PathVariable Integer id) {
-        System.out.println(productservice.getProductById(id));
         return Result.success(productservice.getProductById(id));
     }
     @GetMapping("/stock/{productId}")
