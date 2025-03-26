@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 @Service
@@ -73,6 +74,10 @@ public class sellerServiceImpl implements sellerService {
 
         // 返回分页结果
         return new PageResult<>(stores, total, page, PAGE_SIZE);
+    }
+
+    public List<Store> findByUserId(Integer userId) {
+        return mapper.findByUserName(userId);
     }
 
     private Store convertToVO(Store store) {

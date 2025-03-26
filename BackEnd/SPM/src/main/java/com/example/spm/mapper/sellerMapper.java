@@ -8,7 +8,6 @@ import java.util.List;
 @Mapper
 public interface sellerMapper {
 
-
     @Select("select * from store where name = #{name}")
     Store findByName(String name);
 

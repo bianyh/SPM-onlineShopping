@@ -48,4 +48,10 @@ public interface productMapper {
             "values (#{pictures}, #{price}, #{name}, #{storeId}, #{stock}, #{description}, now(), now() )")
     Integer addProduct(@Param("pictures") String pictures, @Param("price") BigDecimal price, @Param("name") String name
             , @Param("storeId") Integer storeId, @Param("stock") Integer stock, @Param("description") String description);
+
+    @Select("select * from product where store_id = #{storeId} ")
+    List<Product> getProductByStoreId(Integer storeId);
+
+    @Select("select * from store where id in #{storeIds} ")
+    List<Product> findByShopIdIn(List<Integer> shopIds);
 }

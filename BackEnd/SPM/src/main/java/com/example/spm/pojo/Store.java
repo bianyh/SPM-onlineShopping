@@ -17,4 +17,5 @@ public class Store {
     private LocalDateTime createAt;
     private int status; //商店的状态（0为打烊，1为营业，2为审核中）
     private int userId;
+
 }

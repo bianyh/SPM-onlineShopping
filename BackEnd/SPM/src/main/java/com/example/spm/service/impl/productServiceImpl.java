@@ -23,6 +23,9 @@ public class productServiceImpl implements productService {
         return productmapper.getProductById(id);
     }
 
+    public List<Product> getProductByStoreId(List<Integer> storeIds) {
+        return productmapper.findByShopIdIn(storeIds);
+    }
     @Override
     public int addProductToFavorite(UserFavorites userFavorites) {
         Map<String, Object> map = ThreadLocalUtil.get();
