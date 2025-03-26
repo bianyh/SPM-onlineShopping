@@ -69,6 +69,8 @@ export default {
         }
     },
     mounted() {
+        if (window.localStorage.getItem("token") != "")
+            this.isLogined = true
         MessageBus.on("auth", (event) => {
             if (event.type == "login") {
                 this.isLogined = true
@@ -147,8 +149,7 @@ export default {
                     <ShopDropdown />
                 </nav>
                 <span class="placeholder" />
-                <ElButton :icon="Search" circle class="hidden-sm-and-up" style="margin: auto 0.5rem;"/>
-                
+                <ElButton :icon="Search" circle class="hidden-sm-and-up" @click.stop="handleSearch()" style="margin: auto 0.5rem;"/>
                 <ElInput class="aligner hidden-xs-only" id="search" v-model="searchContent" placeholder="Search...">
                     <template #append>
                         <ElButton icon="Search" @click.stop="handleSearch()" />

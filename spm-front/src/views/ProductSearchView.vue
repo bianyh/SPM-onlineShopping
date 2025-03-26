@@ -29,24 +29,26 @@ export default {
         MessageBus.off("search")
     },
     methods: {
-        handleSearch() {
+        async handleSearch() {
+            window.localStorage.setItem('searchContent',this.content)
+            this.products = []
             this.loading = true
             if (this.content == '') {
-                this.products = []
-                searchProduct('', 1, 4).then((result) => {
-                    this.defaultProducts = result.data.products
-                })
                 this.page = 1
                 this.total = 0
             }
             else
-                searchProduct(this.content, this.page, 20).then((result) => {
+                await searchProduct(this.content, this.page, 20).then((result) => {
                     this.products = result.data.products
                     this.page = result.data.page
                     this.total = result.data.total
                     this.loading = false
                 }, (err) => {
                     MessageBus.emit("box", err)
+                })
+            if (this.total == 0)
+                searchProduct('', 1, 4).then((result) => {
+                    this.defaultProducts = result.data.products
                 })
         },
         updateSearch(content) {
@@ -122,6 +124,7 @@ export default {
 
                 </ElSkeleton>
             </ElSpace>
+            <ElPagination :total="total" v-model="page" />
             <div v-if="total == 0">
                 <ElImage src="https://pic1.imgdb.cn/item/67e2b98d0ba3d5a1d7e351e0.png" fit="scale-down"
                     style="width: 100%; height: 10rem;"></ElImage>
@@ -142,7 +145,6 @@ export default {
                     <!--div style="width: 100%; height: 1px; background-color: gray;" /-->
                 </div>
             </div>
-            <ElPagination :total="total" v-model="page" />
         </div>
 
     </ElContainer>
