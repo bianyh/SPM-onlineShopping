@@ -17,7 +17,7 @@ public interface sellerMapper {
 
     @Update("update store set " +
             "name = #{name}, " +
-            "`describe` = #{description}, " +
+            "`description` = #{description}, " +
             "picture_path = #{picturePath}, " +
             "status = #{status} " +
             "where id = #{id}")

@@ -42,9 +42,9 @@ export default {
 
 
 <template>  
-  <!--div class="bgcolor"></div-->
+  <div class="bgcolor"></div>
   <NavigationBar></NavigationBar>
-  <RouterView class="main"></RouterView>
+  <RouterView></RouterView>
   <MsgBox ref="msgbox" class="top-element" />
 </template>
 
@@ -68,7 +68,9 @@ export default {
   background-size: 100% 100%;
   background-attachment: fixed;
   background-color: #c3a8a8;
-  background-image: linear-gradient(to top left, rgb(240, 208, 255) 0%, rgb(255, 247, 225) 100%);
+/*   background-image: linear-gradient(to top left, rgb(240, 208, 255) 0%, rgb(255, 247, 225) 100%); */ 
+  background-image: url(https://img.js.design/assets/img/67cfdb8607c4c2e467899865.png);
+  opacity: 0.2;
 }
 
 .main {

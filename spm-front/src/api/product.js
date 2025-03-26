@@ -15,17 +15,19 @@ export function searchProduct(keyword, page = 1, limit = 20) {
     })
 }
 
-//展示所有用户
-export function userShow() {
+//精确查找
+export function productInfo(id) {
     return myAxios({
-        url: '/api/auth/showall',
+        url: '/api/product/search/' + id,
         method: 'get',
-        params: undefined
+        params: {
+        }
     })
 }
 
+
 //用户注册
-export function userRegister(username, password, email, phoneNumber) {
+export function productRegister(username, password, email, phoneNumber) {
     return myAxios({
         url: '/api/auth/register',
         method: 'post',

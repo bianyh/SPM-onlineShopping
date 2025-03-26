@@ -49,7 +49,6 @@ export default {
 
 <style scoped>
 .carousel {
-    width: 1400px;
     height: 420px;
     margin:0 auto;
 }
