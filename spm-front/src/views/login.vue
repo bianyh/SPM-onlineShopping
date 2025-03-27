@@ -61,9 +61,10 @@ export default {
           result.wait = true // 等待执行结果
           result.callbacks = [this.goToMainPage]
           window.localStorage.setItem("token", result.data) //储存token
-          window.localStorage.setItem("user", decodeJwt(result.data)[1])
-          result.content = window.localStorage.getItem("user")//.claims.username
-          console.log( result.content)
+          var claims = decodeJwt(result.data)[1].claims
+          window.localStorage.setItem("username", claims.username)
+          window.localStorage.setItem("uid", claims.id)
+          result.content = "Welcome! " + claims.username
           MessageBus.emit('box', result) // 登陆成功消息框
           MessageBus.emit("auth", { type: "login" })
         }

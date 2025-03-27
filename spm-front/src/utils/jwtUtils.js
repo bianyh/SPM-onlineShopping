@@ -11,6 +11,5 @@ export function decodeJwt(token) {
     
     const header = decodeBase64Url(parts[0]);
     const payload = decodeBase64Url(parts[1]);
-
     return [header, payload]
 }

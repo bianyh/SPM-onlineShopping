@@ -6,8 +6,7 @@ import homenew from '../views/homenew.vue'
 import Category1 from '@/views/Category/Category1.vue'
 import Category2 from '@/views/Category/Category2.vue'
 import Category3 from '@/views/Category/Category3.vue'
-import Carts from '@/views/Carts.vue'
-import Myorders from '@/views/Myorders.vue'
+import Myorders from '@/views/OrderView.vue'
 import UserMessage from '@/components/user/UserMessage.vue'
 import ProductSearchView from '@/views/ProductSearchView.vue'
 import SellerHome from '@/views/SellerHome.vue'  
@@ -19,6 +18,7 @@ import Application from '@/views/Application.vue'
 import UserView from '@/views/UserView.vue'
 import ProductView from '@/views/ProductView.vue'
 import MessageBus from '@/utils/MessageBus'
+import CartView from '@/views/CartView.vue'
 const routes = [
   {
     path: '/',
@@ -84,7 +84,7 @@ const routes = [
   ,{
     path:'/cart',
     name:'cart',
-    component:Carts,
+    component:CartView,
     meta: {
       title: 'Shopping Cart'
     }
@@ -111,9 +111,12 @@ const routes = [
     component:UserMessage
   },
   {
-    path: '/seller-home',
-    name: 'seller-home',
-    component: SellerHome
+    path: '/seller',
+    name: 'seller',
+    component: SellerHome,
+    meta: {
+      title: 'Seller Center'
+    }
   },
   {
     path: '/application',

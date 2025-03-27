@@ -41,3 +41,14 @@ export function userRegister(username, password, email, phoneNumber) {
         }
     })
 }
+
+//获取用户所有店铺
+export function userStore(username) {
+    var result = myAxios({
+        url: `/api/seller/all/${username}`,
+        method: 'get',
+        params: []
+    }) 
+    console.log(result)
+    return result
+}

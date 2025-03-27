@@ -8,6 +8,7 @@ import { ElButton, ElCol, ElDrawer, ElIcon, ElInput, ElRow, ElDivider, ElLink, E
 import PopupMenu from './PopupMenu.vue';
 import MessageBus from '@/utils/MessageBus';
 import ShopDropdown from './ShopDropdown.vue';
+import { userStore } from '@/api/user';
 
 export default {
     data() {
@@ -15,8 +16,9 @@ export default {
             userProfileImg: '/img/icons/unknown_user.svg',
             searchContent: '',
             isLogined: false,
+            isSeller: true,
             drawerVisible: false,
-            titleText: "SPM onlineShopping"
+            titleText: "SPM onlineShopping",
         }
     },
     components: {
@@ -69,21 +71,29 @@ export default {
         }
     },
     mounted() {
+        //是否登录判断
         if (window.localStorage.getItem("token") != "")
             this.isLogined = true
+        //是否卖家判断
+        //var username = window.localStorage.getItem("username")
+        //userStore(username).then((result) => {
+        //    if (result.data == []) 
+        //        this.isSeller = false
+        //    else
+        //        this.isSeller = true
+        //})
+        //监听登录和路由变更事件
         MessageBus.on("auth", (event) => {
-            if (event.type == "login") {
+            if (event.type == "login")
                 this.isLogined = true
-            }
-            else {
+            else
                 this.isLogined = false
-            }
         })
         MessageBus.on("routerChange", (newtext) => {
             this.titleText = newtext
         })
     },
-    unmounted() {
+    beforeDestroy() {
         MessageBus.off()
     }
 
@@ -102,44 +112,57 @@ export default {
                     <img class="drawer-bg" src="/img/drawerbg.svg">
                     <img class="drawer-text" src="/img/icons/spmos.svg">
                     <ElRow class="row-bg" justify="space-evenly" align="top" @click="drawerVisible = false">
-                        <ElCol v-loading=false :sm="7" :xs="24">
+                        <ElCol :sm="7" :xs="24">
                             <el-divider content-position="left">Explore what you want</el-divider>
                             <ElRow>
-                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/')">商店主页</ElLink>
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/')">Home Page</ElLink>
                             </ElRow>
                             <ElRow>
-                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/')">热卖商品</ElLink>
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/')">Hot Sale
+                                </ElLink>
                             </ElRow>
                             <ElRow>
-                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/search')">分类查找
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/search')">Search
                                 </ElLink>
                             </ElRow>
                         </ElCol>
                         <!--ElCol :sm="2" :xs="0"><el-divider direction="vertical" class="hidden-xs-only"/></ElCol-->
-                        <ElCol v-loading=false :sm="7" :xs="24">
+                        <ElCol :sm="7" :xs="24">
                             <el-divider content-position="left">Find what you got</el-divider>
                             <ElRow>
-                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/user')">用户中心
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/user')">User Center
                                 </ElLink>
                             </ElRow>
                             <ElRow>
-                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/cart')">我的购物车
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/cart')">My Cart
                                 </ElLink>
                             </ElRow>
                             <ElRow>
-                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/order')">我的订单
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/order')">Orders
                                 </ElLink>
                             </ElRow>
                         </ElCol>
                         <!--ElCol :sm="2" :xs="0"><el-divider direction="vertical" class="hidden-xs-only"/></ElCol-->
-                        <ElCol v-loading=true :sm="7" :xs="24">
+                        <ElCol :sm="7" :xs="24">
                             <el-divider content-position="left">Manage what you built</el-divider>
                             <ElRow>
-                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/seller/product')">
-                                    我的商品</ElLink>
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/notifiction')">
+                                    Notifictions
+                                </ElLink>
                             </ElRow>
                             <ElRow>
-                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/seller')">我的店铺
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/verifiction')">
+                                    Report
+                                </ElLink>
+                            </ElRow>
+                            <ElRow v-if="isSeller">
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/seller')">
+                                    My Stores
+                                </ElLink>
+                            </ElRow>
+                            <ElRow v-if="isSeller">
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/seller/product')">
+                                    My Products
                                 </ElLink>
                             </ElRow>
                         </ElCol>
@@ -149,14 +172,15 @@ export default {
                     <ShopDropdown />
                 </nav>
                 <span class="placeholder" />
-                <ElButton :icon="Search" circle class="hidden-sm-and-up" @click.stop="handleSearch()" style="margin: auto 0.5rem;"/>
+                <ElButton :icon="Search" circle class="hidden-sm-and-up" @click.stop="handleSearch()"
+                    style="margin: auto 0.5rem;" />
                 <ElInput class="aligner hidden-xs-only" id="search" v-model="searchContent" placeholder="Search...">
                     <template #append>
                         <ElButton icon="Search" @click.stop="handleSearch()" />
                     </template>
                 </ElInput>
-                       
-                    <popup-menu ref="popupMenu" v-if="isLogined">
+
+                <popup-menu ref="popupMenu" v-if="isLogined">
                     <template #trigger>
                         <ElAvatar alt="user-avatar" :src="userProfileImg" style="height: 2rem; width: 2rem;"
                             fit="contain" ref="userImg" />
