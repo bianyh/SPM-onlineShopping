@@ -80,8 +80,8 @@ export default {
 
 <script setup>
 import CategoryDropdown from '@/components/CategoryDropdown.vue';
-import Carts from '@/views/Carts.vue';
-import Myorders from '@/views/Myorders.vue';
+import Carts from '@/views/CartView.vue';
+import Myorders from '@/views/OrderView.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElButton, ElInput, ElDialog, ElImage, ElText, ElCol, ElRow, ElAvatar, ElContainer, ElAside, ElMain, ElHeader, ElFooter } from 'element-plus';
