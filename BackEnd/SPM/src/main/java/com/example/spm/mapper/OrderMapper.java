@@ -3,6 +3,7 @@ package com.example.spm.mapper;
 
 import com.example.spm.pojo.LogisticsDTO;
 import com.example.spm.pojo.Order;
+import com.example.spm.pojo.pro_order;
 import org.apache.ibatis.annotations.*;
 
 import java.math.BigDecimal;
@@ -42,4 +43,7 @@ public interface OrderMapper {
 
     @Update("update order_logistics set status = 5, updated_at = now()")
     void cancelOrder(Integer orderId);
+
+    @Select("SELECT order_item.order_id,order_item.product_id FROM product,store,order_item WHERE product.id=order_item.order_id AND store.id=product.store_id AND store.user_id=#{userId}")
+    List<pro_order> getProducts(Integer userId);
 }

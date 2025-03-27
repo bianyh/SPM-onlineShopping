@@ -94,5 +94,15 @@ public class OrderController {
         BigDecimal totalAmount = orderservice.getDetail(orderId).getTotalAmount();
         return Result.success("Total:" +  totalAmount);
     }
+
+    @GetMapping("/seller")
+    public Result getOrder(@RequestHeader("Authorization") String authorization,
+                              Integer status) {
+        Map<String, Object> userInfo = JwtUtil.parseToken(authorization);
+        Integer userId = (Integer) userInfo.get("id");
+        Map<Integer, List<Integer>> res = orderservice.getOrder(userId, status);
+        return Result.success(res);
+
+    }
 }
 

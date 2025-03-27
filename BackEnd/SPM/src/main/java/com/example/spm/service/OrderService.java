@@ -24,5 +24,7 @@ public interface OrderService {
 
     List<LogisticsDTO> getLogistics(Integer orderId, Integer productId);
 
- void cancelOrder(Integer orderId);
+    Map<Integer, List<Integer>> getOrder(Integer userId, Integer status);
+
+    void cancelOrder(Integer orderId);
 }

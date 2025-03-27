@@ -12,9 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -103,6 +101,18 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<LogisticsDTO> getLogistics(Integer orderId, Integer productId) {
         return orderMapper.getLogistics(orderId, productId);
+    }
+
+    @Override
+    public Map<Integer, List<Integer>> getOrder(Integer userId, Integer status) {
+        Map<Integer, List<Integer>> ans = new HashMap<>();
+        List<pro_order> products = orderMapper.getProducts(userId);
+        for (pro_order i : products) {
+            List<Integer> cache = ans.getOrDefault(i.getProductId(), new ArrayList<>());
+            cache.add(i.getOrderId());
+            ans.put(i.getProductId(), cache);
+        }
+        return ans;
     }
 
     @Override
