@@ -79,8 +79,8 @@ export default {
                     @keyup.native.enter="handleSearch">
                     <template #prepend>
                         <ElSelect v-model="searchSelect" placeholder="Select" style="width: 6rem">
-                            <ElOption label="商品 / Products" value="1" />
-                            <ElOption label="店铺 / Shops" value="2" />
+                            <ElOption label="Products" value="1" />
+                            <ElOption label="Shops" value="2" />
                         </ElSelect>
                     </template>
                 </ElInput>
