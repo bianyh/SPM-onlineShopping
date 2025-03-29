@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://47.95.178.56:3306/spm?useUnicode=true&characterSetResults=utf8mb4
     username: root
-    password: 1234
+    password: ^yY9z-2l1C5h=o8
 
 mybatis:
   configuration:
