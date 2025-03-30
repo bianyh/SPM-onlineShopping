@@ -1,8 +1,8 @@
 <script setup>
-import { cartAppend, cartShow } from '@/api/cart';
+import { cartAppend, cartRemove, cartShow } from '@/api/cart';
 import { productInfo } from '@/api/product';
 import { storeInfo } from '@/api/store';
-import { ElAvatar, ElButton, ElCard, ElCol, ElContainer, ElIcon, ElImage, ElInputNumber, ElMessage, ElRow, ElSkeleton, ElSkeletonItem, ElText } from 'element-plus';
+import { ElAffix, ElAvatar, ElButton, ElCard, ElCol, ElContainer, ElDivider, ElIcon, ElImage, ElInputNumber, ElMessage, ElRow, ElSkeleton, ElSkeletonItem, ElText } from 'element-plus';
 
 </script>
 <script>
@@ -18,11 +18,28 @@ export default {
     }
   },
   methods: {
-    handleClick() {
+    handleClick(index) {
       if (this.cartDeleting) {
-        
+        if (this.selectedItem != index) {
+          this.selectedItem = index
+          ElMessage({
+            type: 'warning',
+            message: 'Click Again to Confirm and Delete ' + this.productItems[index].name
+          })
+        } else {
+          cartRemove(this.cartItems[index].id).then((result) => {
+            this.updateCart()
+            ElMessage({
+              type: 'success',
+              message: 'Done'
+            })
+          })
+        }
       }
-      this.$router.push('/Carts');
+      else {
+        this.$store.commit('setSharedData', { pid: this.cartItems[index].productId });
+        this.$router.push("/product")
+      }
     },
     updateCart() {
       this.cartLoading = true
@@ -42,7 +59,7 @@ export default {
       var product = {
         "id": -1,
         "name": "[ unknown ] product",
-        "description": "未知商品",
+        "description": "unknown",
         "price": 1.00,
         "stock": 0,
         "categoryId": 1,
@@ -59,11 +76,8 @@ export default {
     async getStoreInfo(sid) {
       var store = {
         "id": -1,
-        "name": "[ unknown ] product",
-        "description": "未知商品",
-        "price": 1.00,
-        "stock": 0,
-        "categoryId": 1,
+        "name": "[ unknown ]",
+        "description": "unknown store",
         "pictures": "/img/icons/doubt.png",
         "status": 0,
       }
@@ -76,7 +90,17 @@ export default {
     },
     handleChange(currentValue, oldValue, item) {
       cartAppend(item.productId, currentValue).catch((err) => { ElMessage({ message: err }) })
+    },
+    openCheckoutView(){
+      for (let index = 0; index < this.productItems.length; index++) {
+        this.productItems[index].quantity = this.cartItems[index].quantity;
+      }
+      this.$store.commit('setSharedData', { pi: this.productItems });
+      this.$router.push("/checkout")
     }
+  },
+  mounted() {
+    this.updateCart()
   }
 }
 </script>
@@ -100,13 +124,14 @@ export default {
         </ElButton>
       </div>
       <ElRow>
-        <ElSkeleton :loading="cartLoading" animated count=1 v-for="(item, index) in cartItems" :key="index" class="card-item">
+        <ElSkeleton :loading="cartLoading" animated :count="1" v-for="(item, index) in cartItems" :key="index"
+          class="card-item">
           <template #template>
             <ElSkeletonItem variant="text" style="margin-right: 16px" />
             <el-skeleton-item variant="text" style="width: 30%" />
           </template>
           <template #default>
-            <ElRow class="card-box" :gutter="16" @click="handleClick">
+            <ElRow class="card-box" :gutter="16" @click="handleClick(index)">
               <ElImage :src="productItems[index].pictures" fit="cover" style="height: 8rem;border-radius: 0.5rem;" />
               <ElCol style="flex:1;">
                 <ElRow>
@@ -118,7 +143,7 @@ export default {
                   <ElText style="flex: 1;">{{ item.createdAt }}</ElText>
                 </ElRow>
               </ElCol>
-              <div style="justify-self: right; justify-items: flex-end;"><!--商品价格和商品购买数量-->
+              <div style="justify-self: right; justify-items: flex-end;" @click.stop><!--商品价格和商品购买数量-->
                 <ElText class="price-text">
                   ${{ productItems[index].price * item.quantity }}
                 </ElText><br>
@@ -130,6 +155,18 @@ export default {
             </ElRow>
           </template>
         </ElSkeleton>
+      </ElRow>
+      <ElDivider>Operations</ElDivider>
+      <ElRow class="card-container">
+        <ElAffix position="bottom" class="custom-card" :z-index="2" style="display: flex;">
+          <ElButton @click="openCheckoutView" :disabled="cartItems == [] ? true : false" type="danger"
+            style="width: 100%;">
+            <ElIcon class="el-icon--left" style="margin-right: 1rem;">
+              <ShoppingTrolley />
+            </ElIcon>
+            Let's Order
+          </ElButton>
+        </ElAffix>
       </ElRow>
     </ElCard>
   </ElRow>

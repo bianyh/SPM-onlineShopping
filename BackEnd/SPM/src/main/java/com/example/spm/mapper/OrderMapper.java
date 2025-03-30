@@ -3,6 +3,7 @@ package com.example.spm.mapper;
 
 import com.example.spm.pojo.LogisticsDTO;
 import com.example.spm.pojo.Order;
+import com.example.spm.pojo.OrderItem;
 import com.example.spm.pojo.pro_order;
 import org.apache.ibatis.annotations.*;
 
@@ -46,4 +47,12 @@ public interface OrderMapper {
 
     @Select("SELECT order_item.order_id,order_item.product_id FROM product,store,order_item WHERE product.id=order_item.order_id AND store.id=product.store_id AND store.user_id=#{userId}")
     List<pro_order> getProducts(Integer userId);
+
+    //按订单查商品
+    @Select("SELECT * FROM order_item WHERE order_id=#{orderId}")
+    List<OrderItem> findProductsByOrder(Integer orderId);
+
+    //按商品查订单
+    @Select("SELECT * FROM order_item WHERE product_id=#{productId}")
+    List<OrderItem> findOrdersByProduct(Integer productId);
 }

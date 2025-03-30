@@ -3,6 +3,7 @@
 import axios from "axios";
 import { transParams } from "@/utils/vineUtils";
 import { decodeJwt } from "@/utils/jwtUtils";
+import { ElMessage } from "element-plus";
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 // 创建axios实例
@@ -58,6 +59,9 @@ myAxios.interceptors.response.use(
     },
     error => {
         console.error('请求错误：', error);
+        ElMessage({
+            message: error
+        })
         return Promise.reject(error);
     }
 )

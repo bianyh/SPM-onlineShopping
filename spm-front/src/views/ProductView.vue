@@ -68,6 +68,10 @@ export default {
         },
         handlePurchase() {
             this.drawerLoading = true
+            var productItems = this.product
+            productItems.quantity = this.purchaseQuantity
+            this.$store.commit('setSharedData', { pi: [productItems] });
+            this.$router.push("/checkout")
         },
         openPurchaseDrawer() {
             this.drawerVisible = true

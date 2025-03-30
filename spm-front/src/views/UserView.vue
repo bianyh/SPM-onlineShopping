@@ -37,25 +37,25 @@ export default {
                     <el-icon>
                         <User />
                     </el-icon>
-                    <span class="">用户基本信息（profile）</span>
+                    <span class="">（profile）</span>
                 </el-menu-item>
-                <el-menu-item index="2">
+                <el-menu-item index="2" @click="this.$router.push('/order')">
                     <el-icon>
                         <Document />
                     </el-icon>
-                    <span>我的订单（My orders）</span>
+                    <span>（My orders）</span>
                 </el-menu-item>
-                <el-menu-item index="3">
+                <el-menu-item index="3" @click="this.$router.push('/address')">
                     <el-icon>
                         <location />
                     </el-icon>
-                    <span>地址管理（My Address）</span>
+                    <span>（My Address）</span>
                 </el-menu-item>
-                <el-menu-item index="4">
+                <el-menu-item index="4" @click="this.$router.push('/cart')">
                     <el-icon>
                         <ShoppingTrolley />
                     </el-icon>
-                    <span>购物车(My Cart)</span>
+                    <span>(My Cart)</span>
                 </el-menu-item>
             </el-menu>
 

@@ -92,10 +92,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getDetail(Integer orderId) {
+    public List<OrderItem> getDetail(Integer orderId) {
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer userId = (Integer) map.get("id");
-        return orderMapper.getDetailOfOrder(orderId, userId);
+        return orderMapper.findProductsByOrder(orderId);
     }
 
     @Override

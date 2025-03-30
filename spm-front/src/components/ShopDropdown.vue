@@ -5,8 +5,8 @@
     </a>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item command="/seller-home">My Shop</el-dropdown-item>
-        <el-dropdown-item command="/shop-application">Application</el-dropdown-item>
+        <el-dropdown-item command="/seller">My Shop</el-dropdown-item>
+        <el-dropdown-item command="/application">Application</el-dropdown-item>
       </el-dropdown-menu>
     </template>
   </el-dropdown>
