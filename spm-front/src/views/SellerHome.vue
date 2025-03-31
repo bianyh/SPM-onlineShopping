@@ -45,7 +45,6 @@ const navigateToRelease = () => {
 }
 
 const navigateToManage = () => {
-  router.push('/Goodsmanage')
 }
 </script>
 

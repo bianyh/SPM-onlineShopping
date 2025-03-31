@@ -79,7 +79,7 @@ public class OrderController {
 
     @GetMapping("/detail")
     public Result getDetail(Integer orderId){
-        List<OrderItem> orderItem = orderservice.getDetail(orderId);
+        List<OrderItem> orderItem = orderservice.getOrderItems(orderId);
         return Result.success(orderItem);
     }
 

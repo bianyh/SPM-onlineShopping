@@ -2,9 +2,11 @@
     <div class="store-container" style="margin-top: 3.5rem;">
         <el-tabs v-model="activeStatus" class="demo-tabs" type="border-card">
             <el-tab-pane label="All Stores" name=-1></el-tab-pane>
-            <el-tab-pane v-for="(status,index) in storeStatus" :key="status" :label="status" :name="index"></el-tab-pane>
+            <el-tab-pane v-for="(status, index) in storeStatus" :key="status" :label="status"
+                :name="index"></el-tab-pane>
 
-            <el-card v-for="store in filteredStores" :key="store.id" class="store-card" shadow="hover">
+            <el-card v-for="store in filteredStores" :key="store.id" class="store-card" shadow="hover"
+                @click="handleClick(store)">
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-image :src="store.picturePath" fit="cover" style="width: 100%; height: 150px;"></el-image>
@@ -39,22 +41,6 @@ export default {
                     picturePath: 'https://via.placeholder.com/300',
                     status: 'Open'
                 },
-                {
-                    id: 'ST002',
-                    name: 'Store 2',
-                    description: 'This is the second store.',
-                    address: '456 Park Ave',
-                    picturePath: 'https://via.placeholder.com/300',
-                    status: 'Closed'
-                },
-                {
-                    id: 'ST003',
-                    name: 'Store 3',
-                    description: 'This is the third store.',
-                    address: '789 Oak Rd',
-                    picturePath: 'https://via.placeholder.com/300',
-                    status: 'Open'
-                }
             ],
             storeStatus: { 0: 'Open', 1: 'Closed', },
             activeStatus: -1
@@ -75,6 +61,10 @@ export default {
                 1: 'info'
             };
             return statusMap[status] || 'default';
+        },
+        handleClick(store) {
+            this.$store.commit('setSharedData', { sid: store.id });
+            this.$router.push("/store")
         }
     },
     mounted() {

@@ -21,7 +21,9 @@ public interface OrderService {
 
     void confirmOrder(Integer orderId);
 
-    List<OrderItem> getDetail(Integer orderId);
+    Order getDetail(Integer orderId);
+
+    List<OrderItem> getOrderItems(Integer orderId);
 
     List<LogisticsDTO> getLogistics(Integer orderId, Integer productId);
 

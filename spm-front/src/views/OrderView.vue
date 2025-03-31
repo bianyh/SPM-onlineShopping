@@ -1,6 +1,6 @@
 <template>
   <div class="order-container">
-    <el-tabs v-model="activeStatus" class="demo-tabs" type="border-card">
+    <el-tabs v-model="activeStatus" class="demo-tabs" >
       <el-tab-pane label="All" name=-1></el-tab-pane>
       <el-tab-pane v-for="(status, index) in orderStatus" :key="index" :label="status" :name="index"></el-tab-pane>
 

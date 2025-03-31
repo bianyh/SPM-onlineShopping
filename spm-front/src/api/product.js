@@ -26,7 +26,7 @@ export function productInfo(id) {
 }
 
 
-//用户注册
+//注册
 export function productRegister(username, password, email, phoneNumber) {
     return myAxios({
         url: '/api/auth/register',

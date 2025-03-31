@@ -32,16 +32,30 @@ export function storeCreate(username,name,address) {
     })
 }
 //店铺信息更新
-export function storeUpdate(username,name,address) {
+export function storeUpdate(name,description,backpicture,id,status,address) {
     return myAxios({
         url: `/api/seller/update`,
         method: 'put',
         data: {
-            name: "string",
-            description: "string",
-            backpicture: "string",
-            status: 0,
-            id: "string"
+            name: name,
+            description: description,
+            picturePath: backpicture,
+            status: status,
+            id: id,
+            address: address,
+        }
+    })
+}
+//搜索商品
+export function storeProducts(sid, page = 1, limit = 10, status = '%') {
+    return myAxios({
+        url: '/api/seller/products',
+        method: 'get',
+        params: {
+            'id': sid,
+            'page': page,
+            'limit': limit,
+            'status': status
         }
     })
 }

@@ -168,19 +168,20 @@ const routes = [
     }
   },
   {
-    path: "/Releasegood",
+    path: "/product/create",
     name: "Releasegood",
     component: Releasegood,
+    meta: {
+      title: 'New Product'
+    }
   },
   {
-    path: "/Goodsmanage",
-    name: "Goodsmanage",
-    component: Goodsmanage,
-  },
-  {
-    path: "/Editgood", 
+    path: "/product/edit", 
     name: "Editgood",
     component: Editgood,
+    meta: {
+      title: 'Product Edit'
+    }
   }
 ]
 
