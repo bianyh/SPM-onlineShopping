@@ -17,4 +17,8 @@ public class PageResult<T> {
         this.page = page;
         this.pageSize = pageSize;
     }
+
+    public PageResult() {
+
+    }
 }

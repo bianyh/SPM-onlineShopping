@@ -24,4 +24,15 @@
         WHERE name LIKE CONCAT('%', #{name}, '%')
     </select>
 
+    <select id="findAllProducts" resultType="com.example.spm.pojo.Product">
+        SELECT * from product
+        <where>
+            store_id = #{storeId}
+            <if test="status != null">
+                and status = #{stauts}
+            </if>
+        </where>
+
+    </select>
+
 </mapper>

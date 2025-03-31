@@ -37,7 +37,7 @@ public interface OrderMapper {
     @Update("update order_logistics set status = 4, updated_at = now()")
     void confirmOrder(Integer orderId);
 
-    @Select("select * from `order` where id = #{orderId} and user_id = #{userId} ")
+    @Select("select * from `order` where id = #{orderId}")
     Order getDetailOfOrder(Integer orderId, Integer userId);
 
     List<LogisticsDTO> getLogistics(@Param("orderId") Integer orderId, @Param("productId") Integer productId);
@@ -45,7 +45,7 @@ public interface OrderMapper {
     @Update("update order_logistics set status = 5, updated_at = now()")
     void cancelOrder(Integer orderId);
 
-    @Select("SELECT order_item.order_id,order_item.product_id FROM product,store,order_item WHERE product.id=order_item.order_id AND store.id=product.store_id AND store.user_id=#{userId}")
+    @Select("SELECT order_item.order_id,order_item.product_id FROM product,store,order_item WHERE product.id=order_item.product_id AND store.id=product.store_id AND store.user_id=#{userId}")
     List<pro_order> getProducts(Integer userId);
 
     //按订单查商品

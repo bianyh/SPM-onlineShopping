@@ -1,6 +1,7 @@
 package com.example.spm.service;
 
 import com.example.spm.pojo.PageResult;
+import com.example.spm.pojo.Product;
 import com.example.spm.pojo.Store;
 import jakarta.validation.constraints.Min;
 
@@ -20,4 +21,6 @@ public interface sellerService {
     Store findById(Integer id);
 
     PageResult<Store> searchStoresByName(String name, @Min(0) int page);
+
+    PageResult<Product> findAllProducts(Integer storeId, Integer status, Integer page, Integer limit);
 }

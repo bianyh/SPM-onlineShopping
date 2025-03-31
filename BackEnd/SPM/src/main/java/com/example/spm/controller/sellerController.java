@@ -76,4 +76,11 @@ public class sellerController {
         productService.updateProduct(product, id);
         return Result.success("成功更新商品信息");
     }
+
+    @GetMapping("/products")
+    public Result getAllProducts(Integer id, Integer status,Integer page,Integer limit){
+        PageResult<Product> pp = sellerService.findAllProducts(id, status, page, limit);
+        return Result.success(pp);
+    }
+
 }

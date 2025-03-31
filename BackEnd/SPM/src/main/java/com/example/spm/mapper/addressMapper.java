@@ -10,7 +10,7 @@ import java.util.Map;
 @Mapper
 public interface addressMapper {
 
-    @Insert("INSERT INTO address(user_id, recipient, phone, province, city, district, address, is_default, created_at) " +
+    @Insert("INSERT INTO address(user_id, recipient, phone, province, city, district, street, is_default, created_at) " +
             "VALUES (#{userId}, #{recipient}, #{phone}, #{province}, #{city}, #{district}, #{street}, #{isDefault}, NOW())")
     void add(
             @Param("userId") Integer userId,
