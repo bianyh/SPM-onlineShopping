@@ -1,5 +1,6 @@
 package com.example.spm.mapper;
 
+import com.example.spm.pojo.Product;
 import com.example.spm.pojo.Store;
 import org.apache.ibatis.annotations.*;
 
@@ -39,4 +40,6 @@ public interface sellerMapper {
     );
 
     int countByNameContaining(String name);
+
+    List<Product> findAllProducts(Integer storeId, Integer status);
 }

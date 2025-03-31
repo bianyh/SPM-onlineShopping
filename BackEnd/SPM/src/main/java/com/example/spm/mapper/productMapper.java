@@ -40,9 +40,11 @@ public interface productMapper {
             "store_id = #{storeId}," +
             "name = #{name}," +
             "description = #{description}, " +
-            "updated_at = now() " +
+            "updated_at = now(), " +
+            "stock = #{stock}, " +
+            "status = #{status} " +
             "where id = #{id}")
-    void updateProduct(String pictures, BigDecimal price, Integer storeId, String name, String description, Integer id);
+    void updateProduct(String pictures, BigDecimal price, Integer storeId, String name, String description, Integer id, Integer stock, Integer status);
 
     @Insert("insert into product(pictures, price, name, store_id, stock, description, created_at, updated_at)" +
             "values (#{pictures}, #{price}, #{name}, #{storeId}, #{stock}, #{description}, now(), now() )")

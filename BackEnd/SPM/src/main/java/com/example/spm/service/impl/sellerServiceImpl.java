@@ -3,9 +3,11 @@ package com.example.spm.service.impl;
 import com.example.spm.mapper.sellerMapper;
 import com.example.spm.mapper.userMapper;
 import com.example.spm.pojo.PageResult;
+import com.example.spm.pojo.Product;
 import com.example.spm.pojo.Store;
 import com.example.spm.service.sellerService;
 import com.example.spm.utils.ThreadLocalUtil;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -88,5 +90,16 @@ public class sellerServiceImpl implements sellerService {
         vo.setPicturePath(store.getPicturePath());
         vo.setStatus(store.getStatus());
         return vo;
+    }
+
+
+      @Override
+    public PageResult<Product> findAllProducts(Integer storeId, Integer status, Integer page, Integer limit) {
+        PageResult<Product> pp = new PageResult<>();
+
+        PageHelper.startPage(page, limit);
+        List<Product> products = mapper.findAllProducts(storeId, status);
+        PageResult<Product> productPageResult = new PageResult<>(products, products.size(), page, limit);
+        return productPageResult;
     }
 }

@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 @RestController
@@ -90,9 +92,9 @@ public class OrderController {
     }
 
     @GetMapping("/checkout")
-    public Result checkout(Integer orderId){
-        BigDecimal totalAmount = orderservice.getDetail(orderId).getTotalAmount();
-        return Result.success("Total:" +  totalAmount);
+    public Result checkout(Integer id){
+        BigDecimal totalAmount = orderservice.getDetail(id).getTotalAmount();
+        return Result.success(totalAmount);
     }
 
     @GetMapping("/seller")
@@ -102,7 +104,23 @@ public class OrderController {
         Integer userId = (Integer) userInfo.get("id");
         Map<Integer, List<Integer>> res = orderservice.getOrder(userId, status);
         return Result.success(res);
+    }
 
+    @GetMapping("/orderdetail")
+    public Result getOrderDetail(Integer orderId) {
+        return Result.success(orderservice.getDetail(orderId));
+    }
+
+    @GetMapping("/getItem")
+    public Result getItem(Integer orderId, Long productId) {
+        List<OrderItem> lists = orderservice.getOrderItems(orderId);
+        List<OrderItem> list = new ArrayList<>();
+        for (OrderItem orderItem : lists) {
+            if (Objects.equals(orderItem.getProductId(), productId)) {
+                list.add(orderItem);
+            }
+        }
+        return Result.success(list);
     }
 }
 
