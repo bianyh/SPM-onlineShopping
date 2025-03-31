@@ -26,19 +26,19 @@ export function productInfo(id) {
 }
 
 
-//注册
-export function productRegister(username, password, email, phoneNumber) {
+// 更新商品信息
+export function productUpdate(name, description, pictures, stock, price, storeId, status = 0, pid = -1,) {
     return myAxios({
-        url: '/api/auth/register',
-        method: 'post',
-        headers: {
-            "Content-Type": 'application/json'
-        },
+        url: `/api/seller/${pid}/update`,
+        method: 'put',
         data: {
-            'username': username,
-            'password': password,
-            'email': email,
-            'phone': phoneNumber
+            name: name,
+            description: description,
+            pictures: pictures,
+            stock: stock,
+            price: price,
+            status: status,
+            storeId: storeId,
         }
     })
 }

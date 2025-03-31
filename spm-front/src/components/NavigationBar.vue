@@ -161,8 +161,8 @@ export default {
                                 </ElLink>
                             </ElRow>
                             <ElRow v-if="isSeller">
-                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/seller/product')">
-                                    My Products
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/seller/order')">
+                                    Manage Orders
                                 </ElLink>
                             </ElRow>
                         </ElCol>

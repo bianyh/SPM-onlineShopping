@@ -61,9 +61,9 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogVisible = false">Close</el-button>
-          <el-button type="primary" @click="handlePay">Pay Now</el-button>
-          <el-button type="success" @click="handleConfirm">Confirm Receipt</el-button>
-          <el-button type="danger" @click="handleCancel">Cancel Order</el-button>
+          <el-button type="primary" @click="handlePay" :plain="selectedOrder.status">{{selectedOrder.status == 0 ? "Pay Now" : "Pended"}}</el-button>
+          <el-button type="success" @click="handleConfirm" :disabled="selectedOrder.status != 1">Confirm Receipt</el-button>
+          <el-button type="danger" @click="handleCancel" :disabled="selectedOrder.status != 1">Cancel Order</el-button>
         </span>
       </template>
     </el-dialog>
@@ -71,9 +71,9 @@
 </template>
 
 <script setup>
-import { orderDetail, orderShow } from '@/api/order';
+import { orderDetail, orderSeller, orderShow } from '@/api/order';
 import { productInfo } from '@/api/product';
-import { ElCard, ElDescriptions, ElDescriptionsItem, ElTag, ElTabs, ElTabPane, ElDialog, ElRow, ElCol, ElImage, ElButton } from 'element-plus';
+import { ElCard, ElDescriptions, ElDescriptionsItem, ElTag, ElTabs, ElTabPane, ElDialog, ElRow, ElCol, ElImage, ElButton, ElMessage } from 'element-plus';
 </script>
 
 <script>
@@ -81,7 +81,7 @@ export default {
   data() {
     return {
       orders: [],
-      orderStatus: { 0: 'Pending payment', 1: 'shipped', 2: 'completed', 3: 'Canceled' },
+      orderStatus: { 0: 'Pending payment', 1: 'shipped', 2: 'completed', 3: 'Canceled', 4: 'Seller' },
       activeStatus: 0,
       dialogVisible: false,
       selectedOrder: null,
@@ -102,7 +102,8 @@ export default {
         0: 'warning',
         1: 'primary',
         2: 'success',
-        3: 'info'
+        3: 'info',
+        4: 'danger'
       };
       return statusMap[status] || 'default';
     },
@@ -124,15 +125,20 @@ export default {
     },
     handlePay() {
       console.log('Pay Now');
-      // 处理支付逻辑
+      this.selectedOrder.status = 1
+      ElMessage({message:'Done..', type:'success'})
     },
     handleConfirm() {
       console.log('Confirm Receipt');
       // 处理确认收货逻辑
+      this.selectedOrder.status = 2
+      ElMessage({message:'Confmired.', type:'success'})
     },
     handleCancel() {
       console.log('Cancel Order');
       // 处理取消订单逻辑
+      this.selectedOrder.status = 3
+      ElMessage({message:'Canceled.', type:'danger'})
     }
   },
   mounted() {

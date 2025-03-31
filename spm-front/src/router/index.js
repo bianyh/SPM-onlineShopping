@@ -12,7 +12,6 @@ import ProductSearchView from '@/views/ProductSearchView.vue'
 import SellerHome from '@/views/SellerHome.vue'  
 import Editgood from '@/views/Editgood.vue'
 import Releasegood from '@/views/Releasegood.vue'
-import Goodsmanage from '@/views/Goodsmanage.vue'
 import Application from '@/views/Application.vue'
 import UserView from '@/views/UserView.vue'
 import ProductView from '@/views/ProductView.vue'
@@ -23,6 +22,7 @@ import AddressManage from '@/components/user/AddressManage.vue'
 import PaymentView from '@/views/PaymentView.vue'
 import StoreView from '@/views/StoreView.vue'
 import StoreCollectionView from '@/views/StoreCollectionView.vue'
+import SellerOrderView from '@/views/SellerOrderView.vue'
 const routes = [
   {
     path: '/',
@@ -147,6 +147,14 @@ const routes = [
     }
   },
   {
+    path: '/seller/order',
+    name: 'sellerorder',
+    component: SellerOrderView,
+    meta: {
+      title: 'Order Manage'
+    }
+  },
+  {
     path: '/application',
     name: 'application',
     component: Application
@@ -178,7 +186,7 @@ const routes = [
   {
     path: "/product/edit", 
     name: "Editgood",
-    component: Editgood,
+    component: Releasegood,
     meta: {
       title: 'Product Edit'
     }

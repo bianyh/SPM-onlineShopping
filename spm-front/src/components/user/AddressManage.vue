@@ -76,7 +76,7 @@ export default {
         // 显示添加地址的抽屉
         showAddDrawer() {
             this.activeAddress = {
-                id: Date.now(),
+                id: -1,
                 recipient: '',
                 phone: '',
                 province: '',

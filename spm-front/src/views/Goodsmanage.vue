@@ -16,12 +16,12 @@
           <!-- 竖向商品列表 -->
           <div class="product-list">
             <div v-for="(item, index) in products" :key="index" class="product-item">
-              <img :src="item.image" alt="Product Image" class="product-image" />
+              <img :src="item.pictures" alt="Product Image" class="product-image" />
               <div class="product-details">
                 <h3 class="product-name">{{ item.name }}</h3>
-                <p class="product-price">¥ {{ item.price }}</p>
+                <p class="product-price">$ {{ item.price }}</p>
               </div>
-              <button v-if="item.status !== 'in_review'" class="status-btn" :class="item.status"
+              <button v-if="item.status !== 0" class="status-btn" :class="item.status"
                 @click="toggleProductStatus(item)">
                 {{ item.status === "in_stock" ? "Out of Stock" : "In Stock" }}
               </button>
@@ -36,6 +36,9 @@
 </template>
 <script>
 export default {
+  emits: [
+    "edit",
+  ],
   props:{
     products: Array,
     filters: Array
@@ -60,7 +63,7 @@ export default {
       item.status = item.status === "in_stock" ? "out_of_stock" : "in_stock";
     },
     edit(id) {
-      this.$router.push(`/Editgood`);
+      this.$emit("edit",id)
     },
   },
 };
