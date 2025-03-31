@@ -10,7 +10,6 @@ import Myorders from '@/views/OrderView.vue'
 import UserMessage from '@/components/user/UserMessage.vue'
 import ProductSearchView from '@/views/ProductSearchView.vue'
 import SellerHome from '@/views/SellerHome.vue'  
-import ShopInfo from '@/views/ShopInfo.vue'
 import Editgood from '@/views/Editgood.vue'
 import Releasegood from '@/views/Releasegood.vue'
 import Goodsmanage from '@/views/Goodsmanage.vue'
@@ -19,6 +18,11 @@ import UserView from '@/views/UserView.vue'
 import ProductView from '@/views/ProductView.vue'
 import MessageBus from '@/utils/MessageBus'
 import CartView from '@/views/CartView.vue'
+import CheckoutView from '@/views/CheckoutView.vue'
+import AddressManage from '@/components/user/AddressManage.vue'
+import PaymentView from '@/views/PaymentView.vue'
+import StoreView from '@/views/StoreView.vue'
+import StoreCollectionView from '@/views/StoreCollectionView.vue'
 const routes = [
   {
     path: '/',
@@ -90,6 +94,14 @@ const routes = [
     }
   },
   {
+    path:'/checkout',
+    name:'checkout',
+    component: CheckoutView,
+    meta: {
+      title: 'Checkout'
+    }
+  },
+  {
     path:'/order',
     name:'order',
     component:Myorders,
@@ -98,11 +110,27 @@ const routes = [
     }
   },
   {
+    path:'/payment',
+    name:'payment',
+    component:PaymentView,
+    meta: {
+      title: 'Payment'
+    }
+  },
+  {
     path:'/user',
     name:'UserView',
     component:UserView,
     meta: {
       title: 'User Center'
+    }
+  },
+  {
+    path:'/address',
+    name:'address',
+    component:AddressManage,
+    meta: {
+      title: 'Address'
     }
   },
   {
@@ -124,24 +152,36 @@ const routes = [
     component: Application
   },
   {
-    path: '/shop-info',
-    name: 'shop-info',
-    component: ShopInfo
+    path: '/store',
+    name: 'store',
+    component: StoreView,
+    meta: {
+      title: 'Seller Center'
+    }
   },
   {
-    path: "/Releasegood",
+    path: '/mystores',
+    name: 'mystores',
+    component: StoreCollectionView,
+    meta: {
+      title: 'My Stores'
+    }
+  },
+  {
+    path: "/product/create",
     name: "Releasegood",
     component: Releasegood,
+    meta: {
+      title: 'New Product'
+    }
   },
   {
-    path: "/Goodsmanage",
-    name: "Goodsmanage",
-    component: Goodsmanage,
-  },
-  {
-    path: "/Editgood", 
+    path: "/product/edit", 
     name: "Editgood",
     component: Editgood,
+    meta: {
+      title: 'Product Edit'
+    }
   }
 ]
 

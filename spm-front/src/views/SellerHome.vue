@@ -37,7 +37,7 @@ const shopName = 'My Shop'
 const shopIntroduction = 'Click to learn more about the shop information.'
 
 const navigateToShopInfo = () => {
-  router.push('/shop-info')
+  router.push('/mystores')
 }
 
 const navigateToRelease = () => {
@@ -45,7 +45,6 @@ const navigateToRelease = () => {
 }
 
 const navigateToManage = () => {
-  router.push('/Goodsmanage')
 }
 </script>
 

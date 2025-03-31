@@ -16,10 +16,20 @@ export function cartAppend(pid, quantity, spec = '') {
 }
 
 //展示用户购物车
-export function cartShow(){
+export function cartShow() {
     return myAxios({
         url: '/api/cart',
         method: 'get',
         params: []
+    })
+}
+
+//移除用户购物车商品
+export function cartRemove(cid) {
+    return myAxios({
+        url: `/api/cart/delete/${cid}`,
+        method: 'delete',
+        data: {
+        }
     })
 }

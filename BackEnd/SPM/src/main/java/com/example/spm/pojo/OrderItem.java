@@ -1,33 +1,16 @@
 package com.example.spm.pojo;
 
+import java.math.BigDecimal;
 
+import lombok.Data;
+
+@Data
 public class OrderItem {
+    private Long orderId;
     private Long productId;
     private int quantity;
     private String spec;
+    private BigDecimal price;
 
     // Getters and Setters
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getSpec() {
-        return spec;
-    }
-
-    public void setSpec(String spec) {
-        this.spec = spec;
-    }
 }

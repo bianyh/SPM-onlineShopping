@@ -2,6 +2,7 @@ package com.example.spm.service;
 
 import com.example.spm.pojo.LogisticsDTO;
 import com.example.spm.pojo.Order;
+import com.example.spm.pojo.OrderItem;
 import com.example.spm.pojo.OrderRequest;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public interface OrderService {
     void confirmOrder(Integer orderId);
 
     Order getDetail(Integer orderId);
+
+    List<OrderItem> getOrderItems(Integer orderId);
 
     List<LogisticsDTO> getLogistics(Integer orderId, Integer productId);
 

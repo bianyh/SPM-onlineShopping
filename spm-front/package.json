@@ -20,6 +20,7 @@
     "swiper": "^11.2.5",
     "vite-plugin-style-import": "^2.0.0",
     "vue": "^3.5.12",
+    "vue-qr": "^4.0.9",
     "vue-router": "^4.4.5",
     "vuex": "^4.0.0"
   },

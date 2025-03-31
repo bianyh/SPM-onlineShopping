@@ -79,8 +79,8 @@ public class OrderController {
 
     @GetMapping("/detail")
     public Result getDetail(Integer orderId){
-        Order order = orderservice.getDetail(orderId);
-        return Result.success(order);
+        List<OrderItem> orderItem = orderservice.getOrderItems(orderId);
+        return Result.success(orderItem);
     }
 
     @GetMapping("/logistics")
