@@ -27,7 +27,8 @@ export default {
             message: 'Click Again to Confirm and Delete ' + this.productItems[index].name
           })
         } else {
-          cartRemove(this.cartItems[index].id).then((result) => {
+          //传的物品id而不是购物车id
+          cartRemove(this.productItems[index].id).then((result) => {
             this.updateCart()
             ElMessage({
               type: 'success',

@@ -18,6 +18,7 @@ export default {
             isLogined: false,
             isSeller: true,
             drawerVisible: false,
+            darkMode: false,
             titleText: "SPM onlineShopping",
         }
     },
@@ -26,7 +27,9 @@ export default {
         ShopDropdown
     },
     methods: {
-        navigateTo(path) {
+        navigateTo(path, params) {
+            window.localStorage.setItem("navigationParams",params)
+            MessageBus.emit("menuChange",params)
             this.$router.push(path)
         },
         handleMenuClick(option) {
@@ -92,6 +95,12 @@ export default {
         MessageBus.on("routerChange", (newtext) => {
             this.titleText = newtext
         })
+        MessageBus.on("colorModeChange", (newcolor) => {
+            if (newcolor == 1)
+                this.darkMode = true
+            else
+                this.darkMode = false
+        })
     },
     beforeDestroy() {
         MessageBus.off()
@@ -102,20 +111,23 @@ export default {
 
 <template>
     <Transition name="pages">
-        <div class="header">
+        <div :class="{ headerdark: darkMode, header: !darkMode}" >
             <div class="mid-container">
                 <img alt="logo" class="aligner" @click="drawerVisible = true" src="/img/icons/icon.svg" />
                 <ElText id="title" class="aligner" @click="drawerVisible = true" style="font-size: x-large;">{{
                     titleText }}</ElText>
                 <ElDrawer v-model="drawerVisible" :show-close=false direction="ttb" :with-header=false :z-index=1
-                    size="30rem">
+                    size="30rem" >
+                    <img class="dark-bg" v-if="darkMode">
                     <img class="drawer-bg" src="/img/drawerbg.svg">
                     <img class="drawer-text" src="/img/icons/spmos.svg">
-                    <ElRow class="row-bg" justify="space-evenly" align="top" @click="drawerVisible = false">
+                    <ElRow  justify="space-evenly" align="top" @click="drawerVisible = false" >
                         <ElCol :sm="7" :xs="24">
-                            <el-divider content-position="left">Explore what you want</el-divider>
+                            <h3>Explore</h3>
+                            <div class="divider"></div>
                             <ElRow>
-                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/')">Home Page</ElLink>
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/')">Home Page
+                                </ElLink>
                             </ElRow>
                             <ElRow>
                                 <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/')">Hot Sale
@@ -128,23 +140,36 @@ export default {
                         </ElCol>
                         <!--ElCol :sm="2" :xs="0"><el-divider direction="vertical" class="hidden-xs-only"/></ElCol-->
                         <ElCol :sm="7" :xs="24">
-                            <el-divider content-position="left">Find what you got</el-divider>
+                            <h3>Yours</h3>
+                            <div class="divider"></div>
                             <ElRow>
-                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/user')">User Center
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/user', '1-1')">User
+                                    Center
                                 </ElLink>
                             </ElRow>
                             <ElRow>
-                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/cart')">My Cart
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/user', '2')">My Cart
                                 </ElLink>
                             </ElRow>
                             <ElRow>
-                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/order')">Orders
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/user', '3')">Orders
                                 </ElLink>
                             </ElRow>
                         </ElCol>
                         <!--ElCol :sm="2" :xs="0"><el-divider direction="vertical" class="hidden-xs-only"/></ElCol-->
                         <ElCol :sm="7" :xs="24">
-                            <el-divider content-position="left">Manage what you built</el-divider>
+                            <h3>Manage</h3>
+                            <div class="divider"></div>
+                            <ElRow v-if="isSeller">
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/seller')">
+                                    Seller Center
+                                </ElLink>
+                            </ElRow>
+                            <ElRow v-if="isSeller">
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/seller/order')">
+                                    Manage Orders
+                                </ElLink>
+                            </ElRow>
                             <ElRow>
                                 <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/notifiction')">
                                     Notifictions
@@ -153,16 +178,6 @@ export default {
                             <ElRow>
                                 <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/verifiction')">
                                     Report
-                                </ElLink>
-                            </ElRow>
-                            <ElRow v-if="isSeller">
-                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/seller')">
-                                    My Stores
-                                </ElLink>
-                            </ElRow>
-                            <ElRow v-if="isSeller">
-                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/seller/order')">
-                                    Manage Orders
                                 </ElLink>
                             </ElRow>
                         </ElCol>
@@ -200,7 +215,9 @@ export default {
 </template>
 
 <style scoped>
+
 .header {
+    background-color: rgb(249, 249, 249);
     transition: 1.0s;
     top: 0px;
     left: 0%;
@@ -210,8 +227,35 @@ export default {
     border: 0;
     box-shadow: 0px 5px 5px #888888;
     font: 1.5em sans-serif;
-    background-color: rgb(249, 249, 249);
     z-index: 100;
+}
+
+.headerdark {
+    background-color: #515151;
+    transition: 1.0s;
+    top: 0px;
+    left: 0%;
+    position: fixed;
+    width: 100%;
+    height: 3rem;
+    border: 0;
+    box-shadow: 0px 5px 5px #888888;
+    font: 1.5em sans-serif;
+    z-index: 100;
+}
+
+.headerdark * {
+    color: rgb(229, 201, 240);
+}
+
+.dark-bg {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    transform: translate(-1em, -1em);
+    background: #333;
 }
 
 .drawer-bg {
@@ -276,7 +320,7 @@ button {
 }
 
 button:hover {
-    background-color: #cfcfcf;
+    background-color: #888;
 }
 
 

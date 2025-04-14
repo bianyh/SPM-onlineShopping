@@ -25,11 +25,10 @@ export function cartShow() {
 }
 
 //移除用户购物车商品
-export function cartRemove(cid) {
+export function cartRemove(pid) {
+    console.log(pid)
     return myAxios({
-        url: `/api/cart/delete/${cid}`,
+        url: `/api/cart/delete/${pid}`,
         method: 'delete',
-        data: {
-        }
     })
 }

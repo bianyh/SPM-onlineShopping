@@ -76,7 +76,7 @@ export default {
         name: 'Store 1',
         description: 'This is the first store.',
         address: '123 Main St',
-        picturePath: 'https://via.placeholder.com/300',
+        picturePath: '',
         createAt: new Date(),
         status: 'Open'
       },

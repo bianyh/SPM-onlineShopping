@@ -103,11 +103,7 @@ const routes = [
   },
   {
     path:'/order',
-    name:'order',
-    component:Myorders,
-    meta: {
-      title: 'Orders'
-    }
+    redirect:'/user'
   },
   {
     path:'/payment',
@@ -143,7 +139,8 @@ const routes = [
     name: 'seller',
     component: SellerHome,
     meta: {
-      title: 'Seller Center'
+      title: 'Seller Center',
+      color: 1,
     }
   },
   {
@@ -151,7 +148,8 @@ const routes = [
     name: 'sellerorder',
     component: SellerOrderView,
     meta: {
-      title: 'Order Manage'
+      title: 'Order Manage',
+      color: 1,
     }
   },
   {
@@ -164,7 +162,8 @@ const routes = [
     name: 'store',
     component: StoreView,
     meta: {
-      title: 'Seller Center'
+      title: 'Seller Center',
+      color: 1,
     }
   },
   {
@@ -172,7 +171,8 @@ const routes = [
     name: 'mystores',
     component: StoreCollectionView,
     meta: {
-      title: 'My Stores'
+      title: 'My Stores',
+      color: 1,
     }
   },
   {
@@ -180,7 +180,8 @@ const routes = [
     name: "Releasegood",
     component: Releasegood,
     meta: {
-      title: 'New Product'
+      title: 'New Product',
+      color: 1,
     }
   },
   {
@@ -188,7 +189,8 @@ const routes = [
     name: "Editgood",
     component: Releasegood,
     meta: {
-      title: 'Product Edit'
+      title: 'Product Edit',
+      color: 1,
     }
   }
 ]
@@ -201,6 +203,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title || 'SPMoS';
   MessageBus.emit("routerChange", to.meta.title || 'SPMoS')
+  MessageBus.emit("colorModeChange", to.meta.color || 0)
   next();
 });
 

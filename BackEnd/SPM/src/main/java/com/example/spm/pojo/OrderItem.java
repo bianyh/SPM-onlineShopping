@@ -11,6 +11,7 @@ public class OrderItem {
     private int quantity;
     private String spec;
     private BigDecimal price;
+    private int status;
 
     // Getters and Setters
 }

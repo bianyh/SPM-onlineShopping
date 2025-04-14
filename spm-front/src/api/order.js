@@ -68,11 +68,30 @@ export function orderSeller(status = 0) {
 //订单状态更新
 export function orderUpdate(orderId,productId) {
     return myAxios({
-        url: '/api/order/seller',
+        url: '/api/order/update',
         method: 'get',
         params: {
             orderId: orderId,
             productId: productId
         }
+    })
+}
+//订单发货
+export function orderSend(orderId,trackingNumber) {
+    return myAxios({
+        url: '/api/order/send',
+        method: 'put',
+        params: {
+            orderId: orderId,
+            trackingNumber: trackingNumber
+        }
+    })
+}
+
+//全局大订单状态更新
+export function orderStateUpdate(orderId,status) {
+    return myAxios({
+        url: `/api/order/status/${orderId}/${status}`,
+        method: 'put',
     })
 }

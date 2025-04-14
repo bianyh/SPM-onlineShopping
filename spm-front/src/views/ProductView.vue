@@ -58,7 +58,8 @@ export default {
                     gotoCart = true
                 })
                 if (gotoCart) {
-                    this.$router.push('/cart')
+                    window.localStorage.setItem("navigationParams","2")
+                    this.$router.push('/user')
                 }
                 this.drawerLoading = false
             }, (err) => {

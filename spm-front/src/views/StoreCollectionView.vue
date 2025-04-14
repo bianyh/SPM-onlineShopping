@@ -1,5 +1,5 @@
 <template>
-    <div class="store-container" style="margin-top: 3.5rem;">
+    <div class="store-container">
         <el-tabs v-model="activeStatus" class="demo-tabs" type="border-card">
             <el-tab-pane label="All Stores" name=-1></el-tab-pane>
             <el-tab-pane v-for="(status, index) in storeStatus" :key="status" :label="status"
@@ -13,8 +13,8 @@
                     </el-col>
                     <el-col :span="16">
                         <div>
-                            <h2>{{ store.name }}</h2>
-                            <h3>{{ store.description }}</h3>
+                            <h1>{{ store.name }}</h1>
+                            <h2>{{ store.description }}</h2>
                             <p>Address: {{ store.address }}</p>
                             <p>Created At: {{ store.createAt }}</p>
                             <el-tag :type="getStatusType(store.status)">{{ storeStatus[store.status] }}</el-tag>
@@ -33,14 +33,6 @@ export default {
     data() {
         return {
             stores: [
-                {
-                    id: 'ST001',
-                    name: 'Store 1',
-                    description: 'This is the first store.',
-                    address: '123 Main St',
-                    picturePath: 'https://via.placeholder.com/300',
-                    status: 'Open'
-                },
             ],
             storeStatus: { 0: 'Open', 1: 'Closed', },
             activeStatus: -1

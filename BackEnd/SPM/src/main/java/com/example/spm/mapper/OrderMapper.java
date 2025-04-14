@@ -17,9 +17,9 @@ public interface OrderMapper {
             "VALUES (#{userId}, #{addressId}, #{totalAmount}, #{paymentMethod}, #{status}, #{createdAt}, #{updatedAt})")
     void submitOrder(Order order);
 
-    @Insert("INSERT INTO order_item (order_id, product_id, quantity, price, spec) " +
-            "VALUES (#{orderId}, #{productId}, #{quantity}, #{multiply}, #{spec})")
-    void submitOrderItem(Integer orderId, Long productId, int quantity, BigDecimal multiply, String spec);
+    @Insert("INSERT INTO order_item (order_id, product_id, quantity, price, spec, status) " +
+            "VALUES (#{orderId}, #{productId}, #{quantity}, #{multiply}, #{spec}, #{status})")
+    void submitOrderItem(Integer orderId, Long productId, int quantity, BigDecimal multiply, String spec, int status);
 
     @Select("select * from `order` where user_id = #{userId} ")
     List<Order> findByUserId(Integer userId);
@@ -55,4 +55,8 @@ public interface OrderMapper {
     //按商品查订单
     @Select("SELECT * FROM order_item WHERE product_id=#{productId}")
     List<OrderItem> findOrdersByProduct(Integer productId);
+
+    //仅更新状态
+    @Update("update `order` set `status` = #{status}, `updated_at` = now() where `id`=#{orderId}")
+    void updateOrderStatus(Integer orderId, Integer status);
 }

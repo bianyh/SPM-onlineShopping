@@ -5,6 +5,7 @@ import com.example.spm.pojo.Order;
 import com.example.spm.service.OrderService;
 import com.example.spm.pojo.OrderItem;
 import com.example.spm.pojo.OrderRequest;
+import com.example.spm.pojo.ProductComment;
 import com.example.spm.pojo.Result;
 import com.example.spm.utils.JwtUtil;
 import com.example.spm.utils.ThreadLocalUtil;
@@ -121,6 +122,12 @@ public class OrderController {
             }
         }
         return Result.success(list);
+    }
+
+    @PutMapping("/status/{id}/{status}")
+    public Result getProductComments(@PathVariable Integer id, @PathVariable Integer status) {
+        orderservice.updateOrderStatus(id, status);
+        return Result.success();
     }
 }
 

@@ -13,6 +13,8 @@ public interface OrderService {
 
    void updateOrderLogistics(Integer orderId, Integer productId);
 
+   void updateOrderStatus(Integer orderId, Integer status);
+
     void submitOrder(Map<String, Object> userInfo, OrderRequest orderRequest);
 
     List<Order> findByUserId(Integer userId, String status);
@@ -30,4 +32,6 @@ public interface OrderService {
     Map<Integer, List<Integer>> getOrder(Integer userId, Integer status);
 
     void cancelOrder(Integer orderId);
+
+
 }

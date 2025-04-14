@@ -103,6 +103,7 @@ public class productController {
             return Result.error("从收藏夹中移除商品失败");
         }
     }
+    
     @GetMapping("/{id}/reviews")
     public Result getProductComments(@PathVariable Integer id) {
         List<ProductComment> comments = productservice.getCommentsByProductId(id);
