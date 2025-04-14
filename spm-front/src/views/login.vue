@@ -60,6 +60,7 @@ export default {
         if (result.code == 0) {
           result.wait = true // 等待执行结果
           result.callbacks = [this.goToMainPage]
+          console.log(result.data)
           window.localStorage.setItem("token", result.data) //储存token
           var claims = decodeJwt(result.data)[1].claims
           window.localStorage.setItem("username", claims.username)

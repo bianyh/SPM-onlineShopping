@@ -3,16 +3,10 @@
   <div class="goods-publish-container">
     <!-- 左侧切换选项 -->
     <div class="sidebar">
-      <button
-        @click="activeTab = 'goods'"
-        :class="{ active: activeTab === 'goods' }"
-      >
+      <button @click="activeTab = 'goods'" :class="{ active: activeTab === 'goods' }">
         Goods Information
       </button>
-      <button
-        @click="activeTab = 'image'"
-        :class="{ active: activeTab === 'image' }"
-      >
+      <button @click="activeTab = 'image'" :class="{ active: activeTab === 'image' }">
         Image Information
       </button>
     </div>
@@ -25,55 +19,52 @@
         <div class="form-grid">
           <div class="form-item">
             <label class="form-label">Goods Name</label>
-            <input
-              v-model="formData.name"
-              type="text"
-              class="form-input"
-              placeholder="Please enter the product name"
-            />
+            <input v-model="formData.name" type="text" class="form-input" placeholder="Please enter the product name" />
           </div>
           <div class="form-item">
             <label class="form-label">Goods Price</label>
             <div class="price-input-group">
               <span class="currency-symbol">¥</span>
-              <input
-                v-model="formData.price"
-                type="number"
-                class="input"
-                placeholder="0.00"
-              />
+              <input v-model="formData.price" type="number" class="input" placeholder="0.00" />
+            </div>
+          </div>
+          <div class="form-item">
+            <label class="form-label">Stock Amount</label>
+            <div class="price-input-group">
+              <input v-model="formData.stock" type="number" class="input" placeholder="0" />
+            </div>
+          </div>
+          <div class="form-item">
+            <label class="form-label">Description</label>
+            <ElInput type="textarea" v-model="formData.description" placeholder="Detail of your Product" />
+          </div>
+          <div class="form-item">
+            <label class="form-label">Status</label>
+            <div class="mb-2 ml-4">
+              <el-radio-group v-model="formData.status">
+                <el-radio value=1 size="large">On Sale</el-radio>
+                <el-radio value=2 size="large">Stop Sale</el-radio>
+              </el-radio-group>
             </div>
           </div>
         </div>
 
-        <h2 class="section-title">Goods Category</h2>
-        <select v-model="selectedCategory" class="form-input">
+        <!--h2 class="section-title">Goods Category</h2>
+        <select v-model="selectedCategory" class="form-input" disabled>
           <option disabled value="">Please select product category</option>
-          <option
-            v-for="(category, index) in categories"
-            :key="index"
-            :value="category.value"
-          >
+          <option v-for="(category, index) in categories" :key="index" :value="category.value">
             {{ category.label }}
           </option>
-        </select>
+        </select-->
       </div>
 
       <!-- 图片上传模块 -->
       <div v-if="activeTab === 'image'" class="form-section">
         <h2 class="section-title">Goods Main Image</h2>
         <div class="image-uploader">
-          <input
-            type="file"
-            accept="image/*"
-            @change="handleImageUpload"
-            hidden
-            ref="fileInput"
-          />
+          <input type="file" accept="image/*" @change="handleImageUpload" hidden ref="fileInput" />
           <div class="upload-area" @click="$refs.fileInput.click()">
-            <span v-if="!previewImage" class="upload-text"
-              >Click to upload the main image</span
-            >
+            <span v-if="!previewImage" class="upload-text">Click to upload the main image</span>
             <template v-else>
               <img :src="previewImage" class="preview-image" alt="商品预览图" />
               <button class="remove-btn" @click.stop="removeMainImage">
@@ -82,11 +73,15 @@
             </template>
           </div>
         </div>
-        
-        <!-- 细节信息部分 -->
+        <div class="form-item">
+          <label class="form-label">Image URL</label>
+          <input v-model="formData.pictures" type="text" class="form-input" placeholder="product picture url" />
+        </div>
+
+        <!-- 细节信息部分 >
         <h2 class="section-title" style="margin-top: 40px">Goods Detail Image</h2>
         <div class="detail-images">
-          <!-- 预览已上传的细节图片，并添加删除按钮 -->
+          < 预览已上传的细节图片，并添加删除按钮 >
           <div
             class="detail-image"
             v-for="(img, index) in detailImages"
@@ -97,7 +92,7 @@
               ×
             </button>
           </div>
-          <!-- 上传框始终保留一个用于继续上传 -->
+          < 上传框始终保留一个用于继续上传 >
           <div class="image-uploader detail-uploader">
             <input
               type="file"
@@ -111,7 +106,7 @@
               <span class="upload-text">Click to upload the detail image</span>
             </div>
           </div>
-        </div>
+        </div-->
       </div>
 
       <!-- 提交按钮 -->
@@ -122,80 +117,114 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { productInfo, productUpdate } from '@/api/product';
+import { ElInput, ElMessage } from 'element-plus';
 
-const activeTab = ref("goods");
-const formData = ref({
-  name: "",
-  price: null,
-});
-
-const categories = ref([
-  { label: "Electronic Product", value: "electronics" },
-  { label: "Home Life", value: "home" },
-  { label: "Clothing, Shoes & Bags", value: "clothing" },
-  { label: "Beauty & Personal Care", value: "beauty" },
-]);
-
-const selectedCategory = ref("");
-const previewImage = ref(null);
-const fileInput = ref(null);
-const detailImages = ref([]); // 用于存储细节图片
-const detailFileInput = ref(null);
-
-const handleImageUpload = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      previewImage.value = e.target.result;
+</script>
+<script>
+export default {
+  data() {
+    return {
+      activeTab: "goods",
+      formData: {
+        name: '',
+        description: '',
+        pictures: '',
+        stock: 0,
+        price: 0.00,
+        status: 0,
+        id: -1
+      },
+      categories: [
+        { label: "Electronic Product", value: "electronics" },
+        { label: "Home Life", value: "home" },
+        { label: "Clothing, Shoes & Bags", value: "clothing" },
+        { label: "Beauty & Personal Care", value: "beauty" },
+      ],
+      selectedCategory: "",
+      previewImage: null,
+      fileInput: null,
+      detailImages: [], // 用于存储细节图片
+      detailFileInput: null,
     };
-    reader.readAsDataURL(file);
-  }
-};
-
-const handleSubmit = () => {
-  const payload = {
-    ...formData.value,
-    category: selectedCategory.value,
-    image: previewImage.value,
-  };
-  console.log("提交数据:", payload);
-  // 这里添加实际提交逻辑
-};
-
-const handleDetailImageUpload = (event) => {
-  const files = event.target.files;
-  if (files.length) {
-    // 逐个文件读取并存储到 detailImages 数组中
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        detailImages.value.push(e.target.result);
+  },
+  methods: {
+    handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.previewImage = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+    handleSubmit() {
+      const payload = {
+        ...this.formData,
+        category: 1,
+        //category: this.selectedCategory,
+        //image: this.previewImage,
       };
-      reader.readAsDataURL(file);
+      console.log(payload)
+      productUpdate(
+        payload.name,
+        payload.description,
+        payload.pictures,
+        payload.stock,
+        payload.price,
+        payload.storeId,
+        payload.status,
+        payload.id,
+      ).then((res) => {
+        ElMessage({ message: res })
+        this.$router.back()
+      })
+      // 这里添加实际提交逻辑
+    },
+    handleDetailImageUpload(event) {
+      const files = event.target.files;
+      if (files.length) {
+        // 逐个文件读取并存储到 detailImages 数组中
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            this.detailImages.push(e.target.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+    },
+    removeDetailImage(index) {
+      this.detailImages.splice(index, 1);
+    },
+    removeMainImage() {
+      this.previewImage = null;
+      // 清空文件输入框的值
+      if (this.fileInput) {
+        this.fileInput.value = "";
+      }
+    },
+  },
+  mounted() {
+    let data = this.$store.state.sharedData
+    if (data?.s){ 
+      this.store = data.s
+      this.formData.storeId = this.store.id
+    }
+    if (data?.pid) {
+      productInfo(data.pid).then((res) => {
+        this.formData = res.data
+        console.log(res.data)
+      })
     }
   }
-};
-
-const removeDetailImage = (index) => {
-  detailImages.value.splice(index, 1);
-};
-
-const removeMainImage = () => {
-  previewImage.value = null;
-  // 清空文件输入框的值
-  if (fileInput.value) {
-    fileInput.value.value = "";
-  }
-};
+}
 </script>
 
 
 <style scoped>
-
-
 /* 主容器左右布局 */
 .goods-publish-container {
   background: white;
@@ -203,20 +232,22 @@ const removeMainImage = () => {
   justify-content: flex-start;
   align-items: center;
   height: 100vh;
-  
-  margin: 0; /* 移除居中，使其靠左 */
-  padding: 40px 20px ;
+
+  margin: 0;
+  /* 移除居中，使其靠左 */
+  padding: 40px 20px;
   gap: 100px;
 }
 
 .sidebar {
-  
+
   width: 200px;
   display: flex;
   flex-direction: column;
   margin-left: 100px;
   gap: 12px;
 }
+
 .sidebar button {
   padding: 12px 16px;
   border: none;
@@ -260,17 +291,15 @@ const removeMainImage = () => {
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 0px;
 }
 
-.form-item {
-  margin-bottom: 25px;
-}
+.form-item {}
 
 .form-label {
   display: block;
-  margin-bottom: 8px;
+  margin: 8px auto;
   font-size: 14px;
   color: #666;
 }
@@ -285,7 +314,7 @@ const removeMainImage = () => {
 }
 
 .form-input:focus {
-  border-color:  #f9b9b9;
+  border-color: #f9b9b9;
   outline: none;
 }
 
@@ -331,7 +360,7 @@ const removeMainImage = () => {
 }
 
 .upload-area:hover {
-  border-color:  #f9b9b9;
+  border-color: #f9b9b9;
 }
 
 .upload-text {
@@ -372,7 +401,8 @@ const removeMainImage = () => {
   width: 200px;
   margin: 10px auto 0;
   padding: 12px;
-  background: linear-gradient(90deg, #f9b9b9, #d0f6fb);;
+  background: linear-gradient(90deg, #f9b9b9, #d0f6fb);
+  ;
   color: white;
   border: none;
   border-radius: 25px;
@@ -396,7 +426,8 @@ const removeMainImage = () => {
 .detail-image {
   width: 300px;
   height: 180px;
-  position: relative; /* 确保删除按钮正确定位 */
+  position: relative;
+  /* 确保删除按钮正确定位 */
 }
 
 .remove-btn {

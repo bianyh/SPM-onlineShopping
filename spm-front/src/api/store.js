@@ -47,7 +47,7 @@ export function storeUpdate(name,description,backpicture,id,status,address) {
     })
 }
 //搜索商品
-export function storeProducts(sid, page = 1, limit = 10, status = '%') {
+export function storeProducts(sid, page = 1, limit = 10, status = '') {
     return myAxios({
         url: '/api/seller/products',
         method: 'get',

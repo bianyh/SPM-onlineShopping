@@ -75,7 +75,7 @@
 
       <!-- 支付按钮 -->
       <button class="pay-btn" @click="handlePayment" :disabled="isProcessing">
-        {{ isProcessing ? 'Paying...' : `Confirm Payment ¥${totalPrice.toFixed(2)}` }}
+        {{ isProcessing ? 'Paying...' : `Confirm Payment $${totalPrice.toFixed(2)}` }}
       </button>
     </div>
   </div>
@@ -146,7 +146,8 @@ export default {
       orderSubmit(orderData).then((result) => {
         ElMessage({message:result})
         this.isProcessing = false;
-        this.$router.push('/order')
+        window.localStorage.setItem('navigationParams',"3")
+        this.$router.push('/user')
       })
     }
   }

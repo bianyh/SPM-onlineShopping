@@ -25,8 +25,8 @@
                 <span v-if="index < allKeywords.length - 1"> </span>
             </span>
         </div>
-        <!-- 轮播图区域 :images="swiperImages" >
-        <Carousel /-->
+        <!-- 轮播图区域 :images="swiperImages" -->
+        <Carousel />
         <!-- 商品展示区域 -->
         <ProductList />
         <ProductList />

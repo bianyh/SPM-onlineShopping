@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
 
         for (OrderItem i : items) {
             Product pro = productmapper.getProductById(Math.toIntExact(i.getProductId()));
-            orderMapper.submitOrderItem(order.getId(), i.getProductId(), i.getQuantity(), pro.getPrice().multiply(BigDecimal.valueOf(i.getQuantity())), i.getSpec());
+            orderMapper.submitOrderItem(order.getId(), i.getProductId(), i.getQuantity(), pro.getPrice().multiply(BigDecimal.valueOf(i.getQuantity())), i.getSpec(), i.getStatus());
         }
     }
 
@@ -127,5 +127,8 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.cancelOrder(orderId);
     }
 
-
+    @Override
+    public void updateOrderStatus(Integer orderId, Integer status) {
+        orderMapper.updateOrderStatus(orderId,status);
+    }
 }

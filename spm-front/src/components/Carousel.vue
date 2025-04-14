@@ -26,13 +26,6 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-// const props=defineProps({
-//     images:{
-//         type:Array,
-//         default:()=>[]
-//     }
-// });
-// const modules=ref([Pagination]);
 export default {
   name: 'HelloWorld',
   data(){
@@ -51,6 +44,7 @@ export default {
 .carousel {
     height: 420px;
     margin:0 auto;
+    max-width: 100%;
 }
 .swiper-slide {
     display: flex;

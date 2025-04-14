@@ -60,6 +60,15 @@ export function userAddressShow() {
     }) 
     return result
 }
+//获取地址详细信息
+export function userAddressDetail(aid) {
+    var result = myAxios({
+        url: `/api/address/${aid}`,
+        method: 'get',
+        params: []
+    }) 
+    return result
+}
 
 //添加用户地址
 export function userAddressAppend(recipient,phone,province,city,district,street,isDefault) {

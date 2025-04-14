@@ -24,8 +24,8 @@
       </div>
     </el-card>
 
-    <Goodsmanage :products="products" />
-    <ElPagination :current-page="page" :total="total" :default-page-size="10">
+    <Goodsmanage :products="products" @edit="(pid) => gotoEditProduct(pid)"/>
+    <ElPagination :current-page="page" :total="total" :default-page-size="10" layout="prev, pager, next">
     </ElPagination>
 
     <!-- 弹出编辑对话框 -->
@@ -76,7 +76,7 @@ export default {
         name: 'Store 1',
         description: 'This is the first store.',
         address: '123 Main St',
-        picturePath: 'https://via.placeholder.com/300',
+        picturePath: '',
         createAt: new Date(),
         status: 'Open'
       },
@@ -112,7 +112,7 @@ export default {
         this.store.status,
         this.store.address,
       ).then((res) => {
-        ElMessage({message:res})
+        ElMessage({ message: res })
       })
       this.dialogVisible = false;
     },
@@ -126,17 +126,24 @@ export default {
       // 实现删除逻辑
     },
     gotoNewProduct() {
+      this.$store.commit('setSharedData', { s: this.store, pid: null });
       this.$router.push('/product/create')
+    },
+    gotoEditProduct(pid) {
+      console.log(pid)
+      this.$store.commit('setSharedData', { s: this.store, pid: pid });
+      this.$router.push('/product/edit')
     }
   },
   mounted() {
     if (this.$store.state.sharedData?.sid) {
       storeInfo(this.$store.state.sharedData.sid).then((res) => {
         this.store = res.data
-      })
-      storeProducts(this.store.id, this.page, this.limit).then((res) => {
-        this.products = res.data.products
-        this.total = res.data.total
+        storeProducts(this.store.id, this.page, this.limit).then((res) => {
+          this.products = res.data.data
+          this.total = res.data.total
+          console.log(res.data)
+        })
       })
     } else {
       console.error('解析商品数据失败');
