@@ -100,7 +100,7 @@ export default {
                 this.quantitys[pid] = {}
                 for (const oid of orders) {
                     await orderItem(oid, pid).then((ores) => {
-                        //console.log(ores.data[0])
+                        console.log(ores)
                         this.quantitys[pid][oid] = ores.data[0].quantity
                     })
                 }
