@@ -84,6 +84,10 @@ export default {
             } else {
                 this.drawerItemDirection = 'vertical'; // 小于 768px 时纵向显示
             }
+        },
+        handleClickStore(){
+            this.$store.commit('setSharedData', { sid: this.store.id });
+            this.$router.push("/store")
         }
     },
     mounted() {
@@ -146,7 +150,7 @@ export default {
                     {{ product?.description }}
                 </ElText>
                 <ElDivider>From Store</ElDivider>
-                <ElCard>
+                <ElCard @click="handleClickStore" style="cursor: pointer;">
                     <ElContainer style="justify-items: center;">
                         <ElAside width="4rem" style="margin-right: 1rem;">
                             <ElAvatar size="large" :src="store?.picturePath" alt=""><img src="/img/icons/doubt.png" />

@@ -35,7 +35,7 @@
           </el-button>
           <el-button type="success" @click="handleConfirm(order)" :disabled="order.status != 2">Confirm
             Receipt</el-button>
-          <el-button type="danger" @click="handleCancel(order)" :disabled="order.status != 3 && order.status != 4">Cancel Order</el-button>
+          <el-button type="danger" @click="handleCancel(order)" :disabled="order.status == 3 || order.status == 4">Cancel Order</el-button>
         </span>
       </ElCard>
     </el-tabs>
@@ -143,14 +143,14 @@ export default {
     handleConfirm(order) {
       console.log('Confirm Receipt');
       // 处理确认收货逻辑
-      order.status = 2
+      order.status = 3
       orderStateUpdate(order.id, order.status)
       ElMessage({ message: 'Confmired.', type: 'success' })
     },
     handleCancel(order) {
       console.log('Cancel Order');
       // 处理取消订单逻辑
-      order.status = 3
+      order.status = 4
       orderStateUpdate(order.id, order.status)
       ElMessage({ message: 'Canceled.', type: 'danger' })
     },

@@ -15,7 +15,7 @@ public interface addressService {
     List<Address> findByUserId(Integer id);
 
 //    通过地址id更新
-    Address updateById(Integer id);
+    Address updateDefaultById(Integer id, Integer uid);
 
     Address findById(Integer id);
 

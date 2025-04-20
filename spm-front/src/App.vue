@@ -44,7 +44,9 @@ export default {
 <template>  
   <div class="bgcolor"></div>
   <NavigationBar></NavigationBar>
+  <KeepAlive>
   <RouterView></RouterView>
+</KeepAlive>
   <MsgBox ref="msgbox" class="top-element" />
 </template>
 

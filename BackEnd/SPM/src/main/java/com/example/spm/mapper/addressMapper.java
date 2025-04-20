@@ -34,6 +34,11 @@ public interface addressMapper {
     void updateDefaultById(Integer id);
 
     /*
+    * 修改用户所有地址的is_default的值为 0 */
+    @Update("update address set is_default = 0 where user_id = #{uid}")
+    void updateUndefaultAllByUserId(Integer uid);
+
+    /*
     * 更新相对应的地址id的信息，如果数据为空不修改*/
     void updateById( @Param("id") Integer id,
                      @Param("recipient") String recipient,

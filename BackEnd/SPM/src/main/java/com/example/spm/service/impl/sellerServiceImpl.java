@@ -43,7 +43,7 @@ public class sellerServiceImpl implements sellerService {
 
     @Override
     public void updateStore(Store store) {
-        mapper.updateStore(store.getName(),store.getDescription(),store.getPicturePath(),store.getStatus(),store.getId());
+        mapper.updateStore(store.getName(),store.getDescription(),store.getPicturePath(),store.getAddress(), store.getStatus(),store.getId());
     }
 
     @Override

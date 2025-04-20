@@ -43,8 +43,8 @@ public class ImageController {
     public Result uploadImage(
             @RequestParam("file") MultipartFile file,
             @RequestParam("usage") String usage,
-            @RequestParam("index") int index,
-            @RequestParam("for") String forId,
+            @RequestParam("imgId") int index,
+            @RequestParam("itemId") String itemId,
             @RequestHeader("Authorization") String authHeader) {
 
         Map<String, Object> response = new HashMap<>();
@@ -59,7 +59,7 @@ public class ImageController {
         if (!usage.matches("^[a-zA-Z0-9_-]+$")) {
             return Result.error("Invalid usage parameter");
         }
-        if (!forId.matches("^\\d+$")) {
+        if (!itemId.matches("^\\d+$")) {
             return Result.error("Invalid for parameter, must be numeric");
         }
 
@@ -74,7 +74,7 @@ public class ImageController {
         String newFileName = "img" + index + extension;
 
         // 构建存储路径
-        Path targetDir = Paths.get(uploadDir, usage, forId).toAbsolutePath().normalize();
+        Path targetDir = Paths.get(uploadDir, usage, itemId).toAbsolutePath().normalize();
         try {
             Files.createDirectories(targetDir);
         } catch (IOException e) {
@@ -90,24 +90,26 @@ public class ImageController {
         }
 
         // 构造响应
-        String relativePath = Paths.get(usage, forId, newFileName).toString().replace("\\", "/");
+        String relativePath = Paths.get(usage, itemId, newFileName).toString().replace("\\", "/");
         Map<String, Object> data = new HashMap<>();
         data.put("filePath", relativePath);
 
-        response.put("code", 0);
-        response.put("message", "File uploaded successfully");
-        response.put("data", data);
-
-        return Result.success(response);
+        return Result.success(data);
     }
 
 // 根据路径返回图片的接口
-    @GetMapping("/get")
+    @GetMapping("/get/{usage}/{item}/{filename}")
     public ResponseEntity<Resource> getImage(
-            @RequestParam("path") String path) {
+        @PathVariable String usage,
+        @PathVariable String item,
+        @PathVariable String filename
+    ) {
+
+        var path = usage + '/' + item + '/' + filename;
+        System.out.println(path);
 
         // 验证路径是否为空
-        if (StringUtils.isEmpty(path)) {
+        if (! StringUtils.hasText(path)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 

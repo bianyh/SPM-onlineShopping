@@ -28,7 +28,8 @@ public class addressServiceImpl implements addressService {
     }
 
     @Override
-    public Address updateById(Integer id) {
+    public Address updateDefaultById(Integer id, Integer uid) {
+        addressMapper.updateUndefaultAllByUserId(uid);
         addressMapper.updateDefaultById(id);
         return addressMapper.findById(id);
     }
