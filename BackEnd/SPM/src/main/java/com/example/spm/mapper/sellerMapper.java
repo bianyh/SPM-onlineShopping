@@ -20,9 +20,10 @@ public interface sellerMapper {
             "name = #{name}, " +
             "`description` = #{description}, " +
             "picture_path = #{picturePath}, " +
-            "status = #{status} " +
+            "status = #{status}, " +
+            "address = #{address} " +
             "where id = #{id}")
-    void updateStore(String name, String description, String picturePath, int status, int id);
+    void updateStore(String name, String description, String picturePath, String address, int status, int id);
 
     @Delete("delete from store where id = #{id}")
     void deleteStore(Integer id);

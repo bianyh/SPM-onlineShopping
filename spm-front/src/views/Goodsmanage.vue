@@ -18,8 +18,10 @@
             <div v-for="(item, index) in products" :key="index" class="product-item">
               <img :src="item.pictures" alt="Product Image" class="product-image" />
               <div class="product-details">
-                <h3 class="product-name">{{ item.name }}</h3>
-                <p class="product-price">$ {{ item.price }}</p>
+                <span class="product-name">{{ item.name }}</span>
+                <span class="product-price">$ {{ item.price }}</span>
+                <el-alert title="This product is currently under review." type="info" :closable="false" 
+                v-if="item.status == 0" />
               </div>
               <button v-if="item.status !== 0" class="status-btn" :class="item.status"
                 @click="toggleProductStatus(item)">
@@ -70,14 +72,13 @@ export default {
 </script>
 
 <script setup>
+import { ElText } from 'element-plus';
+
 
 </script>
 
 <style scoped>
 /* 状态筛选栏 */
-.body {
-  background: white;
-}
 
 
 
@@ -206,7 +207,7 @@ export default {
   /* 控制垂直方向顶部对齐 */
   gap: 4px;
   /* 控制名称和价格间距（可选） */
-  margin-top: -30px;
+  margin-top: -0px;
   /* 整体上移补偿（根据实际情况调整） */
 }
 

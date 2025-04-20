@@ -139,7 +139,7 @@ export default {
 
       const orderData = {
         "addressId": this.address,
-        "paymentMethod": "a",
+        "paymentMethod": this.selectedMethod,
         "items": orderItems
       };
 

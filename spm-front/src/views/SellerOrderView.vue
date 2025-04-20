@@ -21,8 +21,8 @@
                     <div class="card-container" @click="dialogVisible = true; form.orderId = oid">
                         <el-row :gutter="20" v-if="oid in orders">
                             <el-col :span="18">
-                                <el-descriptions :column="3" border>
-                                    <el-descriptions-item label="Order ID">
+                                <el-descriptions :column="3" border width="150px">
+                                    <el-descriptions-item label="Order ID" >
                                         {{ oid }}
                                     </el-descriptions-item>
                                     <el-descriptions-item label="Order time">

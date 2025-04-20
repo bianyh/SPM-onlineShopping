@@ -14,7 +14,6 @@
       <StoreCollectionView />
     </main>
 
-    <div class="footer-bar"></div>
   </div>
 </template>
 

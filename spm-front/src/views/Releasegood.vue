@@ -3,6 +3,12 @@
   <div class="goods-publish-container">
     <!-- 左侧切换选项 -->
     <div class="sidebar">
+      <button @click="this.$router.back()">
+        <ElIcon>
+          <Back />
+        </ElIcon>
+        Cancel & Back
+      </button>
       <button @click="activeTab = 'goods'" :class="{ active: activeTab === 'goods' }">
         Goods Information
       </button>
@@ -59,7 +65,7 @@
       </div>
 
       <!-- 图片上传模块 -->
-      <div v-if="activeTab === 'image'" class="form-section">
+      <div v-if="activeTab === 'image'" class="form-section" :loading="imageUploading">
         <h2 class="section-title">Goods Main Image</h2>
         <div class="image-uploader">
           <input type="file" accept="image/*" @change="handleImageUpload" hidden ref="fileInput" />
@@ -75,7 +81,10 @@
         </div>
         <div class="form-item">
           <label class="form-label">Image URL</label>
-          <input v-model="formData.pictures" type="text" class="form-input" placeholder="product picture url" />
+          <input v-model="formData.pictures" type="text" class="form-input" placeholder="product picture url"
+            :disabled="isImageUpload" />
+          <el-alert title="Note: You can directly enter the image URL, or upload the local image as usual." type="info"
+            :closable="false" />
         </div>
 
         <!-- 细节信息部分 >
@@ -117,8 +126,9 @@
 </template>
 
 <script setup>
+import { uploadImage } from '@/api/imgio';
 import { productInfo, productUpdate } from '@/api/product';
-import { ElInput, ElMessage } from 'element-plus';
+import { ElIcon, ElInput, ElMessage } from 'element-plus';
 
 </script>
 <script>
@@ -126,6 +136,8 @@ export default {
   data() {
     return {
       activeTab: "goods",
+      imageUploading: false,
+      isImageUpload: false,
       formData: {
         name: '',
         description: '',
@@ -151,7 +163,17 @@ export default {
   methods: {
     handleImageUpload(event) {
       const file = event.target.files[0];
+      this.imageUploading = true
       if (file) {
+        this.isImageUpload = true
+        uploadImage(file, "product", this.formData.id, 0).then((res) => {
+          ElMessage({ message: "Picture Upload Success.", type: 'success' })
+          this.formData.pictures = 'http://127.0.0.1:8080/image/get/' + res.data.filePath
+          this.imageUploading = false
+        }).catch((err) => {
+          ElMessage({ message: err })
+          this.imageUploading = false
+        })
         const reader = new FileReader();
         reader.onload = (e) => {
           this.previewImage = e.target.result;
@@ -201,6 +223,7 @@ export default {
     },
     removeMainImage() {
       this.previewImage = null;
+      this.isImageUpload = false;
       // 清空文件输入框的值
       if (this.fileInput) {
         this.fileInput.value = "";
@@ -209,9 +232,12 @@ export default {
   },
   mounted() {
     let data = this.$store.state.sharedData
-    if (data?.s){ 
+    if (data?.s) {
       this.store = data.s
       this.formData.storeId = this.store.id
+    }
+    else {
+      this.$router.back()
     }
     if (data?.pid) {
       productInfo(data.pid).then((res) => {

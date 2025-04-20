@@ -74,8 +74,11 @@ public class addressController {
     * 设置默认地址, 参数为地址对应的地址*/
     @PostMapping("/default")
     public Result setDefaultAddress(@RequestBody addressRequest address) {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer userId = (Integer) map.get("id");
+        System.out.println(userId);
         Integer id = address.getId();
-        Address defaultAddress = addressService.updateById(id);
+        Address defaultAddress = addressService.updateDefaultById(id, userId);
         return Result.success(defaultAddress);
     }
 

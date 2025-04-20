@@ -46,8 +46,9 @@
                     <el-input v-model="activeAddress.street" placeholder="Enter detailed address"></el-input>
                 </el-form-item>
                 <el-form-item label="Set as Default">
-                    <el-button type="primary" @click="setDefaultAddress">{{ activeAddress.isDefault ? 'Cancel Default' :
-                        'Set Default' }}</el-button>
+                    <el-button type="primary" @click="setDefaultAddress" :disabled="activeAddress.isDefault">
+                        {{ activeAddress.isDefault ? 'Defaulted' :'Set Default' }}
+                    </el-button>
                 </el-form-item>
             </el-form>
             <div class="drawer-actions">
