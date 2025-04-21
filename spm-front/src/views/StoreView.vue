@@ -24,7 +24,7 @@
       </div>
     </el-card>
 
-    <Goodsmanage :products="products" @edit="(pid) => gotoEditProduct(pid)" />
+    <Goodsmanage :products="products" @edit="(pid) => gotoEditProduct(pid)" :admin="isAdmin" />
     <ElPagination :current-page="page" :total="total" :default-page-size="10" layout="prev, pager, next">
     </ElPagination>
 
@@ -200,6 +200,8 @@ export default {
   computed: {
     isAdmin() {
       if (window.localStorage.getItem("uid") == this.store.userId)
+        return true
+      if (window.localStorage.getItem("admin") == "true")
         return true
       return false
     }

@@ -25,39 +25,40 @@ public class userController {
 
     /*
      * 注册账号，要求四个参数：用户名、密码、手机号和邮箱
-     * */
+     */
     @PostMapping("/register")
     public Result register(@RequestBody @Validated RegisterDTO user) {
-        //检验数据库中是否存在相同的用户
+        // 检验数据库中是否存在相同的用户
         User u = userservice.findByUsername(user.getUsername());
-        if(u != null) {
+        if (u != null) {
             return Result.error("该用户名已存在！");
         }
 
-        //添加用户
+        // 添加用户
         userservice.register(user);
         return Result.success();
     }
 
     @PostMapping("/login")
     public Result login(@RequestBody @Validated LoginDTO user) {
-        //判断用户是否存在
+        // 判断用户是否存在
         User u = userservice.findByUsername(user.getUsername());
-        if(u == null) {
+        if (u == null) {
             return Result.error("该用户不存在！");
         }
 
-        //判断密码是否正确
-        if(!u.getPassword().equals(Md5Util.getMD5String(user.getPassword()))) {
+        // 判断密码是否正确
+        if (!u.getPassword().equals(Md5Util.getMD5String(user.getPassword()))) {
             return Result.error("密码错误！");
         }
 
-        //密码正确后生成jwt密钥
+        // 密码正确后生成jwt密钥
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", u.getId());
         claims.put("username", u.getUsername());
+        claims.put("admin", userservice.isAdmin(u.getId()));
         String token = JwtUtil.genToken(claims);
-        return Result.success(token);//将token发送前端作为数据data部分
+        return Result.success(token);// 将token发送前端作为数据data部分
     }
 
     @PostMapping("/update")
