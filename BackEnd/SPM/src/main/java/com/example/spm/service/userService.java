@@ -9,4 +9,6 @@ public interface userService {
     void register(RegisterDTO user);
 
     void update(User user);
+
+    boolean isAdmin(Integer userId);
 }

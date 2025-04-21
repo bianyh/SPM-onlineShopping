@@ -15,7 +15,8 @@
 
           <!-- 竖向商品列表 -->
           <div class="product-list">
-            <div v-for="(item, index) in products" :key="index" class="product-item">
+            <div v-for="(item, index) in products" :key="index" class="product-item" @click="handleProductClick(item.id)"
+              v-show="item.status != 0 || admin">
               <img :src="item.pictures" alt="Product Image" class="product-image" />
               <div class="product-details">
                 <span class="product-name">{{ item.name }}</span>
@@ -23,11 +24,12 @@
                 <el-alert title="This product is currently under review." type="info" :closable="false" 
                 v-if="item.status == 0" />
               </div>
-              <button v-if="item.status !== 0" class="status-btn" :class="item.status"
-                @click="toggleProductStatus(item)">
+              <button v-if="item.status !== 0 && admin" class="status-btn" :class="item.status"
+                @click.stop="toggleProductStatus(item)">
                 {{ item.status === "in_stock" ? "Out of Stock" : "In Stock" }}
               </button>
-              <button class="status-btn" @click="edit(item.id)">Edit</button>
+              <button class="status-btn" @click.stop="edit(item.id)" v-if="admin">Edit</button>
+              <button class="status-btn-admin" @click.stop="accept(item.id)" v-show="isAdmin && item.status == 0">Approve</button>
             </div>
           </div>
 
@@ -43,7 +45,8 @@ export default {
   ],
   props:{
     products: Array,
-    filters: Array
+    filters: Array,
+    admin: Boolean
   },
   data() {
     return {
@@ -59,6 +62,11 @@ export default {
     filteredProducts() {
       return this.products.filter((item) => item.status === this.activeFilter);
     },
+    isAdmin(){
+      //console.log(typeof(window.localStorage.getItem("admin")))
+      //if (window.localStorage.getItem("admin") == "true") console.log("yes")
+      return window.localStorage.getItem("admin") == "true"
+    }
   },
   methods: {
     toggleProductStatus(item) {
@@ -67,12 +75,20 @@ export default {
     edit(id) {
       this.$emit("edit",id)
     },
+    handleProductClick(pid) {
+      this.$store.commit('setSharedData', { "pid": pid });
+      this.$router.push("/product")
+    },
+    accept(pid) {
+      productStatusUpdate(pid,1).then((res) => {ElMessage({message:res})})
+    }
   },
 };
 </script>
 
 <script setup>
-import { ElText } from 'element-plus';
+import { productStatusUpdate } from '@/api/product';
+import { ElMessage, ElText } from 'element-plus';
 
 
 </script>
@@ -241,7 +257,25 @@ import { ElText } from 'element-plus';
   border-radius: 8px;
   font-size: 14px;
   cursor: default;
-  background: linear-gradient(90deg, #f9b9b9, #d0f6fb);
+  background: linear-gradient(90deg, #eea9a9, #f1db9d);
+  color: #fcfbfb;
+  margin-right: 30px;
+  margin-top: auto;
+  width: 120px;
+  /* 固定宽度 */
+  min-width: 120px;
+  /* 防止内容过短 */
+  text-align: center;
+  /* 文字居中 */
+}
+/* 状态按钮 */
+.status-btn-admin {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: default;
+  background: linear-gradient(90deg, #f9b9b9, #ae81db);
   color: #fcfbfb;
   margin-right: 30px;
   margin-top: auto;

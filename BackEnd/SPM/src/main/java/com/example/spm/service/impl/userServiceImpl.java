@@ -30,4 +30,9 @@ public class userServiceImpl implements userService {
         User u = usermapper.findByUsername(username);
         return u;
     }
+
+    @Override
+    public boolean isAdmin(Integer userId) {
+        return usermapper.isAdmin(userId) != 0;
+    }
 }

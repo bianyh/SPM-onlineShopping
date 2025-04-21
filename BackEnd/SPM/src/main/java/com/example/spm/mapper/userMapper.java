@@ -15,4 +15,7 @@ public interface userMapper {
 
     @Update("update user set nickname=#{nickname}, avatar=#{userpic}, phone=#{phone}, email=#{email} where id=#{id}")
     void update(@Param("id") int id, @Param("nickname") String nickname, @Param("userpic") String userpic, @Param("phone") String phone, String email);
+
+    @Select("SELECT EXISTS(SELECT 1 FROM admin WHERE user_id = #{userId});")
+    int isAdmin(Integer userId);
 }

@@ -42,3 +42,15 @@ export function productUpdate(name, description, pictures, stock, price, storeId
         }
     })
 }
+
+//更新状态
+export function productStatusUpdate(pid, status) {
+    return myAxios({
+        url: '/api/product/status',
+        method: 'put',
+        data: {
+            id: pid,
+            status: status
+        }
+    })
+}

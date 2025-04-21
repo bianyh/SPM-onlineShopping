@@ -63,8 +63,10 @@ export default {
           console.log(result.data)
           window.localStorage.setItem("token", result.data) //储存token
           var claims = decodeJwt(result.data)[1].claims
+          console.log(claims)
           window.localStorage.setItem("username", claims.username)
           window.localStorage.setItem("uid", claims.id)
+          window.localStorage.setItem("admin", claims.admin)
           result.content = "Welcome! " + claims.username
           MessageBus.emit('box', result) // 登陆成功消息框
           MessageBus.emit("auth", { type: "login" })

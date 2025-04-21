@@ -157,7 +157,6 @@ export default {
     handleProductClick(pid) {
       this.$store.commit('setSharedData', { "pid": pid });
       this.$router.push("/product")
-
     }
   },
   mounted() {
