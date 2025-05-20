@@ -1,39 +1,37 @@
 <template>
-    <div class="carousel">
-      <swiper :modules="modules" :pagination="{ clickable: true }">
-        <!-- <swiper-slide v-for="(image, index) in images" :key="index">
-          <img :src="image" alt="">
-        </swiper-slide> -->
+  <div class="carousel">
+    <swiper :modules="modules" :pagination="{ clickable: true }" :autoplay="{ delay: 2000, disableOnInteraction: false }">
       <swiper-slide>
-        <img src="../assets/swiperpc/1.png" alt="">
+        <img src="../assets/swiperpc/1.jpg" alt="">
       </swiper-slide>
       <swiper-slide>
-        <img src="../assets/swiperpc/2.png" alt="">
+        <img src="../assets/swiperpc/2.jpg" alt="">
       </swiper-slide>
       <swiper-slide>
-        <img src="../assets/swiperpc/3.png" alt="">
+        <img src="../assets/swiperpc/3.jpg" alt="">
       </swiper-slide>
       <swiper-slide>
-        <img src="../assets/swiperpc/n.png" alt="">
+        <img src="../assets/swiperpc/4.jpg" alt="">
       </swiper-slide>
-      </swiper>
-    </div>
+    </swiper>
+  </div>
 </template>
 
-<script >
-import { Pagination } from 'swiper/modules';
+<script>
+import { Pagination, Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
 
 export default {
   name: 'HelloWorld',
-  data(){
-    return{
-      modules: [ Pagination ]
+  data() {
+    return {
+      modules: [Pagination, Autoplay]
     }
   },
-  components:{
+  components: {
     Swiper,
     SwiperSlide
   }
@@ -42,18 +40,18 @@ export default {
 
 <style scoped>
 .carousel {
-    height: 420px;
-    margin:0 auto;
-    max-width: 100%;
+  height: 420px;
+  margin: 0 auto;
+  max-width: 100%;
 }
 .swiper-slide {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 .carousel img {
-    height:420px;
-    /* object-fit: cover; */
+  height: 420px;
+  /* object-fit: cover; */
 }
-</style>
+</style>  

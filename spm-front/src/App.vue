@@ -72,7 +72,7 @@ export default {
   background-color: #c3a8a8;
 /*   background-image: linear-gradient(to top left, rgb(240, 208, 255) 0%, rgb(255, 247, 225) 100%); */ 
   background-image: url(https://img.js.design/assets/img/67cfdb8607c4c2e467899865.png);
-  opacity: 0.2;
+  opacity: 0.8;
 }
 
 .main {
@@ -129,4 +129,3 @@ export default {
   30% { background-color: rgba(255, 255, 255, 1);}
 }
 </style>
-

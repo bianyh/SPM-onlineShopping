@@ -1,66 +1,168 @@
 <template>
-    <div class="product-list">
-      <h2>热门商品</h2>
-      <div class="product-container">
-        <div class="product-item" v-for="product in products" :key="product.id">
-          <img :src="product.image" alt="Product Image" />
-          <p>{{ product.name }}</p>
-          <p>{{ product.price }}</p>
-        </div>
+  <div class="product-list">
+    <h2>{{ type === 'hot-products' ? 'hot products' : 'discount zone' }}</h2>
+    <div class="product-container">
+      <div class="product-item" v-for="product in getProducts()" :key="product.id">
+        <!-- 添加点击事件 -->
+        <img :src="product.image" alt="Product Image" @click="openModal(product)" />
+        <p>{{ product.name }}</p>
+        <p>{{ product.price }}</p>
       </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue';
-  import sampleImage from '@/assets/test2.png';
-  
-  const products = ref([
-    {
-      id: 1,
-      name: '商品 1',
-      price: '￥99.00',
-      image: sampleImage 
-    },
-    {
-      id: 2,
-      name: '商品 2',
-      price: '￥199.00',
-      image: sampleImage
-    },
-    {
-      id: 3,
-      name: '商品 3',
-      price: '￥299.00',
-      image: sampleImage
-    },
-    {
-      id: 4,
-      name: '商品 4',
-      price: '￥399.00',
-      image: sampleImage
-    }
-  ]);
-  </script>
-  
-  <style scoped>
-  .product-list {
-    padding: 20px;
+    <!-- 当 selectedProduct 不为空时显示模态框 -->
+    <ProductModal v-if="selectedProduct" :product="selectedProduct" @close="closeModal" />
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import ProductModal from './ProductModal.vue';
+import sampleImage from '@/assets/test2.png';
+
+const props = defineProps({
+  type: {
+    type: String,
+    default: 'hot-products'
   }
-  
-  .product-container {
-    display: flex;
-    overflow-x: auto;
-    gap: 20px;
+});
+
+const hotProducts = ref([
+  {
+    id: 1,
+    name: '热门商品 1',
+    price: '￥99.00',
+    image: sampleImage ,
+    description:'热门商品，热门商品，热门商品，热门商品，热门商品，热门商品，热门商品'
+  },
+  {
+    id: 2,
+    name: '热门商品 2',
+    price: '￥199.00',
+    image: sampleImage
+  },
+  {
+    id: 3,
+    name: '热门商品 3',
+    price: '￥299.00',
+    image: sampleImage
+  },
+  {
+    id: 4,
+    name: '热门商品 4',
+    price: '￥399.00',
+    image: sampleImage
+  },
+  {
+    id: 5,
+    name: '热门商品 5',
+    price: '￥499.00',
+    image: sampleImage
   }
-  
-  .product-item {
-    min-width: 150px;
-    text-align: center;
+  // 更多热门商品数据
+]);
+
+const discountProducts = ref([
+  {
+    id: 101,
+    name: '打折商品 1',
+    price: '￥49.00',
+    image: sampleImage 
+  },
+  {
+    id: 102,
+    name: '打折商品 2',
+    price: '￥99.00',
+    image: sampleImage
+  },
+  {
+    id: 103,
+    name: '打折商品 3',
+    price: '￥149.00',
+    image: sampleImage
+  },
+  {
+    id: 104,
+    name: '打折商品 4',
+    price: '￥199.00',
+    image: sampleImage
+  },
+  {
+    id: 105,
+    name: '打折商品 5',
+    price: '￥249.00',
+    image: sampleImage
   }
-  
-  .product-item img {
-    width: 100%;
-    height: auto;
+  // 更多打折商品数据
+]);
+
+const getProducts = () => {
+  if (props.type === 'hot-products') {
+    return hotProducts.value.slice(0, 4); // 截取前四个热门商品
+  } else {
+    return discountProducts.value.slice(0, 4); // 截取前四个打折商品
   }
-  </style>
+};
+
+// 定义一个响应式变量用于保存点击的当前商品
+const selectedProduct = ref(null);
+
+const openModal = (product) => {
+  selectedProduct.value = product;
+};
+
+const closeModal = () => {
+  selectedProduct.value = null;
+};
+</script>
+
+<style scoped>
+.product-list {
+  padding: 20px;
+}
+
+.product-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  width: 100%;
+  overflow-y: hidden; 
+  overflow-x: hidden;  
+}
+
+.product-item {
+  min-width: 140px;
+  text-align: center;
+  transition: transform 0.3s; /* 给容器添加过渡，使动画更流畅 */
+}
+
+.product-item img {
+  margin-top:2px;
+  width: 95%;
+  height: auto;
+  border-radius: 10px;
+  transition: all 0.3s ease; /* 统一过渡效果 */
+  border: 2px solid transparent; /* 初始透明边框，避免悬停时位移 */
+}
+/* 图片悬停效果 */
+.product-item img:hover {
+  border-color: rgb(244, 107, 127); /* 边框颜色 */
+  transform: scale(1.03); /* 放大效果 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* 更明显的阴影 */
+}
+/* 优化容器悬停效果（可选：整个商品项响应鼠标事件） */
+.product-item:hover {
+  transform: translateY(2px); /* 轻微下移，增强悬浮感 */
+}
+/* 文字样式优化 */
+.product-item p {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+.product-item .price {
+  color: #ff6b6b;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+</style>
