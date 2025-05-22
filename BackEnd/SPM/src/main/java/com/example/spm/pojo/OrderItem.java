@@ -1,8 +1,8 @@
 package com.example.spm.pojo;
 
-import java.math.BigDecimal;
-
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Data
 public class OrderItem {

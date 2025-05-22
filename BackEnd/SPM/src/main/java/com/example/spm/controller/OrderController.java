@@ -1,12 +1,8 @@
 package com.example.spm.controller;
 
 import com.example.spm.mapper.OrderMapper;
-import com.example.spm.pojo.Order;
+import com.example.spm.pojo.*;
 import com.example.spm.service.OrderService;
-import com.example.spm.pojo.OrderItem;
-import com.example.spm.pojo.OrderRequest;
-import com.example.spm.pojo.ProductComment;
-import com.example.spm.pojo.Result;
 import com.example.spm.utils.JwtUtil;
 import com.example.spm.utils.ThreadLocalUtil;
 import org.apache.ibatis.annotations.Param;
@@ -128,6 +124,16 @@ public class OrderController {
     public Result getProductComments(@PathVariable Integer id, @PathVariable Integer status) {
         orderservice.updateOrderStatus(id, status);
         return Result.success();
+    }
+
+    @PostMapping("/review")
+    public Result UserComment(@RequestBody Comment comment) {
+        Integer orderId = comment.getOrderId();
+        Integer productId = comment.getProductId();
+        Integer rating = comment.getRating();
+        String com = comment.getComment();
+        orderservice.submitComment(orderId, productId, rating, com);
+        return Result.success("成功提交评价");
     }
 }
 
