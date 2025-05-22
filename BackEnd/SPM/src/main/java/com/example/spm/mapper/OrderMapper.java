@@ -59,4 +59,8 @@ public interface OrderMapper {
     //仅更新状态
     @Update("update `order` set `status` = #{status}, `updated_at` = now() where `id`=#{orderId}")
     void updateOrderStatus(Integer orderId, Integer status);
+
+    @Insert("INSERT INTO product_comment(user_id, product_id, content, rating, created_at) " +
+            "values (#{userId},#{productId},#{comment},#{rating},now())")
+    void submitComment(Integer userId, Integer orderId, Integer productId, Integer rating, String comment);
 }

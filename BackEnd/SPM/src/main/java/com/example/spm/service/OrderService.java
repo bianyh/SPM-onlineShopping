@@ -34,4 +34,5 @@ public interface OrderService {
     void cancelOrder(Integer orderId);
 
 
+    void submitComment(Integer orderId, Integer productId, Integer rating, String comment);
 }
