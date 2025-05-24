@@ -128,6 +128,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public void submitComment(Integer orderId, Integer productId, Integer rating, String comment) {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer userId = (Integer) map.get("id");
+        orderMapper.submitComment(userId, orderId, productId, rating, comment);
+    }
+
+    @Override
     public void updateOrderStatus(Integer orderId, Integer status) {
         orderMapper.updateOrderStatus(orderId,status);
     }

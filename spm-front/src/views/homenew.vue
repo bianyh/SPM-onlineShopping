@@ -6,11 +6,11 @@
         </ElText>
         <ElText>Simple, Perfect, Multifarious</ElText>
         <!-- search输入框 -->
-        <div style="width: 100%; background-color: #fff; display: flex;">
+        <div class='searchF' >
             <div class="searchbox">
                 <input type="text" v-model="searchQuery" @input="filterKeywords"
-                    placeholder="please input the search key" style="width: 90%;" />
-                <ElButton style="width: 9%; margin-left: 1%; height: 2.5rem;"><template #default>
+                    placeholder="Search for your favorite products！" style="width: 90%;" />
+                <ElButton class="search-btn" style="width: 9%; margin-left: 1%; height: 2.5rem ;"><template #default>
                         <ElIcon>
                             <Search />
                         </ElIcon>
@@ -28,9 +28,9 @@
         <!-- 轮播图区域 :images="swiperImages" -->
         <Carousel />
         <!-- 商品展示区域 -->
-        <ProductList />
-        <ProductList />
-        <ProductList />
+        <ProductList type="hot-products"/>
+        <ProductList type="discount-zone"/>
+
     </ElRow>
 
 </template>
@@ -46,7 +46,7 @@ import { Search } from '@element-plus/icons-vue';
 const router = useRouter();
 
 const searchQuery = ref('');
-const allKeywords = ref(['手机', '电脑', '平板', '相机', '耳机', '...']);
+const allKeywords = ref(['Phone', 'Computer', 'Tablet', 'Camera', 'Earphone', '...']);
 const filteredKeywords = ref([]);
 
 const filterKeywords = () => {
@@ -85,7 +85,7 @@ const selectKeyword = (keyword) => {
     text-align: center;
     color: #6699cc;
     width: 100%;
-    font-size: 16px;
+    font-size: 18px;
     margin-top: 10px;
 }
 
@@ -97,6 +97,13 @@ const selectKeyword = (keyword) => {
     margin-right: 5px;
 }
 
+.searchF{
+   /*style="width: 100%; background-color: #fff; display: flex;" */
+   width:100%;
+   background-color: #fde9ef;
+   display: flex;
+   border-radius: 10px;
+}
 .searchbox {
     /*保留定位，以便关键词列表定位 */
     width: 700px;
@@ -111,8 +118,24 @@ const selectKeyword = (keyword) => {
     border-radius: 10px;
     font-size: 16px;
     opacity: 0.8;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+     */
 }
-
+.searchbox .el-button {
+    background-image: url('https://img.js.design/assets/img/67cfdb8607c4c2e467899865.png');
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    border-radius: 20px;
+    margin-left: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.el-button:hover{
+    transform: scale(1.03);
+}
 @media (max-width:767px) {
     .searchbox {
         width: 100%;
