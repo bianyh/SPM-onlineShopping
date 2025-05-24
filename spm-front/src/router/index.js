@@ -23,6 +23,7 @@ import PaymentView from '@/views/PaymentView.vue'
 import StoreView from '@/views/StoreView.vue'
 import StoreCollectionView from '@/views/StoreCollectionView.vue'
 import SellerOrderView from '@/views/SellerOrderView.vue'
+import VerificationView from '@/views/VerificationView.vue'
 const routes = [
   {
     path: '/',
@@ -190,6 +191,15 @@ const routes = [
     component: Releasegood,
     meta: {
       title: 'Product Edit',
+      color: 1,
+    }
+  },
+  {
+    path: "/verify", 
+    name: "Verification",
+    component: VerificationView,
+    meta: {
+      title: 'Verifications',
       color: 1,
     }
   }

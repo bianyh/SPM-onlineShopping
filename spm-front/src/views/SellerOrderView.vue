@@ -165,7 +165,9 @@ export default {
             form: {
                 orderId: '',
                 trackingNumber: ''
-            }
+            },
+            progressTotal: 0, //
+            progressCurrent: 0, //
         };
     },
     computed: {

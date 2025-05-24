@@ -3,9 +3,10 @@
     <el-tabs v-model="activeStatus" class="demo-tabs" type="border-card">
       <el-tab-pane label="All" name=-1></el-tab-pane>
       <el-tab-pane v-for="(status, index) in orderStatus" :key="index" :label="status" :name="index"></el-tab-pane>
-      <Nodata v-if="filteredOrders.length == 0"/>
+      <Nodata v-if="filteredOrders.length == 0" />
       <ElCard v-for="order in filteredOrders" :key="order.id" class="order-card" @click="openOrderDetails(order)"
-        v-loading="!isFullLoaded" element-loading-text="Loading..." element-loading-background="rgba(122, 122, 122, 0.8)">
+        v-loading="!isFullLoaded" element-loading-text="Loading..."
+        element-loading-background="rgba(122, 122, 122, 0.8)">
         <el-descriptions :column="2" border>
           <el-descriptions-item label="Order ID">{{ order.id }}</el-descriptions-item>
           <el-descriptions-item label="Total Amount">{{ order.totalAmount }}</el-descriptions-item>
@@ -28,14 +29,15 @@
             </div>
           </el-col>
         </el-row>
-        <span class="dialog-footer">
+        <span class="dialog-footer" v-if="order.status != 3 && order.status != 4">
           <!--el-button @click="dialogVisible = false">Close</el-button-->
-          <el-button type="primary" @click="handlePay(order)" :plain="order.status" :disabled="order.status != 0">
+          <el-button type="primary" @click="handlePay(order)" :plain="order.status == 1" :disabled="order.status != 0">
             {{ order.status == 0 ? "Pay Now" : "Pended" }}
           </el-button>
           <el-button type="success" @click="handleConfirm(order)" :disabled="order.status != 2">Confirm
             Receipt</el-button>
-          <el-button type="danger" @click="handleCancel(order)" :disabled="order.status == 3 || order.status == 4">Cancel Order</el-button>
+          <el-button type="danger" @click="handleCancel(order)"
+            :disabled="order.status == 3 || order.status == 4">Cancel Order</el-button>
         </span>
       </ElCard>
     </el-tabs>
@@ -71,7 +73,7 @@
 import { orderDetail, orderShow, orderStateUpdate } from '@/api/order';
 import { productInfo } from '@/api/product';
 import Nodata from '@/components/Nodata.vue';
-import { ElCard, ElDescriptions, ElDescriptionsItem, ElTag, ElTabs, ElTabPane, ElDialog, ElRow, ElCol, ElImage, ElButton, ElMessage } from 'element-plus';
+import { ElCard, ElDescriptions, ElDescriptionsItem, ElTag, ElTabs, ElTabPane, ElDialog, ElRow, ElCol, ElImage, ElButton, ElMessage, ElMessageBox } from 'element-plus';
 </script>
 
 <script>
@@ -135,10 +137,13 @@ export default {
       return
     },
     handlePay(order) {
-      console.log('Pay Now');
-      order.status = 1
-      orderStateUpdate(order.id, order.status)
-      ElMessage({ message: 'Done..', type: 'success' })
+      //console.log('Pay Now');
+      window.localStorage.setItem("payOrderId", order.id)
+      console.log(order)
+      this.$router.push("/payment")
+      //order.status = 1
+      //orderStateUpdate(order.id, order.status)
+      //ElMessage({ message: 'Done..', type: 'success' })
     },
     handleConfirm(order) {
       console.log('Confirm Receipt');
@@ -148,11 +153,30 @@ export default {
       ElMessage({ message: 'Confmired.', type: 'success' })
     },
     handleCancel(order) {
-      console.log('Cancel Order');
       // 处理取消订单逻辑
-      order.status = 4
-      orderStateUpdate(order.id, order.status)
-      ElMessage({ message: 'Canceled.', type: 'danger' })
+      ElMessageBox.confirm(
+        'The Order will be canceled and can NOT be recovered. Continue?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+      )
+        .then(() => {
+          ElMessage({
+            type: 'success',
+            message: 'Delete completed',
+          })
+          order.status = 4
+          orderStateUpdate(order.id, order.status)
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
     },
     handleProductClick(pid) {
       this.$store.commit('setSharedData', { "pid": pid });
@@ -178,7 +202,6 @@ export default {
 </script>
 
 <style scoped>
-
 .order-card {
   margin-bottom: 15px;
 }

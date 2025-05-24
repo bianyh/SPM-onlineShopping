@@ -176,7 +176,7 @@ export default {
                                 </ElLink>
                             </ElRow>
                             <ElRow>
-                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/verifiction')">
+                                <ElLink :underline="false" class="el-row-expand" @click="navigateTo('/verify')">
                                     Report
                                 </ElLink>
                             </ElRow>
