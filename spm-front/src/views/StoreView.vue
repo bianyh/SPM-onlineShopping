@@ -1,6 +1,6 @@
 <template>
   <div style="margin-top: 3.5rem;">
-    <el-card class="store-card" shadow="hover">
+    <el-card shadow="hover">
       <el-row :gutter="20">
         <el-col :span="8">
           <el-image :src="store.picturePath" fit="cover" style="width: 100%; height: 150px;"></el-image>
@@ -23,6 +23,12 @@
         <el-button type="success" @click="gotoNewProduct">Post New Product</el-button>
       </div>
     </el-card>
+
+    <div style="width: 100%; height: 400px; margin: 0; background: #fff;">
+      <ElText style="font-size: 2rem; font-weight: 500;margin: 0.2rem 2rem;">Sales statistics</ElText>
+      <ElSegmented v-model="chartOption" :options="chartOptions" style="margin: 20px; float: right;"  @change="optionChange" />
+      <div ref="chartRef" style="width: 100%; height: 400px; transform: translateY(-30px);"></div>
+    </div>
 
     <Goodsmanage :products="products" @edit="(pid) => gotoEditProduct(pid)" :admin="isAdmin" />
     <ElPagination :current-page="page" :total="total" :default-page-size="10" layout="prev, pager, next">
@@ -68,15 +74,21 @@
         </span>
       </template>
     </el-dialog>
+
+    <el-dialog v-model="detailDialogVisible" title="Sales Detail" width="90%">
+      <ElTimePicker></ElTimePicker>
+            <div ref="chart2Ref" style="width: 100%; height: 400px; transform: translateY(-30px);"></div>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { ElMessage, ElPagination } from 'element-plus';
+import { ElMessage, ElPagination, ElSegmented, ElText, ElTimePicker } from 'element-plus';
+import * as echarts from 'echarts';
 </script>
 
 <script>
-import { storeInfo, storeProducts, storeUpdate } from '@/api/store';
+import { storeInfo, storeProducts, storeSalesDetail, storeUpdate } from '@/api/store';
 import Goodsmanage from './Goodsmanage.vue';
 import { uploadImage } from '@/api/imgio';
 
@@ -87,17 +99,18 @@ export default {
   data() {
     return {
       store: {
-        id: 'ST001',
-        name: 'Store 1',
-        description: 'This is the first store.',
-        address: '123 Main St',
+        id: '-1',
+        name: 'Loading...',
+        description: 'description',
+        address: 'address',
         picturePath: '',
         createAt: new Date(),
-        status: 'Open'
+        status: '0'
       },
       isImageUpload: false,
       storeStatus: ['Open', 'Closed'],
       dialogVisible: false,
+      detailDialogVisible: false,
       imageUploading: false,
       previewImage: null,
       fileInput: null,
@@ -106,7 +119,10 @@ export default {
       page: 1,
       limit: 10,
       total: 0,
-
+      chartInstance: null,
+      chartData: [],
+      chartOptions: ['Total','Ordered', 'Success', 'Canceled'],
+      chartOption: 'Total',
     };
   },
   methods: {
@@ -181,10 +197,73 @@ export default {
       }
       this.isImageUpload = false
     },
+    initChart() {
+      this.chartInstance = echarts.init(this.$refs.chartRef);
+      this.optionChange(this.chartOption)
+      // 添加点击事件监听器
+      this.chartInstance.on('click', (params) => {
+        const storeId = this.stores[params.dataIndex].storeId;
+        this.handleClickNavigateToStore(storeId);
+      });
+    },
+    optionChange(value) {
+      this.chartOption = value
+      let productName = this.chartData.map(store => store.productName);
+      let volume
+
+      if (this.chartOption == 'Ordered') {
+        volume = this.chartData.map(store => store.orderVolume);
+      } else if (this.chartOption == 'Success') {
+        volume = this.chartData.map(store => store.achieveVolume);
+      } else if (this.chartOption == 'Canceled') {
+        volume = this.chartData.map(store => store.cancelVolume);
+      } else {
+        volume = this.chartData.map(store => store.salesVolume);
+      }
+
+      const option = {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow',
+          },
+        },
+        legend: {
+          data: ['Sales'],
+        },
+        xAxis: {
+          type: 'value',
+        },
+        yAxis: {
+          type: 'category',
+          data: productName,
+        },
+        series: [
+          {
+            name: 'Sales',
+            type: 'bar',
+            data: volume,
+          },
+        ],
+      };
+
+      this.chartInstance.setOption(option);
+    },
+    handleClickNavigateToStore(id) {
+      this.$store.commit('setSharedData', { sid: id });
+      this.$router.push("/store")
+    }
   },
   mounted() {
     if (this.$store.state.sharedData?.sid) {
-      storeInfo(this.$store.state.sharedData.sid).then((res) => {
+      window.localStorage.setItem("storeview_sid", this.$store.state.sharedData.sid)
+    }
+    let sid = window.localStorage.getItem("storeview_sid")
+    if (sid == null) {
+      console.error('解析商品数据失败');
+      //this.$router.back();
+    } else {
+      storeInfo(sid).then((res) => {
         this.store = res.data
         storeProducts(this.store.id, this.page, this.limit).then((res) => {
           this.products = res.data.data
@@ -192,10 +271,15 @@ export default {
           console.log(res.data)
         })
       })
-    } else {
-      console.error('解析商品数据失败');
-      this.$router.back();
+      storeSalesDetail(sid).then((res) => {
+        this.chartData = res.data
+        this.initChart()
+      }).catch((err) => {
+        console.error(err)
+      })
     }
+
+
   },
   computed: {
     isAdmin() {
@@ -210,10 +294,6 @@ export default {
 </script>
 
 <style scoped>
-.store-card {
-  margin-bottom: 15px;
-}
-
 /* 图片上传 */
 .image-uploader {
   margin-top: 16px;

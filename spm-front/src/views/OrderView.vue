@@ -3,9 +3,10 @@
     <el-tabs v-model="activeStatus" class="demo-tabs" type="border-card">
       <el-tab-pane label="All" name=-1></el-tab-pane>
       <el-tab-pane v-for="(status, index) in orderStatus" :key="index" :label="status" :name="index"></el-tab-pane>
-      <Nodata v-if="filteredOrders.length == 0"/>
+      <Nodata v-if="filteredOrders.length == 0" />
       <ElCard v-for="order in filteredOrders" :key="order.id" class="order-card" @click="openOrderDetails(order)"
-        v-loading="!isFullLoaded" element-loading-text="Loading..." element-loading-background="rgba(122, 122, 122, 0.8)">
+        v-loading="!isFullLoaded" element-loading-text="Loading..."
+        element-loading-background="rgba(122, 122, 122, 0.8)">
         <el-descriptions :column="2" border>
           <el-descriptions-item label="Order ID">{{ order.id }}</el-descriptions-item>
           <el-descriptions-item label="Total Amount">{{ order.totalAmount }}</el-descriptions-item>
@@ -21,57 +22,66 @@
           </el-col>
           <el-col :span="16">
             <div>
-              <p><strong>Name:</strong> {{ products[pid].name }}</p>
+              <ElRow>
+                <h3 style="font-weight: 500; padding-right: 0.5rem;">{{ products[pid].name }}</h3>
+                <h3 style="font-weight: 400;"> × {{ order.quantities[pid] }}</h3>
+              </ElRow>
               <p><strong>Status:</strong> {{ products[pid].status }}</p>
-              <p><strong>Quantity:</strong> {{ order.quantities[pid] }}</p>
               <p><strong>Payment Amount:</strong> {{ products[pid].price * order.quantities[pid] }}</p>
+              <ElAlert v-if="products[pid].trackingNumber != null" :title="products[pid].trackingNumber" type="success"
+                show-icon />
             </div>
           </el-col>
         </el-row>
         <span class="dialog-footer">
           <!--el-button @click="dialogVisible = false">Close</el-button-->
-          <el-button type="primary" @click="handlePay(order)" :plain="order.status" :disabled="order.status != 0">
+          <el-button type="primary" @click="handlePay(order)" :plain="order.status == 1" :disabled="order.status != 0"
+            v-if="order.status <= 2">
             {{ order.status == 0 ? "Pay Now" : "Pended" }}
           </el-button>
-          <el-button type="success" @click="handleConfirm(order)" :disabled="order.status != 2">Confirm
+          <el-button type="success" @click="handleConfirm(order)" v-if="order.status == 2">Confirm
             Receipt</el-button>
-          <el-button type="danger" @click="handleCancel(order)" :disabled="order.status == 3 || order.status == 4">Cancel Order</el-button>
+          <el-button type="warning" @click="handleLogistics(order)"
+            v-if="order.status > 1 && order.status < 4">Logistics
+            inquiry</el-button>
+          <el-button type="danger" @click="handleCancel(order)" v-if="order.status < 3">Cancel Order</el-button>
         </span>
       </ElCard>
     </el-tabs>
 
-    <!-- 弹出页面 -->
-    <el-dialog v-model="dialogVisible" title="Order Details" width="60%">
-      <div v-if="selectedOrder">
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <el-card>
-              <template #header>
-                <div class="card-header">
-                  <span>Order Summary</span>
-                </div>
-              </template>
-              <div>
-                <p><strong>Order ID:</strong> {{ selectedOrder.id }}</p>
-                <p><strong>Total Amount:</strong> {{ selectedOrder.totalAmount }}</p>
-                <p><strong>Status:</strong> {{ selectedOrder.status }}</p>
-                <p><strong>Created At:</strong> {{ selectedOrder.createdAt }}</p>
-              </div>
-            </el-card>
-          </el-col>
-        </el-row>
+    <!-- 弹出页面：物流信息 -->
+    <el-dialog v-model="dialogVisible" title="Logistics List" width="50%">
+      <div v-for="(element, index) in logisticsData" :key="index" class="logistics-item">
+        <h2 style="font-weight: 500;"> {{ products[element.productId].name }}</h2>
+        <strong style="font-size: 1rem;">Tracking Number: {{ element.trackingNumber }}</strong>
+        <a @click="copyToClipboard(element.trackingNumber)" style="cursor: pointer;">
+          <el-icon style="width: 20px;">
+            <DocumentCopy />
+          </el-icon></a>
       </div>
-      <template #footer>
-      </template>
+      <ElDivider></ElDivider>
+      <ElAlert
+        title="The logistics waybill number is displayed here. You can go to the website to check the logistics information."
+        type="success" show-icon :closable="false">
+        <template #default>
+          <a href="https://www.ickd.cn" target="_blank" style="font-size: 1rem;">
+            <ElIcon>
+              <Position />
+            </ElIcon>
+            www.ickd.cn
+          </a>
+        </template>
+      </ElAlert>
     </el-dialog>
+
   </div>
 </template>
 
 <script setup>
-import { orderDetail, orderShow, orderStateUpdate } from '@/api/order';
+import { orderConfirm, orderDetail, orderLogistics, orderShow, orderStateUpdate } from '@/api/order';
 import { productInfo } from '@/api/product';
 import Nodata from '@/components/Nodata.vue';
-import { ElCard, ElDescriptions, ElDescriptionsItem, ElTag, ElTabs, ElTabPane, ElDialog, ElRow, ElCol, ElImage, ElButton, ElMessage } from 'element-plus';
+import { ElCard, ElDescriptions, ElDescriptionsItem, ElTag, ElTabs, ElTabPane, ElDialog, ElRow, ElCol, ElImage, ElButton, ElMessage, ElMessageBox, ElAlert, ElDivider } from 'element-plus';
 </script>
 
 <script>
@@ -85,6 +95,7 @@ export default {
       selectedOrder: null,
       products: [],
       isFullLoaded: false,
+      logisticsData: []
     };
   },
   computed: {
@@ -135,28 +146,76 @@ export default {
       return
     },
     handlePay(order) {
-      console.log('Pay Now');
-      order.status = 1
-      orderStateUpdate(order.id, order.status)
-      ElMessage({ message: 'Done..', type: 'success' })
+      //console.log('Pay Now');
+      window.localStorage.setItem("payOrderId", order.id)
+      console.log(order)
+      this.$router.push("/payment")
+      //order.status = 1
+      //orderStateUpdate(order.id, order.status)
+      //ElMessage({ message: 'Done..', type: 'success' })
     },
     handleConfirm(order) {
       console.log('Confirm Receipt');
       // 处理确认收货逻辑
       order.status = 3
-      orderStateUpdate(order.id, order.status)
+      orderConfirm(order.id).then((res) => {
       ElMessage({ message: 'Confmired.', type: 'success' })
+      }).catch((err) => {
+        ElMessage({ message: err, type: 'error' })
+      })
+      //orderStateUpdate(order.id, order.status)
+    },
+    handleLogistics(order) {
+      // 处理物流查询逻辑
+      orderLogistics(order.id).then((res) => {
+        this.logisticsData = res.data
+        this.dialogVisible = true
+      })
     },
     handleCancel(order) {
-      console.log('Cancel Order');
       // 处理取消订单逻辑
-      order.status = 4
-      orderStateUpdate(order.id, order.status)
-      ElMessage({ message: 'Canceled.', type: 'danger' })
+      ElMessageBox.confirm(
+        'The Order will be canceled and can NOT be recovered. Continue?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+      )
+        .then(() => {
+          ElMessage({
+            type: 'success',
+            message: 'Delete completed',
+          })
+          order.status = 4
+          orderStateUpdate(order.id, order.status)
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
     },
     handleProductClick(pid) {
       this.$store.commit('setSharedData', { "pid": pid });
       this.$router.push("/product")
+    },
+    //写入剪贴板
+    copyToClipboard(text) {
+      // 检查浏览器是否支持剪贴板 API
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text)
+          .then(() => {
+            console.log('Content copied to clipboard successfully.');
+          })
+          .catch(err => {
+            console.error('Failed to copy content to clipboard:', err);
+          });
+      } else {
+        console.error('Clipboard API not supported in this browser.');
+      }
     }
   },
   mounted() {
@@ -178,7 +237,6 @@ export default {
 </script>
 
 <style scoped>
-
 .order-card {
   margin-bottom: 15px;
 }

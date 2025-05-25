@@ -55,7 +55,7 @@
         <div class="payment-options">
           <label v-for="method in paymentMethods" :key="method.value"
             :class="{ active: selectedMethod === method.value }">
-            <input type="radio" v-model="selectedMethod" :value="method.value" hidden>
+            <input type="radio" v-model="selectedMethod" :value="method.value" hidden :disabled="!method.enable">
             <span class="icon">{{ method.icon }}</span>
             <span class="name">{{ method.name }}</span>
           </label>
@@ -75,7 +75,7 @@
 
       <!-- 支付按钮 -->
       <button class="pay-btn" @click="handlePayment" :disabled="isProcessing">
-        {{ isProcessing ? 'Paying...' : `Confirm Payment $${totalPrice.toFixed(2)}` }}
+        {{ isProcessing ? 'Creating...' : `Create Order | $${totalPrice.toFixed(2)}` }}
       </button>
     </div>
   </div>
@@ -95,9 +95,9 @@ export default {
       address: -1,
       addresses: [],
       paymentMethods: [
-        { value: 'wechat', name: 'Wechat', icon: '💳' },
-        { value: 'alipay', name: 'Alipay', icon: '💰' },
-        { value: 'bank', name: 'Bank', icon: '🏦' }
+        { value: 'wechat', name: 'Wechat (not use)', icon: '💳', enable: false },
+        { value: 'alipay', name: 'Alipay', icon: '💰', enable: true },
+        { value: 'bank', name: 'Bank (not use)', icon: '🏦', enable: false }
       ],
       selectedMethod: 'wechat',
       isProcessing: false

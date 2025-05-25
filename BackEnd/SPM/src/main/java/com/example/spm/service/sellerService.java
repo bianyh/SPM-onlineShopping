@@ -19,6 +19,7 @@ public interface sellerService {
     List<Store> findByUserName(String username);
 
     Store findById(Integer id);
+    List<Store> findByUserId(Integer userId);
 
     PageResult<Store> searchStoresByName(String name, @Min(0) int page);
 

@@ -59,3 +59,23 @@ export function storeProducts(sid, page = 1, limit = 10, status = '') {
         }
     })
 }
+
+//展示店铺总销量（自动提取用户uid）
+export function storeSales() {
+    return myAxios({
+        url: '/api/seller/sales',
+        method: 'get',
+        params: {
+        }
+    })
+}
+
+//展示指定店铺销量详情
+export function storeSalesDetail(sid) {
+    return myAxios({
+        url: `/api/seller/sales/${sid}`,
+        method: 'get',
+        params: {
+        }
+    })
+}

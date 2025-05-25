@@ -78,6 +78,7 @@ public class sellerServiceImpl implements sellerService {
         return new PageResult<>(stores, total, page, PAGE_SIZE);
     }
 
+    @Override
     public List<Store> findByUserId(Integer userId) {
         return mapper.findByUserName(userId);
     }
@@ -95,8 +96,7 @@ public class sellerServiceImpl implements sellerService {
 
       @Override
     public PageResult<Product> findAllProducts(Integer storeId, Integer status, Integer page, Integer limit) {
-        PageResult<Product> pp = new PageResult<>();
-
+        //PageResult<Product> pp = new PageResult<>();
         PageHelper.startPage(page, limit);
         List<Product> products = mapper.findAllProducts(storeId, status);
         PageResult<Product> productPageResult = new PageResult<>(products, products.size(), page, limit);

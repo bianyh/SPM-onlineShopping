@@ -69,7 +69,8 @@ public class OrderServiceImpl implements OrderService {
 
         for (OrderItem i : items) {
             Product pro = productmapper.getProductById(Math.toIntExact(i.getProductId()));
-            orderMapper.submitOrderItem(order.getId(), i.getProductId(), i.getQuantity(), pro.getPrice().multiply(BigDecimal.valueOf(i.getQuantity())), i.getSpec(), i.getStatus());
+            //spec被替换为userid
+            orderMapper.submitOrderItem(order.getId(), i.getProductId(), i.getQuantity(), pro.getPrice().multiply(BigDecimal.valueOf(i.getQuantity())), userId.toString(), i.getStatus(), order.getCreatedAt().toString(), order.getUpdatedAt().toString());
         }
     }
 
@@ -82,13 +83,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void sendOrder(Integer orderId, String trackingNumber) {
-        orderMapper.sendOrder(orderId, trackingNumber);
+    public void sendOrder(Integer orderId, Integer productId, String trackingNumber) {
+        if (orderMapper.getLogisticsByProductId(orderId, productId) != null) {
+            orderMapper.updateOrderLogistics(orderId, productId, trackingNumber);
+            return;
+        }
+        orderMapper.createOrderLogistics(orderId, productId, trackingNumber);
     }
 
     @Override
     public void confirmOrder(Integer orderId) {
         orderMapper.confirmOrder(orderId);
+        orderMapper.updateOrderStatus(orderId, 4);
     }
 
     @Override
@@ -104,10 +110,14 @@ public class OrderServiceImpl implements OrderService {
         Integer userId = (Integer) map.get("id");
         return orderMapper.findProductsByOrder(orderId);
     }
-
+    
     @Override
-    public List<LogisticsDTO> getLogistics(Integer orderId, Integer productId) {
-        return orderMapper.getLogistics(orderId, productId);
+    public List<LogisticsDTO> getLogistics(Integer orderId) {
+        return orderMapper.getLogistics(orderId);
+    }
+    @Override
+    public LogisticsDTO getLogisticsByProductId(Integer orderId, Integer productId) {
+        return orderMapper.getLogisticsByProductId(orderId, productId);
     }
 
     @Override
@@ -137,5 +147,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void updateOrderStatus(Integer orderId, Integer status) {
         orderMapper.updateOrderStatus(orderId,status);
+        orderMapper.updateOrderItemStatus(orderId,status);
+    }
+
+    @Override
+    public int checkOrder(Integer userId, Integer productId) {
+        return orderMapper.checkOrder(userId, productId);
     }
 }
