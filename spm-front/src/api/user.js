@@ -16,12 +16,12 @@ export function userLogin(username, password) {
 
 //展示所有用户信息
 export function userInfo() {
-    var result = myAxios({
+    return myAxios({
         url: '/api/user',
         method: 'get',
-        params: undefined
+        params: {
+        }
     }) 
-    return result
 }
 
 //用户注册
