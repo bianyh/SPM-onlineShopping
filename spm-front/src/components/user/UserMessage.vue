@@ -2,8 +2,25 @@
 export default {
     data() {
         return {
-            user: userInfo()
+            user: null,
+            userData: {
+                username: '',
+                phone: '',
+                email: '',
+                password: ''
+            },
         }
+    },
+    mounted() {
+        userInfo().then((res) => {
+            this.user = res
+            console.log(this.user)
+            this.userData.username = this.user.username
+            this.userData.phone = this.user.phone
+            this.userData.email = this.user.email
+        }).catch((err) => {
+            console.error(err)
+        })
     }
 }
 </script>
@@ -17,7 +34,7 @@ export default {
                     <ElAvatar size="large" src="/img/kachina.png" alt="" />
                 </ElAside>
                 <ElContainer direction="vertical">
-                    <h3>{{ user.username }}</h3>
+                    <h3>{{ userData.username }}</h3>
                     Joined Time
                 </ElContainer>
             </ElContainer>
