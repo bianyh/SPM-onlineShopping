@@ -8,6 +8,7 @@ import com.example.spm.service.productService;
 import com.example.spm.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.example.spm.pojo.OrderItemRecordDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -26,6 +27,7 @@ public class productServiceImpl implements productService {
     public List<Product> getProductByStoreId(List<Integer> storeIds) {
         return productmapper.findByShopIdIn(storeIds);
     }
+
     @Override
     public int addProductToFavorite(UserFavorites userFavorites) {
         Map<String, Object> map = ThreadLocalUtil.get();
@@ -41,6 +43,11 @@ public class productServiceImpl implements productService {
     }
 
     @Override
+    public int getCommentsCountByProductId(Integer id) {
+        return productmapper.getCommentsCountByProductId(id);
+    }
+
+    @Override
     public int submitComment(ProductComment productComment) {
         productComment.setCreatedAt(new Date());
         productComment.setStatus(1);
@@ -51,20 +58,25 @@ public class productServiceImpl implements productService {
     }
 
     @Override
+    public int deleteComment(Integer cid) {
+        return productmapper.deleteComment(cid);
+    }
+
+    @Override
     public int removeProductFromFavorite(UserFavorites userFavorites) {
         return productmapper.removeProductFromFavorite(userFavorites);
     }
 
     @Override
     public void updateProduct(Product product, Integer id) {
-        productmapper.updateProduct(product.getPictures(),product.getPrice(),product.getStoreId(),product.getName(),
+        productmapper.updateProduct(product.getPictures(), product.getPrice(), product.getStoreId(), product.getName(),
                 product.getDescription(), id, product.getStock(), product.getStatus());
     }
 
     @Override
     public Integer addProduct(Product product) {
-         return productmapper.addProduct(product.getPictures(),product.getPrice(),product.getName(),product.getStoreId()
-                 ,product.getStock(), product.getDescription());
+        return productmapper.addProduct(product.getPictures(), product.getPrice(), product.getName(),
+                product.getStoreId(), product.getStock(), product.getDescription());
     }
 
     @Override
@@ -74,14 +86,13 @@ public class productServiceImpl implements productService {
 
     @Override
     public List<Product> getProducts(String keyword, int page, int limit) {
-        return  productmapper.getProducts(keyword, page, limit);
+        return productmapper.getProducts(keyword, page, limit);
     }
 
     @Override
     public long getTotalCount(String keyword) {
         return productmapper.getTotalCount(keyword);
     }
-
 
     @Override
     public int updateProductStatus(int id, int status) {
@@ -91,5 +102,24 @@ public class productServiceImpl implements productService {
     @Override
     public int deleteProduct(Integer id) {
         return productmapper.deleteProductById(id);
+    }
+
+    @Override
+    public int getSalesVolume(Integer productId, int status) {
+        if (status < 0) {
+            return productmapper.getSalesVolumeAll(productId);
+        }
+        return productmapper.getSalesVolume(productId, status);
+    }
+
+    @Override
+    public List<OrderItemRecordDTO> getSalesVolumeDetail(Integer productId, int status, String startTime,
+            String endTime) {
+        return productmapper.getSalesVolumeDetail(productId, status, startTime, endTime);
+    }
+
+    @Override
+    public List<Product> getProductsByRandom(int limit) {
+        return productmapper.getProductsByRandom(limit);
     }
 }

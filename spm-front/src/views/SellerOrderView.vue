@@ -155,7 +155,7 @@ export default {
             po: {},
             fpo: {},
             quantitys: {},
-            orderStatusFilter: [false, true, false, false, false],
+            orderStatusFilter: [false, false, false, false, false],
             orderStatus: ['Pending payment', 'waiting for shipping', 'Shipped', 'Completed', 'Canceled'],
             refuseOrderStatus: [0, 3, 4],
             isLoading: true,
@@ -164,6 +164,7 @@ export default {
             currentProductId: 0,
             form: {
                 orderId: '',
+                pid: '',
                 trackingNumber: ''
             },
             progressTotal: 0, //
@@ -213,6 +214,14 @@ export default {
             this.orders[orderId].status = 2
             this.filter()
             orderStateUpdate(orderId, 2).then((res) => { ElMessage({ message: res }) })
+            orderSend(orderId, pid, this.form.trackingNumber).then((res) => {
+                console.log(res)
+                this.dialogVisible = false;
+                this.form.trackingNumber = '';
+                ElMessage({ message: "Product shipped.", type: "success" })
+            }).catch((err) => {
+                ElMessage({ message: err })
+            })
             // 实现确认发货逻辑
         },
         contactBuyer(orderId) {
@@ -233,7 +242,7 @@ export default {
                 this.orders[oid].status = 2
                 this.filter()
             }
-            orderSend(this.form.orderId, this.form.trackingNumber).then((res) => {
+            orderSend(this.form.orderId, this.form.pid, this.form.trackingNumber).then((res) => {
                 console.log(res)
                 this.dialogVisible = false;
                 this.form.trackingNumber = '';

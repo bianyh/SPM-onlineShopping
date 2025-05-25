@@ -9,8 +9,8 @@
         <div class='searchF' >
             <div class="searchbox">
                 <input type="text" v-model="searchQuery" @input="filterKeywords"
-                    placeholder="Search for your favorite products！" style="width: 90%;" />
-                <ElButton class="search-btn" style="width: 9%; margin-left: 1%; height: 2.5rem ;"><template #default>
+                    placeholder="Search for your favorite products！" style="width: 90%;padding-left: 1rem;" />
+                <ElButton class="search-btn" style="width: 9%; margin-left: 1%; height: 2.5rem ;" @click="handleSearch"><template #default>
                         <ElIcon>
                             <Search />
                         </ElIcon>
@@ -29,7 +29,6 @@
         <Carousel />
         <!-- 商品展示区域 -->
         <ProductList type="hot-products"/>
-        <ProductList type="discount-zone"/>
 
     </ElRow>
 
@@ -62,9 +61,19 @@ const filterKeywords = () => {
 const selectKeyword = (keyword) => {
     searchQuery.value = keyword;
     filteredKeywords.value = [];
-    console.log(`搜索关键词: ${keyword}`);
+    handleSearch();
 };
+
+const handleSearch = () => {
+    if (searchQuery.value) {
+        localStorage.setItem('searchContent', searchQuery.value);
+        router.push({ name: 'search', query: { keyword: searchQuery.value } });
+    }
+};
+
 </script>
+
+
 
 <style scoped>
 .title-text {

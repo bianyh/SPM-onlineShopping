@@ -42,7 +42,7 @@ export default {
 <template>
     <ElRow class="row-bg" justify="space-evenly" align="top" style="top: 3.5rem;">
         <ElCol :span="6" :xs="0">
-        <h1>Menu</h1>
+        <h1 style="background:#fff; padding-left: 1rem; border-left: 0.5rem solid #aaa;">Menu</h1>
             <el-menu default-active="1-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
                 :collapse="isCollapse" @select="handleSelect">
                 <ElSubMenu index="1">

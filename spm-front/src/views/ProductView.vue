@@ -1,23 +1,32 @@
 <script setup>
 import { cartAppend } from '@/api/cart';
-import { productInfo } from '@/api/product';
+import { productCommentCount, productCommentDelete, productCommentGet, productCommentPost, productInfo } from '@/api/product';
 import { storeInfo } from '@/api/store';
 import MessageBus from '@/utils/MessageBus';
-import { ElAffix, ElAside, ElAvatar, ElButton, ElCard, ElCol, ElContainer, ElDescriptions, ElDescriptionsItem, ElDivider, ElDrawer, ElFooter, ElHeader, ElIcon, ElImage, ElInputNumber, ElMain, ElMessage, ElMessageBox, ElPageHeader, ElRate, ElRow, ElTag, ElText, } from 'element-plus';
+import { ElAffix, ElAside, ElAvatar, ElButton, ElCard, ElCol, ElContainer, ElDescriptions, ElDescriptionsItem, ElDialog, ElDivider, ElDrawer, ElFooter, ElHeader, ElIcon, ElImage, ElInputNumber, ElMain, ElMessage, ElMessageBox, ElPageHeader, ElPagination, ElRate, ElRow, ElTag, ElText, } from 'element-plus';
 </script>
 
 <script>
 export default {
     data() {
         return {
+            uid: -1,
             product: null,
             productDescription: "",
-            productRate: 0,
+            productRate: 5,
             store: null,
+            commentVisible: false,
+            commentLoading: false,
+            commentText: "",
+            commentRate: 5,
             drawerVisible: false,
             drawerLoading: false,
             drawerItemDirection: 'horizontal',
             purchaseQuantity: 1,
+            comments: [],
+            total: 1,
+            page: 1,
+            limit: 3,
         }
     },
     computed: {
@@ -28,23 +37,42 @@ export default {
                 return ''
         },
         productRateText() {
-            if (this.productRate > 4) {
-                return "Perfect!"
-            } else if (this.productRate > 3) {
-                return "Great!"
-            } else if (this.productRate > 2) {
-                return "Good"
-            } else if (this.productRate > 1) {
-                return "Normal"
-            } else {
-                return "Miss"
-            }
+            return this.getRateText(this.productRate)
+        },
+        commentRateText() {
+            return this.getRateText(this.commentRate)
         },
         productDescriptionText() {
 
         }
     },
     methods: {
+        handleComment() {
+            this.commentLoading = true
+            //后端其实能自动获取uid的
+            let uid = window.localStorage.getItem("uid")
+            productCommentPost(uid, this.product.id, this.commentRate, this.commentText).then((result) => {
+                this.commentLoading = false
+                this.commentVisible = false
+                ElMessage({ message: "Comment successfully submitted!" })
+            }, (err) => {
+                MessageBus.emit('box', err)
+                this.commentLoading = false
+            })
+        },
+        getRateText(rate) {
+            if (rate > 4) {
+                return "Perfect!"
+            } else if (rate > 3) {
+                return "Great!"
+            } else if (rate > 2) {
+                return "Good"
+            } else if (rate > 1) {
+                return "Not bad"
+            } else {
+                return "Bad"
+            }
+        },
         handleAddtoCart() {
             this.drawerLoading = true
             var gotoCart = false
@@ -58,7 +86,7 @@ export default {
                     gotoCart = true
                 })
                 if (gotoCart) {
-                    window.localStorage.setItem("navigationParams","2")
+                    window.localStorage.setItem("navigationParams", "2")
                     this.$router.push('/user')
                 }
                 this.drawerLoading = false
@@ -85,20 +113,51 @@ export default {
                 this.drawerItemDirection = 'vertical'; // 小于 768px 时纵向显示
             }
         },
-        handleClickStore(){
+        handleClickStore() {
             this.$store.commit('setSharedData', { sid: this.store.id });
             this.$router.push("/store")
+        },
+        handlePageChange(page) {
+            this.page = page
+            productCommentGet(this.product.id, this.page, this.limit).then(res => {
+                this.comments = res.data
+            })
+        },
+        handleCommentDelete(id) {
+            this.commentLoading = true
+            productCommentDelete(id).then((result) => {
+                this.commentLoading = false
+                ElMessage({ message: "Comment successfully deleted!" })
+                this.comments = this.comments.filter(comment => comment.id !== id)
+            }, (err) => {
+                MessageBus.emit('box', err)
+                this.commentLoading = false
+            })
         }
     },
     mounted() {
-        if (this.$store.state.sharedData?.pid)
-            productInfo(this.$store.state.sharedData?.pid).then((result) => {
+        this.uid = window.localStorage.getItem("uid")
+        if (this.$store.state.sharedData?.pid) {
+            window.localStorage.setItem("productview_pid", this.$store.state.sharedData.pid)
+        }
+        let pid = window.localStorage.getItem("productview_pid")
+        if (pid) {
+            productInfo(pid).then((result) => {
                 this.product = result.data
                 this.productRate = this.product.rate
                 storeInfo(result.data.storeId).then((storeinfo) => {
                     this.store = storeinfo.data
                 })
             }, (err) => { ElMessage({ message: err }) })
+            productCommentCount(pid).then(res => {
+                if (res.data) {
+                    this.total = res.data
+                    productCommentGet(pid, this.page, this.limit).then(res2 => {
+                        this.comments = res2.data
+                    })
+                }
+            })
+        }
         else
             this.$router.back()
         // 监听窗口大小变化
@@ -137,7 +196,8 @@ export default {
                 <ElDivider>Price and rating</ElDivider>
                 <ElRow justify="space-between">
                     <div style="color: #d66; font-size: 1.5rem;">
-                        <ElRate v-model="productRate" disabled text-color="#ff9900" size="large" />
+                        <ElRate v-model="productRate" disabled text-color="#ff9900" size="large"
+                            style="scale: 2;margin-left: 4rem;" />
                         <br>
                         Rating: {{ productRate }} {{ productRateText }}
                     </div>
@@ -162,6 +222,30 @@ export default {
                         </ElContainer>
                     </ElContainer>
                 </ElCard>
+                <ElDivider>Comments</ElDivider>
+                <div style="cursor: pointer;" v-for="(comment, index) in comments" :key="index" class="comment-card">
+                    <ElContainer style="justify-items: center;">
+                        <div style="font-size: 1.8rem; display: flex; justify-content: end; color:orange; margin-right: 1rem;">
+                            {{ comment.rating }}
+                                <Star style="width: 2rem; height: 2rem; margin-top: 0.5rem;" />
+                        </div>
+                        <ElContainer direction="vertical">
+                            <h2>{{ comment?.content }}</h2>
+                            <h4 style="color: darkgrey;">{{ comment?.createdAt }}</h4>
+                        </ElContainer>
+                        <div>
+                            <h4 style="color: gray;">UID: {{ comment?.userId }}</h4>
+                            <a style="width: 100%; display: flex; justify-content: right;" v-if="uid == comment?.userId" @click="handleCommentDelete(comment.id)">
+                                <el-icon>
+                                    <Delete />
+                                </el-icon></a>
+                        </div>
+                    </ElContainer>
+                    <div class="divider"></div>
+                </div>
+                <ElPagination :page-size="limit" v-model="page" :total="total" layout="total, sizes, prev, pager, next"
+                    @current-change="handlePageChange">
+                </ElPagination>
             </ElCard>
 
         </div>
@@ -176,7 +260,21 @@ export default {
                 </ElButton>
             </ElAffix>
         </div>
+        <div style="position: fixed; right:1rem; bottom: 5rem; width: 5rem; height: 1rem;"
+            @click="commentVisible = true">
+            <ElCard style="border-radius: 4px; font-size: 2rem;">
+                <Comment style="width: 100%;" />
+            </ElCard>
+        </div>
     </ElRow>
+    <ElDialog v-model="commentVisible" class="card-container" :show-close="true" :close-on-click-modal="false"
+        :close-on-press-escape="false" :title="'Comment for ' + product?.name">
+        <ElRate v-model="commentRate" text-color="#ff9900" class="card-container" style="scale: 2;" />
+        <h3 class="card-container" style="font-size: 2rem;">{{ commentRateText }}</h3>
+        <ElInput v-model="commentText" type="textarea" :rows="4" placeholder="Please leave your comment here"
+            style="width: 100%; margin: 1rem 0;" />
+        <ElButton type="primary" @click="handleComment">Submit</ElButton>
+    </ElDialog>
     <ElDrawer v-model="drawerVisible" :show-close="true" direction="btt" :with-header=true :z-index=3 size="30rem"
         :title="product?.name" :loading="drawerLoading">
         <el-descriptions class="margin-top" title="Product specifications" :column="1" size="large" border
@@ -300,6 +398,12 @@ div * {
     width: 100%;
     height: 3.5rem;
     font-size: 1.2rem;
+}
+
+.comment-card {
+    width: 100%;
+    font-size: 1.2rem;
+    border: 0px 0px 0px 0.2rem solid #434343;
 }
 
 /* 定义断点，例如 md 为 768px */

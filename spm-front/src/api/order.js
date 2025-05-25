@@ -76,13 +76,14 @@ export function orderUpdate(orderId,productId) {
         }
     })
 }
-//订单发货
-export function orderSend(orderId,trackingNumber) {
+//订单发货和物流状态更新
+export function orderSend(orderId, pid, trackingNumber) {
     return myAxios({
         url: '/api/order/send',
         method: 'put',
         params: {
             orderId: orderId,
+            productId: pid,
             trackingNumber: trackingNumber
         }
     })
@@ -93,5 +94,28 @@ export function orderStateUpdate(orderId,status) {
     return myAxios({
         url: `/api/order/status/${orderId}/${status}`,
         method: 'put',
+    })
+}
+
+//订单物流信息
+export function orderLogistics(orderId) {
+    return myAxios({
+        url: '/api/order/logistics',
+        method: 'get',
+        params: {
+            orderId: orderId,
+            productId: -1
+        }
+    })
+}
+
+//订单确认收货
+export function orderConfirm(orderId) {
+    return myAxios({
+        url: '/api/order/confirm',
+        method: 'put',
+        params: {
+            orderId: orderId
+        }
     })
 }

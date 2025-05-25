@@ -58,6 +58,12 @@ myAxios.interceptors.response.use(
         return res;
     },
     error => {
+        if (error.response && error.response.status === 401) {
+            // 401: 未登录
+            // window.localStorage.removeItem("token");
+            window.location.href = '/#/login';
+            console.log("未登录");
+        }
         console.error('请求错误：', error);
         ElMessage({
             message: error

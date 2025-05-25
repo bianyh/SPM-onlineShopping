@@ -183,9 +183,9 @@ export default {
                         </ElCol>
                     </ElRow>
                 </ElDrawer>
-                <nav class="left-logo-aligner">
+                <!--nav class="left-logo-aligner">
                     <ShopDropdown />
-                </nav>
+                </nav-->
                 <span class="placeholder" />
                 <ElButton :icon="Search" circle class="hidden-sm-and-up" @click.stop="handleSearch()"
                     style="margin: auto 0.5rem;" />

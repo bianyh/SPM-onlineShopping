@@ -6,6 +6,8 @@ import com.example.spm.pojo.UserFavorites;
 
 import java.util.List;
 
+import com.example.spm.pojo.OrderItemRecordDTO;
+
 public interface productService {
     Product getProductStockById(Integer productId);
 
@@ -18,8 +20,11 @@ public interface productService {
     int addProductToFavorite(UserFavorites userFavorites);
 
     List<ProductComment> getCommentsByProductId(Integer id);
+    int getCommentsCountByProductId(Integer id);
 
     int submitComment(ProductComment productComment);
+
+    int deleteComment(Integer cid);
 
     int removeProductFromFavorite(UserFavorites userFavorites);
 
@@ -30,5 +35,11 @@ public interface productService {
     int updateProductStatus(int id, int status);
 
     int deleteProduct(Integer id);
+
+    int getSalesVolume(Integer productId, int status);
+
+    List<OrderItemRecordDTO> getSalesVolumeDetail(Integer productId, int status, String startTime, String endTime);
+
+    List<Product> getProductsByRandom(int limit);
 }
 

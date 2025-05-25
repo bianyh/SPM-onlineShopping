@@ -10,6 +10,7 @@ import java.util.Map;
 
 public interface OrderService {
 
+    
 
    void updateOrderLogistics(Integer orderId, Integer productId);
 
@@ -19,7 +20,7 @@ public interface OrderService {
 
     List<Order> findByUserId(Integer userId, String status);
 
-    void sendOrder(Integer orderId, String trackingNumber);
+    void sendOrder(Integer orderId, Integer productId, String trackingNumber);
 
     void confirmOrder(Integer orderId);
 
@@ -27,12 +28,15 @@ public interface OrderService {
 
     List<OrderItem> getOrderItems(Integer orderId);
 
-    List<LogisticsDTO> getLogistics(Integer orderId, Integer productId);
+    List<LogisticsDTO> getLogistics(Integer orderId);
+    LogisticsDTO getLogisticsByProductId(Integer orderId, Integer productId);
 
     Map<Integer, List<Integer>> getOrder(Integer userId, Integer status);
 
     void cancelOrder(Integer orderId);
 
-
     void submitComment(Integer orderId, Integer productId, Integer rating, String comment);
+
+    //查询用户是否购买过指定商品
+    int checkOrder(Integer userId, Integer productId);
 }
